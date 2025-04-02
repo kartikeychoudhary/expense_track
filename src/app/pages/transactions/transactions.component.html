@@ -1,0 +1,82 @@
+<div class="p-4 md:p-6 card bg-base-100 border border-base-300">
+  <!-- Header Section -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+    <h2 class="text-2xl font-semibold mb-2 md:mb-0">Recent Transactions</h2>
+    <div class="flex items-center space-x-2">
+      <!-- Search Input -->
+      <label class="input input-bordered flex items-center gap-2">
+        <input type="text" class="grow" placeholder="Search transactions..." />
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
+      </label>
+      <!-- Add Transaction Button -->
+      <button class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        Add Transaction
+      </button>
+    </div>
+  </div>
+
+  <!-- DaisyUI Table -->
+  <div class="overflow-x-auto mb-4">
+    <table class="table table-zebra w-full">
+      <!-- Head -->
+      <thead class="bg-base-200">
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th class="text-right">Amount</th>
+          <th>Account</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows -->
+        <tr *ngFor="let transaction of paginatedRowData" class="hover">
+          <td>{{ transaction.date }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>{{ transaction.category }}</td>
+          <td 
+            class="text-right font-medium"
+            [ngClass]="transaction.amount < 0 ? 'text-error' : 'text-success'">
+            {{ transaction.amount | number:'1.2-2'}}
+          </td>
+          <td>{{ transaction.account }}</td>
+        </tr>
+        <!-- Placeholder if no data -->
+        <tr *ngIf="!paginatedRowData || paginatedRowData.length === 0">
+          <td colspan="5" class="text-center py-4">No transactions found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-center mt-4" *ngIf="totalPages > 1">
+    <div class="join">
+      <button 
+        class="join-item btn btn-sm"
+        (click)="goToPreviousPage()"
+        [disabled]="currentPage === 1">
+        «
+      </button>
+      
+      <button 
+        *ngFor="let pageNum of getPageNumbers()" 
+        class="join-item btn btn-sm"
+        [class.btn-active]="currentPage === pageNum"
+        (click)="goToPage(pageNum)">
+        {{ pageNum }}
+      </button>
+      
+      <button 
+        class="join-item btn btn-sm"
+        (click)="goToNextPage()"
+        [disabled]="currentPage === totalPages">
+        »
+      </button>
+    </div>
+  </div>
+
+</div>

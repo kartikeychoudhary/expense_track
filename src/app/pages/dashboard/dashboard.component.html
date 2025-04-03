@@ -1,1 +1,125 @@
-<p>dashboard works!</p>
+<div class="card p-6 bg-base-100">
+  <h1 class="text-3xl font-bold mb-6">Welcome back, {{ userName }}</h1>
+
+  <!-- Stats Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <!-- Total Balance Stat -->
+    <div class="stats border border-base-300 bg-base-100">
+      <div class="stat">
+        <div class="stat-figure text-success">
+          <i class="fas fa-dollar-sign fa-2x"></i>
+        </div>
+        <div class="stat-title">Total Balance</div>
+        <div class="stat-value">${{ totalBalance | number:'1.2-2' }}</div>
+        <div class="stat-desc text-success">↗︎ {{ balanceChange | number:'1.1-1' }}%</div>
+      </div>
+    </div>
+
+    <!-- Monthly Expenses Stat -->
+    <div class="stats border border-base-300 bg-base-100">
+      <div class="stat">
+        <div class="stat-figure text-error">
+          <i class="fas fa-arrow-trend-down fa-2x"></i>
+        </div>
+        <div class="stat-title">Monthly Expenses</div>
+        <div class="stat-value">${{ monthlyExpenses | number:'1.2-2' }}</div>
+        <div class="stat-desc text-error">↘︎ {{ expensesChange | number:'1.1-1' }}%</div>
+      </div>
+    </div>
+
+    <!-- Monthly Income Stat -->
+    <div class="stats border border-base-300 bg-base-100">
+      <div class="stat">
+        <div class="stat-figure text-info">
+          <i class="fas fa-arrow-trend-up fa-2x"></i>
+        </div>
+        <div class="stat-title">Monthly Income</div>
+        <div class="stat-value">${{ monthlyIncome | number:'1.2-2' }}</div>
+        <div class="stat-desc text-info">↗︎ {{ incomeChange | number:'1.1-1' }}%</div>
+      </div>
+    </div>
+
+    <!-- Savings Rate Stat -->
+    <div class="stats border border-base-300 bg-base-100">
+      <div class="stat">
+        <div class="stat-figure text-secondary">
+          <i class="fas fa-piggy-bank fa-2x"></i>
+        </div>
+        <div class="stat-title">Savings Rate</div>
+        <div class="stat-value">{{ savingsRate }}%</div>
+        <div class="stat-desc text-secondary">↗︎ {{ savingsChange | number:'1.1-1' }}%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Expense Distribution Card -->
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Expense Distribution</h2>
+        <!-- Placeholder for Donut Chart -->
+        <div class="flex justify-center items-center h-64 bg-base-200 rounded-box">
+          <p class="text-lg text-base-content/60">Donut Chart Placeholder</p>
+        </div>
+        <!-- Placeholder for Legend -->
+         <div class="flex justify-center space-x-4 mt-4">
+          <span class="badge badge-info badge-xs"></span> Food
+          <span class="badge badge-success badge-xs"></span> Transport
+          <span class="badge badge-warning badge-xs"></span> Shopping
+          <span class="badge badge-error badge-xs"></span> Bills
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Spending Trend Card -->
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body">
+        <h2 class="card-title">Monthly Spending Trend</h2>
+        <!-- Placeholder for Line Chart -->
+        <div class="flex justify-center items-center h-64 bg-base-200 rounded-box">
+           <p class="text-lg text-base-content/60">Line Chart Placeholder</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions Section -->
+  <div class="card bg-base-100 border border-base-300">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Recent Transactions</h2>
+      <div class="overflow-x-auto">
+        <table class="table w-full">
+          <!-- head -->
+          <!-- We omit the table head for a cleaner look similar to the image -->
+          <tbody>
+            <!-- Rows generated via *ngFor -->
+            <tr *ngFor="let tx of recentTransactions" class="hover">
+              <td>
+                <div class="flex items-center space-x-3">
+                  <div class="avatar placeholder">
+                     <div class="bg-neutral-focus text-neutral-content rounded-full w-10 h-10 flex items-center justify-center">
+                        <i class="text-xl" [ngClass]="tx.icon"></i>
+                     </div>
+                  </div>
+                  <div>
+                    <div class="font-bold">{{ tx.description }}</div>
+                    <div class="text-sm opacity-50">{{ tx.date }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-right">
+                <span [ngClass]="{'text-success': tx.amount > 0, 'text-error': tx.amount < 0}">
+                  {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | number:'1.2-2' }}
+                </span>
+                <br/>
+                <span class="text-sm opacity-50">{{ tx.account }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -12,6 +12,7 @@ import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
+import { ChartComponent } from './components/chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AgGridAngular } from 'ag-grid-angular';
     SettingsComponent,
     SideBarComponent,
     TransactionsComponent,
+    ChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,7 @@ import { AgGridAngular } from 'ag-grid-angular';
     FormsModule,
     CommonModule,
     AgGridAngular
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

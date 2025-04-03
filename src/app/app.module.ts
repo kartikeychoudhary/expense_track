@@ -11,6 +11,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { CommonModule } from '@angular/common';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -20,13 +21,14 @@ import { CommonModule } from '@angular/common';
     DashboardComponent,
     SettingsComponent,
     SideBarComponent,
-    TransactionsComponent
+    TransactionsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    AgGridAngular
   ],
   providers: [],
   bootstrap: [AppComponent]

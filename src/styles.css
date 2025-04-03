@@ -9,3 +9,110 @@
 @plugin "daisyui" {
     themes: all;
 }
+/*
+.ag-header-cell-text {
+    background: 
+    font-weight: 600;
+    font-size: 20px;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+} */
+
+body {
+    /* override value of backgroundColor, foregroundColor and spacing parameters */
+    --ag-background-color: hsl(var(--color-base-100)); /* Use DaisyUI base-100 background */
+    --ag-foreground-color: hsl(var(--color-base-content)); /* Use DaisyUI base-content color */
+    --ag-spacing: 4px; /* Keep spacing as is */
+    /* use dark scrollbars */
+    --ag-browser-color-scheme: dark; /* Keep dark scrollbars */
+
+    /* --- DaisyUI Mapped Colors --- */
+    /* Primary/Active Color */
+    --ag-alpine-active-color: hsl(var(--color-primary));
+    --ag-selected-row-background-color: hsla(var(--color-primary) / 0.3);
+    --ag-row-hover-color: hsla(var(--color-primary) / 0.1);
+    --ag-column-hover-color: hsla(var(--color-primary) / 0.1);
+    --ag-input-focus-border-color: hsla(var(--color-primary) / 0.4);
+    --ag-range-selection-background-color: hsla(var(--color-primary) / 0.2);
+    --ag-range-selection-background-color-2: hsla(var(--color-primary) / 0.3); /* Adjusted alpha slightly */
+    --ag-range-selection-background-color-3: hsla(var(--color-primary) / 0.4); /* Adjusted alpha slightly */
+    --ag-range-selection-background-color-4: hsla(var(--color-primary) / 0.5); /* Adjusted alpha slightly */
+    --ag-range-selection-border-color: hsl(var(--color-primary)); /* Derived: uses --ag-alpine-active-color */
+    --ag-checkbox-checked-color: hsl(var(--color-primary)); /* Derived: uses --ag-alpine-active-color */
+    --ag-selected-tab-underline-color: hsl(var(--color-primary)); /* Derived: uses --ag-alpine-active-color */
+    --ag-row-numbers-selected-color: color-mix(in srgb, transparent, hsl(var(--color-primary)) 50%); /* Derived: uses --ag-alpine-active-color */
+
+    /* Base Colors (Background, Foreground, Borders) */
+    --ag-background-color: hsl(var(--color-base-100)); /* Base background */
+    --ag-foreground-color: hsl(var(--color-base-content)); /* Base content color */
+    --ag-secondary-foreground-color: hsl(var(--color-base-content)); /* Derived: uses --ag-foreground-color */
+    --ag-border-color: hsl(var(--color-base-300)); /* Base-300 for borders */
+    --ag-secondary-border-color: hsl(var(--color-base-200)); /* Base-200 for secondary borders */
+    --ag-header-background-color: hsl(var(--color-base-200)); /* Base-200 for header */
+    --ag-odd-row-background-color: hsl(var(--color-base-100)); /* Base-100 for odd rows (same as even) */
+    --ag-control-panel-background-color: hsl(var(--color-base-200)); /* Base-200 for control panel */
+    --ag-subheader-background-color: hsl(var(--color-base-100)); /* Base-100 for subheader */
+    --ag-checkbox-background-color: hsl(var(--color-base-100)); /* Derived: uses --ag-background-color */
+    --ag-panel-background-color: hsl(var(--color-base-200)); /* Derived: uses --ag-header-background-color */
+    --ag-menu-background-color: hsl(var(--color-base-200)); /* Derived: uses --ag-header-background-color */
+    --ag-input-border-color: hsl(var(--color-base-300)); /* Derived: uses --ag-border-color */
+
+    /* Neutral & Tooltip */
+    --ag-tooltip-background-color: hsl(var(--color-neutral)); /* Neutral for tooltips */
+    --ag-checkbox-unchecked-color: hsla(var(--color-base-content) / 0.6); /* Base content with alpha for unchecked */
+
+    /* State Colors (Invalid, Disabled, Find) */
+    --ag-invalid-color: hsl(var(--color-error)); /* Error color for invalid */
+    --ag-input-border-color-invalid: hsl(var(--color-error)); /* Derived: uses --ag-invalid-color */
+    --ag-disabled-foreground-color: hsla(var(--color-base-content) / 0.5); /* Base content with alpha for disabled text */
+    --ag-input-disabled-border-color: hsla(var(--color-base-300) / 0.5); /* Base-300 with alpha for disabled border */
+    --ag-input-disabled-background-color: hsla(var(--color-base-200) / 0.5); /* Base-200 with alpha for disabled background */
+    --ag-find-match-color: hsl(var(--color-base-content)); /* Derived: uses --ag-foreground-color */
+    --ag-find-match-background-color: hsla(var(--color-warning) / 0.5); /* Warning color with alpha for find match */
+    --ag-find-active-match-color: hsl(var(--color-base-content)); /* Derived: uses --ag-foreground-color */
+    --ag-find-active-match-background-color: hsl(var(--color-warning)); /* Warning color for active find match */
+
+    /* Component Colors (Pills, Chips) */
+    --ag-chip-background-color: hsla(var(--color-base-content) / 0.1); /* Base content with low alpha for chips */
+    --ag-advanced-filter-join-pill-color: hsla(var(--color-neutral) / 0.5);   /* Neutral */
+    --ag-advanced-filter-column-pill-color: hsla(var(--color-success) / 0.5); /* Success */
+    --ag-advanced-filter-option-pill-color: hsla(var(--color-warning) / 0.5); /* Warning */
+    --ag-advanced-filter-value-pill-color: hsla(var(--color-info) / 0.5);  /* Info */
+
+    /* Shadows */
+    --ag-input-focus-box-shadow: 0 0 2px 0.1rem hsla(var(--color-primary) / 0.4); /* Derived: uses --ag-input-focus-border-color */
+    --ag-card-shadow: 0 1px 4px 1px hsla(var(--color-neutral) / 0.4); /* Neutral based shadow */
+    --ag-popup-shadow: var(--ag-card-shadow); /* Derived: uses --ag-card-shadow */
+
+    /* --- Non-Color Variables (Keep As Is) --- */
+    --ag-borders: solid 1px;
+    --ag-border-radius: 3px;
+    --ag-borders-side-button: none;
+    --ag-side-button-selected-background-color: transparent;
+    --ag-header-column-resize-handle-display: block;
+    --ag-header-column-resize-handle-width: 2px;
+    --ag-header-column-resize-handle-height: 30%;
+    --ag-grid-size: 6px;
+    --ag-icon-size: 16px;
+    --ag-row-height: calc(var(--ag-grid-size) * 7);
+    --ag-header-height: calc(var(--ag-grid-size) * 8);
+    --ag-list-item-height: calc(var(--ag-grid-size) * 4);
+    --ag-column-select-indent-size: var(--ag-icon-size);
+    --ag-set-filter-indent-size: var(--ag-icon-size);
+    --ag-advanced-filter-builder-indent-size: calc(var(--ag-icon-size) + var(--ag-grid-size) * 2);
+    --ag-cell-horizontal-padding: calc(var(--ag-grid-size) * 3);
+    --ag-cell-widget-spacing: calc(var(--ag-grid-size) * 2);
+    --ag-widget-container-vertical-padding: calc(var(--ag-grid-size) * 2);
+    --ag-widget-container-horizontal-padding: calc(var(--ag-grid-size) * 2);
+    --ag-widget-vertical-spacing: calc(var(--ag-grid-size) * 1.5);
+    --ag-toggle-button-height: 18px;
+    --ag-toggle-button-width: 28px;
+    --ag-font-size: 13px;
+    --ag-selected-tab-underline-width: 2px;
+    --ag-selected-tab-underline-transition-speed: 0.3s;
+    --ag-tab-min-width: 240px;
+    --ag-card-shadow: 0 1px 4px 1px rgba(186, 191, 199, 0.4);
+    --ag-popup-shadow: var(--ag-card-shadow);
+    --ag-side-bar-panel-width: 250px;
+}

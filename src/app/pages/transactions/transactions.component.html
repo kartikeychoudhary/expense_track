@@ -18,65 +18,21 @@
     </div>
   </div>
 
-  <!-- DaisyUI Table -->
-  <div class="overflow-x-auto mb-4">
-    <table class="table table-zebra w-full">
-      <!-- Head -->
-      <thead class="bg-base-200">
-        <tr>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th class="text-right">Amount</th>
-          <th>Account</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Rows -->
-        <tr *ngFor="let transaction of paginatedRowData" class="hover">
-          <td>{{ transaction.date }}</td>
-          <td>{{ transaction.description }}</td>
-          <td>{{ transaction.category }}</td>
-          <td 
-            class="text-right font-medium"
-            [ngClass]="transaction.amount < 0 ? 'text-error' : 'text-success'">
-            {{ transaction.amount | number:'1.2-2'}}
-          </td>
-          <td>{{ transaction.account }}</td>
-        </tr>
-        <!-- Placeholder if no data -->
-        <tr *ngIf="!paginatedRowData || paginatedRowData.length === 0">
-          <td colspan="5" class="text-center py-4">No transactions found.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Pagination Controls -->
-  <div class="flex justify-center mt-4" *ngIf="totalPages > 1">
-    <div class="join">
-      <button 
-        class="join-item btn btn-sm"
-        (click)="goToPreviousPage()"
-        [disabled]="currentPage === 1">
-        «
-      </button>
-      
-      <button 
-        *ngFor="let pageNum of getPageNumbers()" 
-        class="join-item btn btn-sm"
-        [class.btn-active]="currentPage === pageNum"
-        (click)="goToPage(pageNum)">
-        {{ pageNum }}
-      </button>
-      
-      <button 
-        class="join-item btn btn-sm"
-        (click)="goToNextPage()"
-        [disabled]="currentPage === totalPages">
-        »
-      </button>
-    </div>
+  <!-- AG Grid Table with Custom Theme -->
+  <div 
+    class="ag-theme-custom" 
+    style="height: 500px; width: 100%;"> <!-- Adjust height as needed -->
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      [rowData]="rowData"
+      [columnDefs]="colDefs"
+      [pagination]="true"
+      [paginationPageSize]="10" 
+      [paginationPageSizeSelector]="[10, 20, 50]"
+      [domLayout]="'autoHeight'" 
+      [defaultColDef]="defaultColDef"
+    >
+    </ag-grid-angular>
   </div>
 
 </div>

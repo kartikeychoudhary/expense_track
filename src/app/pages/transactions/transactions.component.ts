@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef } from 'ag-grid-community';
 
 interface Transaction {
   date: string;
@@ -15,9 +17,33 @@ interface Transaction {
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
 })
-export class TransactionsComponent implements OnInit {
+export class TransactionsComponent {
 
-  public allRowData: Transaction[] = [
+  public defaultColDef: ColDef = {
+    sortable: true,
+    filter: true,
+    resizable: true,
+    flex: 1,
+    minWidth: 100,
+  };
+
+  public colDefs: ColDef<Transaction>[] = [
+    { field: 'date', headerName: 'Date', sort: 'desc' },
+    { field: 'description', headerName: 'Description' },
+    { field: 'category', headerName: 'Category' },
+    {
+      field: 'amount',
+      headerName: 'Amount',
+      cellClass: params => params.value < 0 ? 'text-error' : 'text-success',
+      valueFormatter: params => {
+        const absValue = Math.abs(params.value).toFixed(2);
+        return params.value < 0 ? `-${absValue}` : `+${absValue}`;
+      }
+    },
+    { field: 'account', headerName: 'Account' }
+  ];
+
+  public rowData: Transaction[] = [
     { date: '2024-01-15', description: 'Grocery Shopping', category: 'Food', amount: -120.50, account: 'Credit Card' },
     { date: '2024-01-14', description: 'Salary Deposit', category: 'Income', amount: 3000.00, account: 'Savings' },
     { date: '2024-01-13', description: 'Netflix Subscription', category: 'Entertainment', amount: -15.99, account: 'Credit Card' },
@@ -31,49 +57,6 @@ export class TransactionsComponent implements OnInit {
     { date: '2024-01-05', description: 'Client Project', category: 'Income', amount: 1200.00, account: 'Savings' },
   ];
 
-  public paginatedRowData: Transaction[] = [];
-
-  public currentPage: number = 1;
-  public itemsPerPage: number = 10;
-  public totalPages: number = 1;
-
   constructor() {}
-
-  ngOnInit(): void {
-    this.updatePagination();
-  }
-
-  updatePagination(): void {
-    this.totalPages = Math.ceil(this.allRowData.length / this.itemsPerPage);
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = this.totalPages;
-    }
-    if (this.currentPage < 1) {
-        this.currentPage = 1;
-    }
-
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedRowData = this.allRowData.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePagination();
-    }
-  }
-
-  goToPreviousPage(): void {
-    this.goToPage(this.currentPage - 1);
-  }
-
-  goToNextPage(): void {
-    this.goToPage(this.currentPage + 1);
-  }
-
-  getPageNumbers(): number[] {
-    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-  }
 
 }

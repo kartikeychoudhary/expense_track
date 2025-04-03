@@ -1,0 +1,92 @@
+<dialog class="modal" [class.modal-open]="isVisible">
+  <div class="modal-box">
+    <button (click)="handleClose()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    <h3 class="font-bold text-lg mb-4">{{ isEditing ? 'Edit' : 'Add New' }} Transaction</h3>
+
+    <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+      <!-- Form Fields -->
+      <div class="grid grid-cols-1 gap-4">
+        <!-- Date -->
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Date</span>
+          </div>
+          <input type="date" formControlName="date" class="input input-bordered w-full" 
+                 [class.input-error]="date?.invalid && date?.touched" />
+          <div class="label" *ngIf="date?.invalid && date?.touched">
+            <span class="label-text-alt text-error">Date is required.</span>
+          </div>
+        </label>
+
+        <!-- Description -->
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Description</span>
+          </div>
+          <input type="text" formControlName="description" placeholder="E.g., Grocery shopping" class="input input-bordered w-full" 
+                 [class.input-error]="description?.invalid && description?.touched"/>
+           <div class="label" *ngIf="description?.invalid && description?.touched">
+            <span class="label-text-alt text-error">Description is required.</span>
+          </div>
+        </label>
+
+        <!-- Category -->
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Category</span>
+          </div>
+          <select formControlName="category" class="select select-bordered w-full"
+                  [class.select-error]="category?.invalid && category?.touched">
+            <option disabled selected value="">Select category</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+           <div class="label" *ngIf="category?.invalid && category?.touched">
+            <span class="label-text-alt text-error">Category is required.</span>
+          </div>
+        </label>
+
+        <!-- Amount -->
+         <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Amount</span>
+          </div>
+          <input type="number" step="0.01" formControlName="amount" placeholder="E.g., -120.50 or 3000" class="input input-bordered w-full"
+                 [class.input-error]="amount?.invalid && amount?.touched"/>
+           <div class="label" *ngIf="amount?.invalid && amount?.touched">
+             <span class="label-text-alt text-error">
+                <ng-container *ngIf="amount?.errors?.['required']">Amount is required.</ng-container>
+                <ng-container *ngIf="amount?.errors?.['pattern']">Enter a valid number (e.g., 50 or -25.50).</ng-container>
+             </span>
+           </div>
+        </label>
+
+         <!-- Account -->
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Account</span>
+          </div>
+          <select formControlName="account" class="select select-bordered w-full"
+                  [class.select-error]="account?.invalid && account?.touched">
+            <option disabled selected value="">Select account</option>
+            <option *ngFor="let acc of accounts" [value]="acc">{{ acc }}</option>
+          </select>
+           <div class="label" *ngIf="account?.invalid && account?.touched">
+            <span class="label-text-alt text-error">Account is required.</span>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="modal-action mt-6">
+        <button type="button" (click)="handleClose()" class="btn btn-ghost">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="transactionForm.invalid">{{ isEditing ? 'Update' : 'Save' }} Transaction</button>
+      </div>
+    </form>
+
+  </div>
+  <!-- Optional: Click outside to close -->
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="handleClose()">close</button>
+  </form>
+</dialog>

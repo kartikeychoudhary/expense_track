@@ -22,11 +22,20 @@ export class AgGridActionsComponent implements ICellRendererAngularComp {
   }
 
   onEditClick(): void {
-    // Implement your edit logic here
-    // You can access row data via this.params.data
-    console.log('Edit clicked for row: ', this.params?.data);
-    // Example: Call a method on the parent component
-    // this.params?.context.componentParent.editMethod(this.params.data);
+    console.log('[AgGridActions] onEditClick triggered');
+    console.log('[AgGridActions] Params:', this.params);
+    console.log('[AgGridActions] Context:', this.params?.context);
+    console.log('[AgGridActions] Parent Component:', this.params?.context?.componentParent);
+    console.log('[AgGridActions] openEditModal Method:', this.params?.context?.componentParent?.openEditModal);
+
+    // Call the parent component's method via context
+    if (this.params?.context?.componentParent?.openEditModal) {
+       console.log('[AgGridActions] Calling openEditModal with data:', this.params.data);
+       this.params.context.componentParent.openEditModal(this.params.data);
+    } else {
+      console.error('Parent component method or context not available for edit.');
+    }
+    // console.log('Edit clicked for row: ', this.params?.data);
   }
 
   onDeleteClick(): void {

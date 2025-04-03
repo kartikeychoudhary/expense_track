@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ChartComponent } from './components/chart/chart.component';
 import { AgGridActionsComponent } from './components/ag-grid-actions/ag-grid-actions.component';
+import { TransactionModalComponent } from './components/transaction-modal/transaction-modal.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +27,13 @@ import { AgGridActionsComponent } from './components/ag-grid-actions/ag-grid-act
     TransactionsComponent,
     ChartComponent,
     AgGridActionsComponent,
+    TransactionModalComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     AgGridAngular
     ],

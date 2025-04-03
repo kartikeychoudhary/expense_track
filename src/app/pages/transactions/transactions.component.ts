@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
+import { AgGridActionsComponent } from '../../components/ag-grid-actions/ag-grid-actions.component';
 
 interface Transaction {
   date: string;
@@ -40,7 +41,17 @@ export class TransactionsComponent {
         return params.value < 0 ? `-${absValue}` : `+${absValue}`;
       }
     },
-    { field: 'account', headerName: 'Account' }
+    { field: 'account', headerName: 'Account' },
+    {
+      headerName: 'Actions',
+      cellRenderer: AgGridActionsComponent,
+      filter: false,
+      sortable: false,
+      resizable: false,
+      width: 100,
+      pinned: 'right',
+      cellStyle: { textAlign: 'center' },
+    }
   ];
 
   public rowData: Transaction[] = [
@@ -54,7 +65,6 @@ export class TransactionsComponent {
     { date: '2024-01-08', description: 'Coffee', category: 'Food', amount: -4.50, account: 'Checking' },
     { date: '2024-01-07', description: 'Movie Tickets', category: 'Entertainment', amount: -30.00, account: 'Credit Card' },
     { date: '2024-01-06', description: 'Gym Membership', category: 'Health', amount: -40.00, account: 'Checking' },
-    { date: '2024-01-05', description: 'Client Project', category: 'Income', amount: 1200.00, account: 'Savings' },
     { date: '2024-01-05', description: 'Client Project', category: 'Income', amount: 1200.00, account: 'Savings' },
     { date: '2024-01-05', description: 'Client Project', category: 'Income', amount: 1200.00, account: 'Savings' },
     { date: '2024-01-05', description: 'Client Project', category: 'Income', amount: 1200.00, account: 'Savings' },

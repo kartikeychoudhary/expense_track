@@ -13,6 +13,7 @@ import { TransactionsComponent } from './pages/transactions/transactions.compone
 import { CommonModule } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ChartComponent } from './components/chart/chart.component';
+import { AgGridActionsComponent } from './components/ag-grid-actions/ag-grid-actions.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ChartComponent } from './components/chart/chart.component';
     SideBarComponent,
     TransactionsComponent,
     ChartComponent,
+    AgGridActionsComponent,
   ],
   imports: [
     BrowserModule,

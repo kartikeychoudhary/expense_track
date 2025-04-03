@@ -1,1 +1,2 @@
-<app-main></app-main>
+<app-main *ngIf="!isAuthRoute"></app-main>
+<app-authentication *ngIf="isAuthRoute"></app-authentication>

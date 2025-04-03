@@ -16,6 +16,7 @@ import { ChartComponent } from './components/chart/chart.component';
 import { AgGridActionsComponent } from './components/ag-grid-actions/ag-grid-actions.component';
 import { TransactionModalComponent } from './components/transaction-modal/transaction-modal.component';
 import { VisualizeComponent } from './pages/visualize/visualize.component';
+import { AuthenticationComponent } from './pages/authentication/authentication.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { VisualizeComponent } from './pages/visualize/visualize.component';
     AgGridActionsComponent,
     TransactionModalComponent,
     VisualizeComponent,
+    AuthenticationComponent,
   ],
   imports: [
     BrowserModule,

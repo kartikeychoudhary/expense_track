@@ -1,0 +1,87 @@
+<div class="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-primary via-accent to-secondary animated-gradient-bg">
+  <div class="absolute inset-0 backdrop-blur-lg bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10"></div>
+
+  <div class="relative card w-full max-w-md glass">
+    <div class="card-body">
+      <div role="tablist" class="tabs tabs-bordered mb-6">
+        <input type="radio" name="auth_tabs" role="tab" class="tab" aria-label="Login" checked />
+        <div role="tabpanel" class="tab-content pt-6">
+           <!-- Login Form -->
+           <form class="space-y-4">
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Email address</span>
+                </label>
+                <input type="email" placeholder="Enter your email" class="input input-bordered w-full bg-opacity-75 border-opacity-50" />
+              </div>
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Password</span>
+                </label>
+                <div class="relative">
+                   <input type="password" placeholder="Enter your password" class="input input-bordered w-full pr-10 bg-opacity-75 border-opacity-50" />
+                   <span class="absolute inset-y-0 right-0 flex items-center pr-3">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                       <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                     </svg>
+                   </span>
+                </div>
+                <label class="label pt-1 justify-end">
+                   <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+                </label>
+              </div>
+              <div class="form-control pt-2">
+                <button type="submit" class="btn w-full bg-opacity-75 glass">Log in</button>
+              </div>
+           </form>
+        </div>
+
+        <input type="radio" name="auth_tabs" role="tab" class="tab" aria-label="Sign Up" />
+        <div role="tabpanel" class="tab-content pt-6">
+          <!-- Signup Form -->
+           <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignup()" class="space-y-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">First Name</span>
+              </label>
+              <input type="text" placeholder="First Name" class="input input-bordered w-full bg-opacity-75 border-opacity-50" formControlName="firstName"/>
+              <!-- Add validation messages later -->
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Last Name</span>
+              </label>
+              <input type="text" placeholder="Last Name" class="input input-bordered w-full bg-opacity-75 border-opacity-50" formControlName="lastName"/>
+              <!-- Add validation messages later -->
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Email</span>
+              </label>
+              <input type="email" placeholder="email@example.com" class="input input-bordered w-full bg-opacity-75 border-opacity-50" formControlName="email"/>
+              <!-- Add validation messages later -->
+            </div>
+             <div class="form-control">
+              <label class="label">
+                <span class="label-text">Password</span>
+              </label>
+              <input type="password" placeholder="Password" class="input input-bordered w-full bg-opacity-75 border-opacity-50" formControlName="password"/>
+              <!-- Add validation messages later -->
+            </div>
+             <div class="form-control">
+              <label class="label">
+                <span class="label-text">Confirm Password</span>
+              </label>
+              <input type="password" placeholder="Confirm Password" class="input input-bordered w-full bg-opacity-75 border-opacity-50" formControlName="confirmPassword"/>
+               <!-- Add validation messages later -->
+            </div>
+            <div class="form-control pt-2">
+              <button type="submit" class="btn  w-full bg-opacity-75 glass" [disabled]="signupForm.invalid">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

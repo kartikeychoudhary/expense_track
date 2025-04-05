@@ -1,0 +1,94 @@
+<section class="max-h-[90vh] overflow-y-auto">
+    <div class="bg-base-100 py-2 px-4 mx-auto max-w-2xl lg:py-8">
+        <h2 class="mb-4 text-xl font-bold text-base-content"> {{editMode ? 'Edit' : 'Add'}} Transaction </h2>
+        <form *ngIf="transactionForm" [formGroup]="transactionForm" (ngSubmit)="addTransaction()">
+            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                
+                <div class="sm:col-span-2">
+                    <label for="name" class="block mb-2 text-sm font-medium text-base-content"> Tags </label>
+                    <div type="text" name="name" id="name" class="block bg-base-200 border border-base-300 text-base-content text-sm rounded-lg focus:ring-primary focus:border-primary w-full p-2.5" >
+                        @for (tag of tags; track $index) {
+                            <span class="mb-2 badge badge-info gap-2">
+                                {{ tag }}
+                                <button (click)="removeTag(tag)" type="button" class="inline-flex items-center p-1 ms-2 text-sm text-info-content bg-transparent rounded-sm hover:bg-info-focus" aria-label="Remove">
+                                <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Remove badge</span>
+                                </button>
+                            </span>
+                        }
+                          <div class="flex">
+                            <button type="button" (click)="addTag()" class="btn btn-sm btn-outline btn-info rounded-e-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                  </svg>
+                            </button>
+                            <input name="tags" [(ngModel)]="tag" [ngModelOptions]="{standalone: true}" type="text" id="website-admin" class="input input-bordered input-sm rounded-s-none w-full max-w-xs" placeholder="tag1">
+                          </div>
+
+                    </div>
+                      
+                </div>
+                <div class="w-full">
+                    <label for="account" class="block mb-2 text-sm font-medium text-base-content"> Account </label>
+                    <input formControlName="account" type="text" class="input input-bordered w-full" placeholder="Account">
+                </div>
+                <div class="w-full">
+                    <label for="price" class="block mb-2 text-sm font-medium text-base-content"> Amount </label>
+                    <input  formControlName="amount" type="number" class="input input-bordered w-full" placeholder="INR ">
+                </div>
+                <div class="w-full">
+                    <label for="price" class="block mb-2 text-sm font-medium text-base-content"> Spend At </label>
+                    <input  formControlName="spendAt" type="text" class="input input-bordered w-full" placeholder="Spend At ">
+                </div>
+                <div>
+                    <label for="category" class="block mb-2 text-sm font-medium text-base-content"> Category </label>
+                    <select formControlName="category" class="select select-bordered w-full">
+                        <option value="">Select category</option>
+                        <option [value]="c" *ngFor="let c of categories">{{c}}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="mode" class="block mb-2 text-sm font-medium text-base-content"> Mode </label>
+                    <select formControlName="mode" class="select select-bordered w-full">
+                        <option value="">Select Mode</option>
+                        <option [value]="m" *ngFor="let m of modes">{{m}}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="type" class="block mb-2 text-sm font-medium text-base-content"> Type </label>
+                    <select formControlName="type" class="select select-bordered w-full">
+                        <option value="">Select Mode</option>
+                        <option [value]="t" *ngFor="let t of types">{{t}}</option>
+                    </select>
+                </div>
+                <div class="block">
+                    <label class="label cursor-pointer">
+                      <span class="label-text text-base-content"> Disable for charts </span>
+                      <input type="checkbox" formControlName="disableForCharts" class="toggle toggle-primary" />
+                    </label>
+                </div> 
+                <div class="col-span-2">
+                    <label for="datetime" class="block mb-2 text-sm font-medium text-base-content"> Date & Time </label>
+                    <input 
+                        type="datetime-local" 
+                        id="datetime" 
+                        class="input input-bordered w-full" 
+                        [value]="dateForInput" 
+                        (input)="updateDateFromInput($event)"
+                    />
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="description" class="block mb-2 text-sm font-medium text-base-content"> Description </label>
+                    <textarea formControlName="description" id="description" rows="8" class="textarea textarea-bordered w-full" placeholder="Your description here"></textarea>
+                </div>
+            </div>
+            <div class="w-full flex mt-4 place-content-end space-x-2">
+                <button (click)="dialogRef.close()" type="button" class="btn"> Cancel </button>
+                <button type="submit" class="btn btn-primary"> {{editMode ? 'Save' : 'Add'}} </button>
+            </div>
+
+        </form>
+    </div>
+  </section>

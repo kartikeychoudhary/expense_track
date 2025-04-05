@@ -1,0 +1,25 @@
+
+  <div class="max-w-sm mx-auto flex gap-2">
+    <select (change)="getSelectedDateInMillis();" [(ngModel)]="day"  class="block  p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <option selected>day</option>
+      <option [value]="d" *ngFor="let d of days">{{d}}</option>
+    </select>
+    <select (change)="onChangeMonth();getSelectedDateInMillis();" [(ngModel)]="month"  class="block  p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>month</option>
+        <option [value]="m.key" *ngFor="let m of MONTH_NAMES">{{m.value}}</option>
+    </select>
+    <select (change)="onChangeYear();getSelectedDateInMillis();" [(ngModel)]="year"  class="block  p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>year</option>
+        <option [value]="y" *ngFor="let y of years">{{y}}</option>
+    </select>
+
+    <select (change)="getSelectedDateInMillis();" [(ngModel)]="hour"  class="block  p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>Hour</option>
+        <option [value]="h" *ngFor="let h of hours">{{h}}</option>
+    </select>
+
+    <select (change)="getSelectedDateInMillis();"  [(ngModel)]="minute"  class="block  p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option selected>Minute</option>
+        <option [value]="m" *ngFor="let m of mins">{{m}}</option>
+    </select>
+  </div>

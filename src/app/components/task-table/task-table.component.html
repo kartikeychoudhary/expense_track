@@ -1,0 +1,16 @@
+<div class="relative overflow-x-auto card border border-base-300 sm:rounded-lg h-80vh">
+    <ag-grid-angular
+   style="height: 75vh;"
+   class="ag-theme-quartz-dark"
+   [columnDefs]="columnDefs"
+   [autoGroupColumnDef]="autoGroupColumnDef"
+   [defaultColDef]="defaultColDef"
+   [suppressRowClickSelection]="true"
+   [groupSelectsChildren]="true"
+   [rowSelection]="rowSelection"
+   [pagination]="true"
+   [rowData]="rowData"
+   [class]="themeClass"
+   (gridReady)="onGridReady($event)"
+ ></ag-grid-angular>
+</div>

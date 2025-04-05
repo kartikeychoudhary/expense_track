@@ -1,8 +1,7 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ThemeEngineService } from '../../services/theme-engine.service';
-import { Theme } from '../../utils/application.constant';
-import { LayoutManagerService } from '../../services/layout-manager.service';
 import { Subscription } from 'rxjs';
+import { Theme } from '../../utils/application.helper';
 
 @Component({
   selector: 'app-settings',
@@ -12,7 +11,6 @@ import { Subscription } from 'rxjs';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   private themeEngine = inject(ThemeEngineService);
-  private layoutManager = inject(LayoutManagerService);
   private themeSubscription: Subscription | null = null;
   
   themes = Object.values(Theme);
@@ -45,9 +43,5 @@ export class SettingsComponent implements OnInit, OnDestroy {
   onChangePassword(): void {
     // TODO: Implement password change logic
     console.log('Password change requested');
-  }
-
-  isMobile(): boolean {
-    return this.layoutManager.isMobile();
   }
 }

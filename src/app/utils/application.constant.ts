@@ -1,35 +1,29 @@
-import { NavItem } from "../modals/nav-item.modal";
-import { DashboardComponent } from "../pages/dashboard/dashboard.component";
-import { SettingsComponent } from "../pages/settings/settings.component";
-import { TransactionsComponent } from "../pages/transactions/transactions.component";
-import { VisualizeComponent } from "../pages/visualize/visualize.component";
-
-export const navItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        icon: 'fa-solid fa-house',
-        route: 'home',
-        component: DashboardComponent
-    },
-    {
-        title: 'Transactions',
-        icon: 'fa-solid fa-money-bill',
-        route: 'transactions',
-        component: TransactionsComponent
-    },
-    {
-        title: 'Visualize',
-        icon: 'fa-solid fa-chart-pie',
-        route: 'visualize',
-        component: VisualizeComponent
-    },
-    {
-        title: 'Settings',
-        icon: 'fa-solid fa-gear',
-        route: 'settings',
-        component: SettingsComponent    
-    }
-]; 
+// export const navItems: NavItem[] = [
+//     {
+//         title: 'Dashboard',
+//         icon: 'fa-solid fa-house',
+//         route: 'home',
+//         component: DashboardComponent
+//     },
+//     {
+//         title: 'Transactions',
+//         icon: 'fa-solid fa-money-bill',
+//         route: 'transactions',
+//         component: TransactionsComponent
+//     },
+//     {
+//         title: 'Visualize',
+//         icon: 'fa-solid fa-chart-pie',
+//         route: 'visualize',
+//         component: VisualizeComponent
+//     },
+//     {
+//         title: 'Settings',
+//         icon: 'fa-solid fa-gear',
+//         route: 'settings',
+//         component: SettingsComponent    
+//     }
+// ]; 
 
 export enum DeviceType {
     DESKTOP = 'DESKTOP',

@@ -5,6 +5,9 @@ import { ValidationModule } from 'ag-grid-community';
 import { PaginationModule } from 'ag-grid-community';
 import { CellStyleModule } from 'ag-grid-community';
 import { TextFilterModule, NumberFilterModule, DateFilterModule } from 'ag-grid-community';
+import { RowSelectionModule } from 'ag-grid-community';
+import { ColumnApiModule } from 'ag-grid-community';
+import { CsvExportModule } from 'ag-grid-community';
 
 import { AppModule } from './app/app.module';
 
@@ -15,7 +18,10 @@ ModuleRegistry.registerModules([
   CellStyleModule,
   TextFilterModule,
   NumberFilterModule,
-  DateFilterModule
+  DateFilterModule,
+  RowSelectionModule,
+  ColumnApiModule,
+  CsvExportModule
 ]);
 
 platformBrowserDynamic().bootstrapModule(AppModule)

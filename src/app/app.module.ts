@@ -1,47 +1,78 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LayoutComponent } from './pages/layout/layout.component';
-import { MainComponent } from './pages/main/main.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { SettingsComponent } from './pages/settings/settings.component';
-import { SideBarComponent } from './components/side-bar/side-bar.component';
-import { TransactionsComponent } from './pages/transactions/transactions.component';
-import { CommonModule } from '@angular/common';
-import { AgGridAngular } from 'ag-grid-angular';
-import { ChartComponent } from './components/chart/chart.component';
-import { AgGridActionsComponent } from './components/ag-grid-actions/ag-grid-actions.component';
-import { TransactionModalComponent } from './components/transaction-modal/transaction-modal.component';
+import { NgModule } from "@angular/core";
+import { AppComponent } from "./app.component";
+import { HomeComponent } from "./pages/home/home.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { ThemeToggleButtonComponent } from "./components/theme-toggle-button/theme-toggle-button.component";
+import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import { AreaComponent } from "./components/charts/area/area.component";
+import { LineComponent } from "./components/charts/line/line.component";
+import { ColumnComponent } from "./components/charts/column/column.component";
+import { BarComponent } from "./components/charts/bar/bar.component";
+import { PieComponent } from "./components/charts/pie/pie.component";
+import { DonutComponent } from "./components/charts/donut/donut.component";
+import { RadialComponent } from "./components/charts/radial/radial.component";
+import { TransactionsComponent } from "./pages/transactions/transactions.component";
+import { TransactionTableComponent } from "./components/transaction-table/transaction-table.component";
+import { ActionButtons } from "./components/action-buttons/action-buttons.component";
+import { TransactionFormDialogComponent } from "./components/transaction-form-dialog/transaction-form-dialog.component";
+import { TaskTableComponent } from "./components/task-table/task-table.component";
+import { FooterComponent } from "./components/footer/footer.component";
+import { FieldEditorDialogComponent } from "./components/field-editor-dialog/field-editor-dialog.component";
+import { DatePickerComponent } from "./components/date-picker/date-picker.component";
+import { BulkUploadComponent } from "./pages/bulk-upload/bulk-upload.component";
+import { SettingsComponent } from "./pages/settings/settings.component";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import { AppRoutingModule } from "./app-routing.module";
+import { DecimalPipe, TitleCasePipe } from "@angular/common";
+import { AgGridAngular } from "ag-grid-angular";
+import { AuthInterceptor } from "./interceptor/auth.interceptor";
+import { TasksComponent } from "./pages/tasks/tasks.component";
+import { BaseChartDirective } from 'ng2-charts';
 import { VisualizeComponent } from './pages/visualize/visualize.component';
-import { AuthenticationComponent } from './pages/authentication/authentication.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutComponent,
-    MainComponent,
+    HomeComponent,
+    LoginComponent,
+    ThemeToggleButtonComponent,
     DashboardComponent,
-    SettingsComponent,
-    SideBarComponent,
+    AreaComponent,
+    LineComponent,
+    ColumnComponent,
+    BarComponent,
+    PieComponent,
+    DonutComponent,
+    RadialComponent,
     TransactionsComponent,
-    ChartComponent,
-    AgGridActionsComponent,
-    TransactionModalComponent,
-    VisualizeComponent,
-    AuthenticationComponent,
+    TransactionTableComponent,
+    ActionButtons,
+    TransactionFormDialogComponent,
+    TaskTableComponent,
+    FooterComponent,
+    TasksComponent,
+    FieldEditorDialogComponent,
+    DatePickerComponent,
+    BulkUploadComponent,
+    SettingsComponent,
+    VisualizeComponent
   ],
   imports: [
+    HttpClientModule,
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    DecimalPipe,
+    TitleCasePipe,
     ReactiveFormsModule,
-    CommonModule,
-    AgGridAngular
+    AgGridAngular,
+    BaseChartDirective,
     ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

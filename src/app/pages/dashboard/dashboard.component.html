@@ -1,136 +1,41 @@
-<div class="card p-6 bg-base-100">
-  <h1 class="text-3xl font-bold mb-6">Welcome back, {{ userName }}</h1>
-
-  <!-- Stats Section -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-    <!-- Total Balance Stat -->
-    <div class="stats border border-base-300 bg-base-100">
-      <div class="stat">
-        <div class="stat-figure text-success">
-          <i class="fas fa-dollar-sign fa-2x"></i>
-        </div>
-        <div class="stat-title">Total Balance</div>
-        <div class="stat-value">${{ totalBalance | number:'1.2-2' }}</div>
-        <div class="stat-desc text-success">↗︎ {{ balanceChange | number:'1.1-1' }}%</div>
-      </div>
-    </div>
-
-    <!-- Monthly Expenses Stat -->
-    <div class="stats border border-base-300 bg-base-100">
-      <div class="stat">
-        <div class="stat-figure text-error">
-          <i class="fas fa-arrow-trend-down fa-2x"></i>
-        </div>
-        <div class="stat-title">Monthly Expenses</div>
-        <div class="stat-value">${{ monthlyExpenses | number:'1.2-2' }}</div>
-        <div class="stat-desc text-error">↘︎ {{ expensesChange | number:'1.1-1' }}%</div>
-      </div>
-    </div>
-
-    <!-- Monthly Income Stat -->
-    <div class="stats border border-base-300 bg-base-100">
-      <div class="stat">
-        <div class="stat-figure text-info">
-          <i class="fas fa-arrow-trend-up fa-2x"></i>
-        </div>
-        <div class="stat-title">Monthly Income</div>
-        <div class="stat-value">${{ monthlyIncome | number:'1.2-2' }}</div>
-        <div class="stat-desc text-info">↗︎ {{ incomeChange | number:'1.1-1' }}%</div>
-      </div>
-    </div>
-
-    <!-- Savings Rate Stat -->
-    <div class="stats border border-base-300 bg-base-100">
-      <div class="stat">
-        <div class="stat-figure text-secondary">
-          <i class="fas fa-piggy-bank fa-2x"></i>
-        </div>
-        <div class="stat-title">Savings Rate</div>
-        <div class="stat-value">{{ savingsRate }}%</div>
-        <div class="stat-desc text-secondary">↗︎ {{ savingsChange | number:'1.1-1' }}%</div>
-      </div>
-    </div>
+<div class="flex gap-2 mb-6">
+  <div class="form-control w-full max-w-xs" *ngIf="isLoaded">
+    <select (change)="selector()" [(ngModel)]="account" class="select select-bordered">
+      <option [value]="acc" *ngFor="let acc of accounts">{{acc}}</option>
+    </select>
   </div>
 
-  <!-- Charts Section -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-    <!-- Expense Distribution Card -->
-    <div class="card bg-base-100 border border-base-300">
-      <div class="card-body">
-        <h2 class="card-title">Expense Distribution</h2>
-        <!-- Replace Placeholder with app-chart -->
-        <div class="h-64 w-full">
-           <app-chart 
-             [chartType]="doughnutChartType" 
-             [chartData]="doughnutChartData" 
-             [chartOptions]="doughnutChartOptions">
-           </app-chart>
-        </div>
-        <!-- Custom Legend -->
-         <div class="flex justify-center flex-wrap gap-x-4 gap-y-2 mt-4">
-          <div *ngFor="let label of doughnutChartLabels; let i = index" class="flex items-center text-xs">
-             <span class="badge badge-xs mr-1" [style.backgroundColor]="doughnutBackgroundColors[i]"></span> {{ label }}
-          </div>
-          <!-- <span class="badge badge-info badge-xs"></span> Food -->
-          <!-- <span class="badge badge-success badge-xs"></span> Transport -->
-          <!-- <span class="badge badge-warning badge-xs"></span> Shopping -->
-          <!-- <span class="badge badge-error badge-xs"></span> Bills -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Monthly Spending Trend Card -->
-    <div class="card bg-base-100 border border-base-300">
-      <div class="card-body">
-        <h2 class="card-title">Monthly Spending Trend</h2>
-        <!-- Replace Placeholder with app-chart -->
-        <div class="h-72 w-full"> <!-- Increased height slightly for line chart -->
-           <app-chart 
-             [chartType]="lineChartType" 
-             [chartData]="lineChartData" 
-             [chartOptions]="lineChartOptions">
-            </app-chart>
-        </div>
-      </div>
-    </div>
+  <div class="form-control w-full max-w-xs">
+      <select [(ngModel)]="duration" class="select select-bordered" (change)="loadTransactions()">
+        <option value="7_DAYS">From last 7 days</option>
+        <option value="1_MONTH">From last month</option>
+        <option value="3_MONTH">From last 3 months</option>
+        <option value="1_YEAR">From last year</option>
+        <option value="ALL">All time</option>
+      </select>
   </div>
+  <div class="form-control w-full max-w-xs" *ngIf="isLoaded">
+    <select [(ngModel)]="uniqueSelected" class="select select-bordered">
+      <option [value]="unique" *ngFor="let unique of uniqueSelector">{{unique}}</option>
+    </select>
+</div>
+</div>
+<div class="overflow-auto grid grid-flow-row auto-cols-auto gap-4 md:grid-cols-1 lg:grid-cols-3 sm:grid-cols-1 grid-cols-1">
+    <!-- <app-area></app-area> -->
 
-  <!-- Recent Transactions Section -->
-  <div class="card bg-base-100 border border-base-300">
-    <div class="card-body">
-      <h2 class="card-title mb-4">Recent Transactions</h2>
-      <div class="overflow-x-auto">
-        <table class="table w-full">
-          <!-- head -->
-          <!-- We omit the table head for a cleaner look similar to the image -->
-          <tbody>
-            <!-- Rows generated via *ngFor -->
-            <tr *ngFor="let tx of recentTransactions" class="hover">
-              <td>
-                <div class="flex items-center space-x-3">
-                  <div class="avatar placeholder">
-                     <div class="bg-neutral-focus text-neutral-content rounded-full w-10 h-10 flex items-center justify-center">
-                        <i class="text-xl" [ngClass]="tx.icon"></i>
-                     </div>
-                  </div>
-                  <div>
-                    <div class="font-bold">{{ tx.description }}</div>
-                    <div class="text-sm opacity-50">{{ tx.date }}</div>
-                  </div>
-                </div>
-              </td>
-              <td class="text-right">
-                <span [ngClass]="{'text-success': tx.amount > 0, 'text-error': tx.amount < 0}">
-                  {{ tx.amount > 0 ? '+' : '' }}{{ tx.amount | number:'1.2-2' }}
-                </span>
-                <br/>
-                <span class="text-sm opacity-50">{{ tx.account }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+    <app-bar class="col-span-1" [series]="multiDimChartSeries" [labels]="multiDimChartLabels" (event)="handleEvent($event)" *ngIf="isLoaded"></app-bar>
+    <!-- <app-pie class="col-span-2" [series]="singleDimChartSeries" [labels]="singleDimChartLabels" [duration]="uniqueSelected" *ngIf="isLoaded"></app-pie> -->
+    <app-donut class="col-span-2" [series]="singleDimChartSeries" [labels]="singleDimChartLabels" [duration]="uniqueSelected" *ngIf="isLoaded"></app-donut>
+    <!-- <app-radial></app-radial>  -->
+
+    <!-- <app-column></app-column>
+
+    <app-donut></app-donut>
+
+    <app-pie></app-pie>
+ 
+    <app-radial></app-radial> -->
+
+   <span class="w-full mb-4 text-4xl font-extrabold leading-none tracking-tight text-base-content md:text-5xl lg:text-6xl" *ngIf="!isLoaded">No Data to display charts</span>
 
 </div>

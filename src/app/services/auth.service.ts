@@ -102,5 +102,8 @@ export class AuthService {
     return this._refreshToken
   }
   
+  public getUserInfo(){
+    return this.loggedInUser
+  }
 
 }

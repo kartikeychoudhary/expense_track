@@ -13,6 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'expense_track';
   name = '';
   isSidebarOpen = false;
+  isAuth = false;
 
   @ViewChild('logoSidebar') sidebarRef!: ElementRef;
   @ViewChild('sidebarToggler') sidebarTogglerRef!: ElementRef;
@@ -21,6 +22,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.name = this.authService.getName();
+    this.isAuth = this.authService.isAuthenticated();
+    this.authService.loginEvent.subscribe(userInfo=>{
+      this.isAuth = userInfo !== undefined;
+      this.name = this.authService.getName();
+    });
   }
 
   ngOnDestroy(): void {

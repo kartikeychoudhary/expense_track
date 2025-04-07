@@ -33,6 +33,7 @@ import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2
 import { VisualizeComponent } from './pages/visualize/visualize.component';
 import { CardComponent } from './components/card/card.component';
 import { GridsterModule } from 'angular-gridster2';
+import { AccountsTableComponent } from './components/accounts-table/accounts-table.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { GridsterModule } from 'angular-gridster2';
     BulkUploadComponent,
     SettingsComponent,
     VisualizeComponent,
-    CardComponent
+    CardComponent,
+    AccountsTableComponent
   ],
   imports: [
     HttpClientModule,

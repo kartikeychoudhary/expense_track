@@ -57,6 +57,8 @@ export class ApplicationConstant {
     10:'Nov', 
     11:'Dec', 
   }
+
+  
 }
 
 export enum DeviceType {
@@ -113,4 +115,11 @@ export class CurrencySymbol {
   static currentSymbol(currency: string):string {
     return this.symbols[currency] ? this.symbols[currency] : currency;
   }
+}
+
+export enum AccountTypes {
+  BANK = 'BANK',
+  CREDIT_CARD = 'CREDIT CARD',
+  WALLET = 'WALLET',
+  LOAN = 'LOAN'
 }

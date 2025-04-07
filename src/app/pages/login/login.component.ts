@@ -71,6 +71,7 @@ export class LoginComponent {
             const {firstname, lastname, email, profilePicURL} = response.user;
             this.authService.parseUserInfo(firstname, lastname, email, profilePicURL);
             this.authService.storeToken(response.access_token, response.refresh_token);
+            this.authService.loginEvent.next(this.authService.getUserInfo());
             this.router.navigate([''])
           },
           error: (err)=>{
@@ -92,6 +93,7 @@ export class LoginComponent {
             const {firstname, lastname, email, profilePicURL} = response.user;
             this.authService.parseUserInfo(firstname, lastname, email, profilePicURL);
             this.authService.storeToken(response.access_token, response.refresh_token);
+            this.authService.loginEvent.next(this.authService.getUserInfo());
             this.router.navigate([''])
           },
           error: (err)=>{

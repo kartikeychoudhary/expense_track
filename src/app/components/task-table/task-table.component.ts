@@ -101,6 +101,8 @@ export class TaskTableComponent {
     sortable: true,
     flex: 1,
     minWidth: 100,
+    cellClass: 'bg-base-100', // Add cell class here
+    headerClass: 'bg-base-300' // Add header class here
   };
   public rowSelection: 'single' | 'multiple' = 'multiple';
   public rowData!: Task[];

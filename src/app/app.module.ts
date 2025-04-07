@@ -31,6 +31,8 @@ import { AuthInterceptor } from "./interceptor/auth.interceptor";
 import { TasksComponent } from "./pages/tasks/tasks.component";
 import { BaseChartDirective } from 'ng2-charts';
 import { VisualizeComponent } from './pages/visualize/visualize.component';
+import { CardComponent } from './components/card/card.component';
+import { GridsterModule } from 'angular-gridster2';
 
 
 @NgModule({
@@ -58,7 +60,8 @@ import { VisualizeComponent } from './pages/visualize/visualize.component';
     DatePickerComponent,
     BulkUploadComponent,
     SettingsComponent,
-    VisualizeComponent
+    VisualizeComponent,
+    CardComponent
   ],
   imports: [
     HttpClientModule,
@@ -71,7 +74,8 @@ import { VisualizeComponent } from './pages/visualize/visualize.component';
     ReactiveFormsModule,
     AgGridAngular,
     BaseChartDirective,
-    ],
+    GridsterModule
+  ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })

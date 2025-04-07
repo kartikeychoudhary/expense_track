@@ -1,1 +1,14 @@
-<p>visualize works!</p>
+<div class="h-[85vh]">
+  <button class="btn btn-primary mb-4" (click)="addItem()">Add Item</button>
+  <gridster [options]="options" class="bg-base-300">
+    <gridster-item [item]="item" *ngFor="let item of dashboard" class="bg-transparent">
+      <app-card [title]="item['title']" (delete)="removeItem($event, item)">
+        <!-- Content for the card goes here -->
+        <div class="p-2">
+          This is the content for {{ item['title'] }}
+        </div>
+        <!-- Add more complex content or components as needed -->
+      </app-card>
+    </gridster-item>
+  </gridster>
+</div>

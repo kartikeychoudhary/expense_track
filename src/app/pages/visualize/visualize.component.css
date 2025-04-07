@@ -1,0 +1,13 @@
+/* Recreate the file and add styles */
+gridster {
+  /* Use a repeating radial gradient to create dots */
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px);
+  background-size: 25px 25px; /* Match fixedColWidth/fixedRowHeight */
+  /* Remove default background if previously set by Daisy UI/Tailwind */
+  background-color: transparent !important; /* Use !important cautiously */
+}
+
+/* Optional: Style for gridster items if needed */
+/* gridster-item {
+    background: rgba(255, 255, 255, 0.8); /* Example background */
+/* } */ 

@@ -6,7 +6,7 @@
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
-          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-base-content/70 rounded-lg sm:hidden hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-base-300">
+          <button #sidebarToggler aria-controls="logo-sidebar" type="button" (click)="toggleSidebar()" class="inline-flex items-center p-2 text-sm text-base-content/70 rounded-lg sm:hidden hover:bg-base-200 focus:outline-none focus:ring-2 focus:ring-base-300">
               <span class="sr-only">Open sidebar</span>
               <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                  <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -18,37 +18,40 @@
           </a> -->
         </div>
         <div class="flex items-center">
-            <div class="flex items-center ms-3">
-              <div>
-                <button type="button" class="flex text-sm bg-neutral rounded-full focus:ring-4 focus:ring-neutral-focus" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                  <span class="sr-only">Open user menu</span>
-                  <img class="w-8 h-8 rounded-full" [src]="'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=' + name" alt="user photo">
-                </button>
-              </div>
-              <div class="z-50 hidden my-4 text-base list-none bg-base-100 divide-y divide-base-200 rounded shadow" id="dropdown-user">
-                <div class="px-4 py-3" role="none">
-                  <p class="text-sm text-base-content" role="none">
-                    {{name}}
-                  </p>
-                  <p class="text-sm font-medium text-base-content/80 truncate" role="none">
-                  </p>
+            <div class="dropdown dropdown-end ms-3">
+              <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-10 rounded-full">
+                   <img class="w-8 h-8 rounded-full" [src]="'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=' + name" alt="user photo">
                 </div>
-                <ul class="py-1" role="none">
-                  <!-- <li>
-                    <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
-                  </li> -->
-                  <li>
-                    <a (click)="authService.logout()" class="block px-4 py-2 text-sm text-base-content/90 hover:bg-base-200" role="menuitem">Sign out</a>
-                  </li>
-                </ul>
               </div>
+              <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li>
+                  <div class="px-4 py-2">
+                    <p class="text-sm font-semibold text-base-content">
+                      {{name}}
+                    </p>
+                    <p class="text-xs text-base-content/80 truncate">
+                      <!-- Optional: Add email or role here -->
+                    </p>
+                  </div>
+                </li>
+                <div class="divider my-0"></div> <!-- Optional divider -->
+                <!-- Settings Link Placeholder -->
+                <!-- <li>
+                  <a href="/#/settings">Settings</a>
+                </li> -->
+                <li>
+                   <a (click)="authService.logout()" role="menuitem">Sign out</a>
+                </li>
+              </ul>
             </div>
           </div>
       </div>
     </div>
   </nav>
   
-  <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-base-100 border-r border-base-300 sm:translate-x-0" aria-label="Sidebar">
+  <aside #logoSidebar id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-base-100 border-r border-base-300 sm:translate-x-0" aria-label="Sidebar"
+         [ngClass]="{'-translate-x-full': !isSidebarOpen}">
      <div class="h-full px-3 pb-4 overflow-y-auto bg-base-100">
         <ul class="space-y-2 font-medium">
            <li>

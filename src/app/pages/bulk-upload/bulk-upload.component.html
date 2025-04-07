@@ -1,136 +1,132 @@
-<div class="overflow-auto grid grid-flow-row auto-cols-auto gap-4 md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1 grid-cols-1">
-    <div class="w-full max-w-sm card bg-base-100 border border-base-300 shadow p-4 sm:p-6">
-        <h5 class="mb-3 text-base font-semibold text-base-content md:text-xl">
-        Bulk Upload
-        </h5>
-    
-        <ol class="space-y-4 w-72" *ngIf="steps">
-            <li>
-                <button class="w-full p-4 text-left rounded-lg alert" 
-                [ngClass]="{'alert-info': steps.downloadTemplate.status === 'pending', 'alert-success': steps.downloadTemplate.status !== 'pending'}"
-                (click)="downloadTemplate();steps.downloadTemplate.status = 'completed'">
-                    <div class="flex items-center justify-between">
-                        <span class="sr-only">{{steps.downloadTemplate.label}}</span>
-                        <h3 class="font-medium">{{steps.downloadTemplate.label}}</h3>
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12" *ngIf="steps.downloadTemplate.status === 'completed'">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                        </svg>
+<div class="grid grid-flow-row auto-cols-auto gap-4 md:grid-cols-2 lg:grid-cols-4 sm:grid-cols-1 grid-cols-1">
+    <div class="card bg-base-100 border border-base-300 shadow">
+        <div class="card-body">
+            <h2 class="card-title text-xl">Bulk Upload Steps</h2>
+        
+            <ol class="space-y-4 w-full mt-4">
+                <li>
+                    <button class="w-full p-4 text-left rounded-lg alert"
+                    [ngClass]="{'alert-info': steps.downloadTemplate.status === 'pending', 'alert-success': steps.downloadTemplate.status !== 'pending'}"
+                    (click)="downloadTemplate();steps.downloadTemplate.status = 'completed'">
+                        <div class="flex items-center justify-between">
+                            <span class="sr-only">{{steps.downloadTemplate.label}}</span>
+                            <h3 class="font-medium">{{steps.downloadTemplate.label}}</h3>
+                            <i class="fa-solid fa-check px-2" *ngIf="steps.downloadTemplate.status === 'completed'"></i>
+                        </div>
+                        <p class="text-left text-xs opacity-80">Click here to download template.</p>
+                    </button>
+                </li>
+                <li>
+                    <div class="w-full p-4 text-left rounded-lg alert"
+                    [ngClass]="{'alert-info': steps.uploadTemplate.status === 'pending', 'alert-success': steps.uploadTemplate.status !== 'pending'}">
+                        <div class="flex items-center justify-between">
+                            <span class="sr-only">{{steps.uploadTemplate.label}}</span>
+                            <h3 class="font-medium">{{steps.uploadTemplate.label}}</h3>
+                            <i class="fa-solid fa-check px-2" *ngIf="steps.uploadTemplate.status === 'completed'"></i>
+                        </div>
+                        <p class="text-left text-xs opacity-80">Upload template with data.</p>
                     </div>
-                    <p class="text-left text-xs opacity-80">Click here to download template.</p>
-                </button>
-            </li>
-            <li>
-                <div class="w-full p-4 text-left rounded-lg alert" 
-                [ngClass]="{'alert-info': steps.uploadTemplate.status === 'pending', 'alert-success': steps.uploadTemplate.status !== 'pending'}">
-                    <div class="flex items-center justify-between">
-                        <span class="sr-only">{{steps.uploadTemplate.label}}</span>
-                        <h3 class="font-medium">{{steps.uploadTemplate.label}}</h3>
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12" *ngIf="steps.uploadTemplate.status === 'completed'">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                        </svg>
+                </li>
+                <li>
+                    <button class="w-full p-4 text-left rounded-lg alert"
+                    [ngClass]="{'alert-info': steps.previewTemplate.status === 'pending', 'alert-success': steps.previewTemplate.status !== 'pending'}"
+                    (click)="steps.uploadTemplate.status === 'completed' ?  steps.previewTemplate.status = 'completed' : ''">
+                        <div class="flex items-center justify-between">
+                            <span class="sr-only">{{steps.previewTemplate.label}}</span>
+                            <h3 class="font-medium">{{steps.previewTemplate.label}}</h3>
+                            <i class="fa-solid fa-check px-2" *ngIf="steps.previewTemplate.status === 'completed'"></i>
+                        </div>
+                        <p class="text-left text-xs opacity-80">Click here once you have verified the preview data</p>
+                    </button>
+                </li>
+                <li>
+                    <div class="w-full p-4 text-left rounded-lg alert"
+                    [ngClass]="{'alert-info': steps.submitTemplate.status === 'pending', 'alert-success': steps.submitTemplate.status !== 'pending'}"
+                    >
+                        <div class="flex items-center justify-between">
+                            <span class="sr-only">{{steps.submitTemplate.label}}</span>
+                            <h3 class="font-medium">{{steps.submitTemplate.label}}</h3>
+                            <i class="fa-solid fa-check px-2" *ngIf="steps.submitTemplate.status === 'completed'"></i>
+                        </div>
+                        <p class="text-left text-xs opacity-80">Submit the verified template. <br><span class="font-bold">Once submitted you can not undo this transaction.</span></p>
                     </div>
-                    <p class="text-left text-xs opacity-80">Upload template with data.</p>
-                </div>
-            </li>
-            <li>
-                <button class="w-full p-4 text-left rounded-lg alert" 
-                [ngClass]="{'alert-info': steps.previewTemplate.status === 'pending', 'alert-success': steps.previewTemplate.status !== 'pending'}"
-                (click)="steps.uploadTemplate.status === 'completed' ?  steps.previewTemplate.status = 'completed' : ''">
-                    <div class="flex items-center justify-between">
-                        <span class="sr-only">{{steps.previewTemplate.label}}</span>
-                        <h3 class="font-medium">{{steps.previewTemplate.label}}</h3>
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12" *ngIf="steps.previewTemplate.status === 'completed'">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                        </svg>
+                </li>
+                <li>
+                    <div class="w-full p-4 text-left rounded-lg alert"
+                    [ngClass]="{'alert-info': steps.jobCompleted.status === 'pending', 'alert-success': steps.jobCompleted.status !== 'pending'}"
+                    >
+                        <div class="flex items-center justify-between">
+                            <span class="sr-only">{{steps.jobCompleted.label}}</span>
+                            <h3 class="font-medium">{{steps.jobCompleted.label}}</h3>
+                            <i class="fa-solid fa-check px-2" *ngIf="steps.jobCompleted.status === 'completed'"></i>
+                        </div>
+                        <p class="text-left text-xs opacity-80">This will turn green when the job is completed.</p>
                     </div>
-                    <p class="text-left text-xs opacity-80">Click here once you have verified the preview data</p>
-                </button>
-            </li>
-            <li>
-                <div class="w-full p-4 text-left rounded-lg alert" 
-                [ngClass]="{'alert-info': steps.submitTemplate.status === 'pending', 'alert-success': steps.submitTemplate.status !== 'pending'}"
-                >
-                    <div class="flex items-center justify-between">
-                        <span class="sr-only">{{steps.submitTemplate.label}}</span>
-                        <h3 class="font-medium">{{steps.submitTemplate.label}}</h3>
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12" *ngIf="steps.submitTemplate.status === 'completed'">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                        </svg>
-                    </div>
-                    <p class="text-left text-xs opacity-80">Submit the verified template. <br><span class="font-black">Once submitted you can not undo this transaction.</span></p>
-                </div>
-            </li>
-            <li>
-                <div class="w-full p-4 text-left rounded-lg alert" 
-                [ngClass]="{'alert-info': steps.jobCompleted.status === 'pending', 'alert-success': steps.jobCompleted.status !== 'pending'}"
-                >
-                    <div class="flex items-center justify-between">
-                        <span class="sr-only">{{steps.jobCompleted.label}}</span>
-                        <h3 class="font-medium">{{steps.jobCompleted.label}}</h3>
-                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12" *ngIf="steps.jobCompleted.status === 'completed'">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                        </svg>
-                    </div>
-                    <p class="text-left text-xs opacity-80">This will turn green when the job is completed.</p>
-                </div>
-            </li>
-            
-        </ol>
+                </li>
+                
+            </ol>
+        </div>
     </div>
     
-    <div class="w-full max-w-sm card bg-base-100 border border-base-300 shadow p-4 sm:p-6">
-        <div class="flex justify-center w-full h-80">
-            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-base-300 border-dashed rounded-lg cursor-pointer bg-base-200 hover:bg-base-300">
+    <div class="card bg-base-100 border border-base-300 shadow">
+        <div class="card-body items-center">
+            <h2 class="card-title">Upload File</h2>
+            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-base-300 border-dashed rounded-lg cursor-pointer bg-base-200 hover:bg-base-300 mt-4">
                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-8 h-8 mb-4 text-base-content/60" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                    </svg>
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl mb-4 text-base-content/60"></i>
                     <p class="mb-2 text-sm text-base-content/70" *ngIf="!selectedFile"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                     <p class="mb-2 text-sm text-base-content/70" *ngIf="selectedFile"><span class="font-semibold">{{selectedFile.name}}</span></p>
                     <p class="text-xs text-base-content/70" >CSV File</p>
                 </div>
-                <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)" [disabled]="submitDisabled" />
+                <input id="dropzone-file" type="file" class="hidden" (change)="onFileSelected($event)" [disabled]="submitDisabled" accept=".csv"/>
             </label>
-        </div> 
-        <button (click)="uploadCSV()" type="button" class="btn btn-primary w-full" [disabled]="submitDisabled">Upload</button>
-        <button type="button" class="btn btn-success w-full mt-2" [ngClass]="{'hidden':transactions.length === 0}" data-drawer-target="drawer-bottom-example" data-drawer-toggle="drawer-bottom-example" data-drawer-placement="bottom" aria-controls="drawer-bottom-example">Preview</button>
-        <button *ngIf="steps.previewTemplate.status === 'completed'" (click)="submitCSV()" type="button" class="btn btn-warning w-full mt-2" [disabled]="submitDisabled">Submit</button>
+            <div class="card-actions justify-end w-full mt-4 space-y-2">
+                <button (click)="uploadCSV()" type="button" class="btn btn-primary w-full" [disabled]="submitDisabled || !selectedFile">Upload & Verify</button>
+                <!-- Use button to open the modal -->
+                <button type="button" class="btn btn-success w-full" [disabled]="transactions.length === 0" (click)="previewModal.showModal()">Preview</button>
+                <button *ngIf="steps.previewTemplate.status === 'completed'" (click)="submitCSV()" type="button" class="btn btn-warning w-full" [disabled]="submitDisabled">Submit</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- drawer component -->
-<div [hidden]="transactions.length === 0" id="drawer-bottom-example" class="fixed bottom-0 left-0 right-0 z-40 w-full p-4 overflow-y-auto transition-transform bg-base-100 transform-none" tabindex="-1" aria-labelledby="drawer-bottom-label">
-    <h5 id="drawer-bottom-label" class="inline-flex items-center mb-4 text-base font-semibold text-base-content/80"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-  </svg><p>Total extracted transactions : {{transactions.length}}</p></h5>
-    <button type="button" data-drawer-hide="drawer-bottom-example" aria-controls="drawer-bottom-example" class="text-base-content/60 bg-transparent hover:bg-base-200 hover:text-base-content rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center" >
-      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-      </svg>
-      <span class="sr-only">Close menu</span>
-   </button>
-   <div class="relative overflow-x-auto max-h-[25vh]" >
-    <table class="table table-xs w-full">
-        <thead class="text-xs text-base-content/80 uppercase bg-base-200">
-            <tr>
-                <th class="px-6 py-3">date</th>
-                <th class="px-6 py-3">account</th>
-                <th class="px-6 py-3">description</th>
-                <th class="px-6 py-3">category</th>
-                <th class="px-6 py-3">type</th>
-                <th class="px-6 py-3">amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="border-b border-base-300" *ngFor="let transaction of transactions">
-                <td class="px-6 py-3">{{getFormatedDate(transaction.createdDate)}}</td>
-                <td class="px-6 py-3">{{transaction.account}}</td>
-                <td class="px-6 py-3">{{transaction.description}}</td>
-                <td class="px-6 py-3">{{transaction.category}}</td>
-                <td class="px-6 py-3">{{transaction.type}}</td>
-                <td class="px-6 py-3">{{transaction.amount}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-</div>
+<!-- Daisy UI Modal for Preview -->
+<dialog #previewModal class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box max-w-4xl h-[60vh] flex flex-col">
+    <h3 class="font-bold text-lg">Preview Extracted Transactions ({{transactions.length}})</h3>
+    <div class="divider my-2"></div>
+    <div class="relative overflow-auto flex-grow">
+        <table class="table table-xs w-full">
+            <thead class="sticky top-0 text-xs text-base-content uppercase bg-base-200 z-10">
+                <tr>
+                    <th class="px-6 py-3">Date</th>
+                    <th class="px-6 py-3">Account</th>
+                    <th class="px-6 py-3">Description</th>
+                    <th class="px-6 py-3">Category</th>
+                    <th class="px-6 py-3">Type</th>
+                    <th class="px-6 py-3">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-base-300 hover:bg-base-200" *ngFor="let transaction of transactions">
+                    <td class="px-6 py-3">{{getFormatedDate(transaction.createdDate)}}</td>
+                    <td class="px-6 py-3">{{transaction.account}}</td>
+                    <td class="px-6 py-3">{{transaction.description}}</td>
+                    <td class="px-6 py-3">{{transaction.category}}</td>
+                    <td class="px-6 py-3">{{transaction.type}}</td>
+                    <td class="px-6 py-3">{{transaction.amount | currency}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-action mt-4">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

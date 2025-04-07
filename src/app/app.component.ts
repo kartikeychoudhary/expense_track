@@ -1,5 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { LayoutManagerService } from './services/layout-manager.service';
+import { ThemeEngineService } from './services/theme-engine.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,12 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'expense_track';
   name = '';
-  constructor(public authService: AuthService) {}
+  isSidebarOpen = false;
+
+  @ViewChild('logoSidebar') sidebarRef!: ElementRef;
+  @ViewChild('sidebarToggler') sidebarTogglerRef!: ElementRef;
+
+  constructor(public authService: AuthService, private layoutService: LayoutManagerService, private themeEngine: ThemeEngineService) {}
 
   ngOnInit(): void {
     this.name = this.authService.getName();
@@ -18,5 +25,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.isSidebarOpen && 
+        !this.sidebarRef.nativeElement.contains(event.target as Node) &&
+        !this.sidebarTogglerRef.nativeElement.contains(event.target as Node)) {
+      this.isSidebarOpen = false;
+    }
   }
 }

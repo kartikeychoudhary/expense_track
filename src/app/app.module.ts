@@ -29,7 +29,7 @@ import { DecimalPipe, TitleCasePipe } from "@angular/common";
 import { AgGridAngular } from "ag-grid-angular";
 import { AuthInterceptor } from "./interceptor/auth.interceptor";
 import { TasksComponent } from "./pages/tasks/tasks.component";
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { VisualizeComponent } from './pages/visualize/visualize.component';
 import { CardComponent } from './components/card/card.component';
 import { GridsterModule } from 'angular-gridster2';
@@ -76,7 +76,9 @@ import { GridsterModule } from 'angular-gridster2';
     BaseChartDirective,
     GridsterModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, 
+    provideCharts(withDefaultRegisterables())
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

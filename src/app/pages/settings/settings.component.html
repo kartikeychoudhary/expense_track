@@ -1,17 +1,15 @@
 <div class="card bg-base-100 border border-base-300">
   <div class="card-body">
     <h1 class="card-title text-2xl text-primary">Settings</h1>
-    
-    <div [ngClass]="{'grid grid-cols-1 md:grid-cols-2 gap-6': true}">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
       <!-- Theme Selection -->
       <div class="card bg-base-200 border border-base-300">
         <div class="card-body">
           <h2 class="card-title text-lg">Themes</h2>
           <div class="form-control w-full">
-            <select 
-              [(ngModel)]="selectedTheme"
-              (change)="onThemeChange($event)"
-              class="select select-bordered w-full">
+            <select [(ngModel)]="selectedTheme" (change)="onThemeChange($event)" class="select select-bordered w-full">
               <option *ngFor="let theme of themes" [value]="theme">
                 {{theme}}
               </option>
@@ -30,10 +28,7 @@
                 <div class="join-item bg-base-300 px-3 flex items-center">
                   <i class="fas fa-lock"></i>
                 </div>
-                <input 
-                  type="password"
-                  [(ngModel)]="currentPassword"
-                  placeholder="Current Password"
+                <input type="password" [(ngModel)]="currentPassword" placeholder="Current Password"
                   class="input input-bordered join-item w-full" />
               </div>
             </div>
@@ -42,10 +37,7 @@
                 <div class="join-item bg-base-300 px-3 flex items-center">
                   <i class="fas fa-lock"></i>
                 </div>
-                <input 
-                  type="password"
-                  [(ngModel)]="newPassword"
-                  placeholder="New Password"
+                <input type="password" [(ngModel)]="newPassword" placeholder="New Password"
                   class="input input-bordered join-item w-full" />
               </div>
             </div>
@@ -54,21 +46,35 @@
                 <div class="join-item bg-base-300 px-3 flex items-center">
                   <i class="fas fa-lock"></i>
                 </div>
-                <input 
-                  type="password"
-                  [(ngModel)]="confirmPassword"
-                  placeholder="Confirm New Password"
+                <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirm New Password"
                   class="input input-bordered join-item w-full" />
               </div>
             </div>
-            <button 
-              (click)="onChangePassword()"
-              class="btn btn-primary w-full">
+            <button (click)="onChangePassword()" class="btn btn-primary w-full">
               Change Password
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+
+      <!-- Currency Selection -->
+      <div class="card bg-base-200 border border-base-300">
+        <div class="card-body">
+          <h2 class="card-title text-lg">Currency</h2>
+          <div class="form-control w-full">
+            <select [(ngModel)]="selectedCurrency" (change)="onCurrencyChange($event)"
+              class="select select-bordered w-full" placeholder="Select Currency">
+              <option *ngFor="let currency of allCurrencies" [value]="currency">
+                {{currency}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
   </div>
-</div>

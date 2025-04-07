@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { UserInfo } from '../modal/user.modal';
+import { UserInfo } from '../modals/user.modal';
 import { Router } from '@angular/router';
 import { environment } from '../../environment/environment.prod';
 

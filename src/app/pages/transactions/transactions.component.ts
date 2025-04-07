@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { TransactionService } from '../../services/transaction.service';
 import { TransactionFormDialogComponent } from '../../components/transaction-form-dialog/transaction-form-dialog.component';
 import { getMillisForLast } from '../../utils/application.helper';
-import { Transaction } from '../../modal/transaction.modal';
+import { Transaction } from '../../modals/transaction.modal';
 
 @Component({
   selector: 'app-transactions',

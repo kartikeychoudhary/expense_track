@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeviceType } from '../utils/application.constant';
+import { DeviceType } from '../constants/application.constant';
 
 @Injectable({
   providedIn: 'root'

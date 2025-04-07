@@ -1,7 +1,7 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-import { Theme } from '../utils/application.constant';
 import { IndexDBService } from './index-db.service';
 import { BehaviorSubject } from 'rxjs';
+import { Theme } from '../constants/application.constant';
 
 @Injectable({
   providedIn: 'root'

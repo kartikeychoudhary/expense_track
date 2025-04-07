@@ -58,3 +58,59 @@ export class ApplicationConstant {
     11:'Dec', 
   }
 }
+
+export enum DeviceType {
+  DESKTOP = 'DESKTOP',
+  MOBILE = 'MOBILE',
+  TABLET = 'TABLET'
+}
+
+export enum Theme {
+  LIGHT = 'light',
+  DARK = 'dark',
+  FOREST = 'forest',
+  CYBERPUNK = 'cyberpunk',
+  FANTASY = 'fantasy',
+  BLACK = 'black',
+  LUXURY = 'luxury',
+  DRACULA = 'dracula',
+  CMYK = 'cmyk',
+  AUTUMN = 'autumn',
+  BUSINESS = 'business',
+  ACID = 'acid',
+  LEMONADE = 'lemonade',
+  NIGHT = 'night',
+  COFFEE = 'coffee',
+  WINTER = 'winter',
+  RETRO = 'retro',
+  SYNTHWAVE = 'synthwave',
+  HALLOWEEN = 'halloween',
+  GARDEN = 'garden',
+  AQUA = 'aqua',
+  LOFI = 'lofi',
+  PASTEL = 'pastel',
+  CORPORATE = 'corporate',
+  VALENTINE = 'valentine',
+  WIREFRAME = 'wireframe',
+  CUPCAKE = 'cupcake',
+  BUMBLEBEE = 'bumblebee',
+  EMERALD = 'emerald',
+  CARROT = 'carrot',
+  SUNSET = 'sunset',
+  NEUTRAL = 'neutral',
+  GHOST = 'ghost',
+  SLATE = 'slate'
+}
+
+export class CurrencySymbol {
+  static symbols = {
+    'INR': '₹',
+    'USD': '$',
+    'EUR': '€',
+    'GBP': '£',
+    'CAD': 'C$'
+  }
+  static currentSymbol(currency: string):string {
+    return this.symbols[currency] ? this.symbols[currency] : currency;
+  }
+}

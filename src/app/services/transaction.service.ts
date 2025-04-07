@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Transaction } from '../modal/transaction.modal';
+import { Transaction } from '../modals/transaction.modal';
 import { environment } from '../../environment/environment';
 
 @Injectable({

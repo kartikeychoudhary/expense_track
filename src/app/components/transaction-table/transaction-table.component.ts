@@ -10,7 +10,7 @@ import {
 } from 'ag-grid-community';
 import { ActionButtons } from '../action-buttons/action-buttons.component';
 import { Subject } from 'rxjs';
-import { Transaction } from '../../modal/transaction.modal';
+import { Transaction } from '../../modals/transaction.modal';
 import { convertDateToMillis, formatDate } from '../../utils/application.helper';
 
 

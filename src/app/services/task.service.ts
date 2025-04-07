@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environment/environment';
-import { Task } from '../modal/task.modal';
+import { Task } from '../modals/task.modal';
 
 @Injectable({
   providedIn: 'root'

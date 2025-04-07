@@ -4,9 +4,9 @@ import { Subject } from 'rxjs';
 import { TaskService } from '../../services/task.service';
 import { GenaiService } from '../../services/genai.service';
 import { FieldEditorDialogComponent } from '../../components/field-editor-dialog/field-editor-dialog.component';
-import { Transaction } from '../../modal/transaction.modal';
+import { Transaction } from '../../modals/transaction.modal';
 import { TransactionFormDialogComponent } from '../../components/transaction-form-dialog/transaction-form-dialog.component';
-import { Task } from '../../modal/task.modal';
+import { Task } from '../../modals/task.modal';
 
 
 @Component({

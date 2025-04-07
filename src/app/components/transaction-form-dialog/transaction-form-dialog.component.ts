@@ -2,7 +2,7 @@ import { Component, Inject, Input, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApplicationConstant } from '../../constants/application.constant';
-import { Transaction } from '../../modal/transaction.modal';
+import { Transaction } from '../../modals/transaction.modal';
 
 @Component({
   selector: 'transaction-form-dialog',

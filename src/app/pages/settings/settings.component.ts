@@ -1,8 +1,9 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ThemeEngineService } from '../../services/theme-engine.service';
 import { Subscription } from 'rxjs';
-import { Theme } from '../../utils/application.helper';
 import { LayoutManagerService } from '../../services/layout-manager.service';
+import { Theme } from '../../constants/application.constant';
+import { SettingsManagerService } from '../../services/settings-manager.service';
 
 @Component({
   selector: 'app-settings',
@@ -13,6 +14,7 @@ import { LayoutManagerService } from '../../services/layout-manager.service';
 export class SettingsComponent implements OnInit, OnDestroy {
   private themeEngine = inject(ThemeEngineService);
   private layoutService = inject(LayoutManagerService);
+  private settingsService = inject(SettingsManagerService);
   private themeSubscription: Subscription | null = null;
   
   themes = Object.values(Theme);
@@ -20,6 +22,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   currentPassword: string = '';
   newPassword: string = '';
   confirmPassword: string = '';
+  selectedCurrency!: string;
 
   ngOnInit(): void {
     this.themeSubscription = this.themeEngine.getThemeObservable().subscribe(theme => {
@@ -27,6 +30,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.selectedTheme = theme;
       }
     });
+    this.selectedCurrency = this.settingsService.getCurrentCurrency();
   }
 
   ngOnDestroy(): void {
@@ -42,6 +46,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCurrencyChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    if (select) {
+      this.selectedCurrency = select.value;
+      this.settingsService.setCurrency(this.selectedCurrency);
+    }
+  } 
   onChangePassword(): void {
     // TODO: Implement password change logic
     console.log('Password change requested');
@@ -54,5 +65,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
   isDesktop(): boolean {
     return this.layoutService.isDesktop();
+  }
+
+  get allCurrencies():string[] {
+    return this.settingsService.allCurrencies;
+  }
+
+  get allCategories():string[] {
+    return this.settingsService.allCategories;
   }
 }

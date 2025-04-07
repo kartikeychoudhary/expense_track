@@ -9,7 +9,7 @@ import {
   IGroupCellRendererParams,
 } from 'ag-grid-community';
 import { ActionButtons } from '../action-buttons/action-buttons.component';
-import { Task } from '../../modal/task.modal';
+import { Task } from '../../modals/task.modal';
 import { formatDate, formatExecutionTime } from '../../utils/application.helper';
 import { Subject } from 'rxjs';
 @Component({

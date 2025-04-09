@@ -20,7 +20,7 @@
     </select>
 </div>
 </div>
-<div class="overflow-auto grid grid-flow-row auto-cols-auto gap-4 md:grid-cols-1 lg:grid-cols-3 sm:grid-cols-1 grid-cols-1">
+<div class="overflow-auto grid grid-flow-row auto-cols-auto gap-4 md:grid-cols-1 lg:grid-cols-3 sm:grid-cols-1 grid-cols-1" style="height: 85vh;">
     <!-- <app-area></app-area> -->
 
     <app-bar class="col-span-1" [series]="multiDimChartSeries" [labels]="multiDimChartLabels" (event)="handleEvent($event)" *ngIf="isLoaded"></app-bar>

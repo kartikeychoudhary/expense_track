@@ -25,13 +25,16 @@
       </dl>
     </div>
   
-    <canvas baseChart 
-      [datasets]="barChartData.datasets"
-      [labels]="barChartLabels"
-      [options]="barChartOptions"
-      [legend]="barChartLegend"
-      [type]="'bar'"
-      (chartClick)="chartClicked($event)">
-    </canvas>
+    <!-- Added div wrapper for chart canvas -->
+    <div class="chart-container" [style.height.px]="chartContainerHeight" style="position: relative;">
+      <canvas baseChart 
+        [datasets]="barChartData.datasets"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [type]="'bar'"
+        (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
       
   </div>

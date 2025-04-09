@@ -14,12 +14,16 @@ export class BarComponent {
   @Input() labels: string[] = [];
   @Output() event = new EventEmitter<{seriesIndex: number, label: string, isSelected: boolean}>();
 
+  // Added property for dynamic height
+  chartContainerHeight: number = 300; // Default height
+
   income: number = 0;
   expense: number = 0;
   net: number = 0;
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     indexAxis: 'y',
     scales: {
       x: {
@@ -93,6 +97,11 @@ export class BarComponent {
         borderWidth: 1,
       }))
     };
+
+    // Calculate dynamic height
+    const baseHeight = 150; // Minimum height
+    const heightPerLabel = 30; // Pixels per label
+    this.chartContainerHeight = baseHeight + (this.barChartLabels.length * heightPerLabel);
   }
 
   getDefaultColor(seriesName: string): string {

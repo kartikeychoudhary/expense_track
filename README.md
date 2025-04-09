@@ -15,7 +15,6 @@ After building the image, you can run it in a container:
 ```bash
 docker run -d -p 4500:80 expense-track-web
 ```
-This will start the application accessible at `http://localhost:4500/`. Note that the container's Nginx exposes port 80, which is mapped to port 4500 on your host machine.
 
 **Note:** To run this application, you need an instance of the backend service available at [https://github.com/kartikeychoudhary/wheremybuckgoes](https://github.com/kartikeychoudhary/wheremybuckgoes) running. Ensure the backend URL is correctly configured in `src/environment/environment.ts` (for development) and `src/environment/environment.prod.ts` (for production builds).
 

@@ -5,7 +5,7 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
 # Copy the contents of the ../dist/wheremybuckgoes-web/ directory into the container at /usr/share/nginx/html
-COPY dist/expense_track/ .
+COPY dist/expense_track/browser .
 
 # Expose port 4500 to the outside world
 EXPOSE 4500

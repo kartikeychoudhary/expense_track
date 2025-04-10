@@ -1,6 +1,11 @@
-<div class="card bg-base-100 border border-base-300">
+<div class="card bg-base-100 border border-base-300 overflow-y-auto max-h-screen">
   <div class="card-body">
-    <h1 class="card-title text-2xl text-primary">Settings</h1>
+    <div class="flex justify-between items-center">
+      <h1 class="card-title text-2xl text-primary">Settings</h1>
+      <button class="btn btn-primary btn-sm p-4" (click)="saveSettings()">
+        <i class="fas fa-save"></i>
+      </button>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -81,10 +86,21 @@
 
       <div class="card bg-base-200 border border-base-300">
         <div class="card-body">
-          <h2 class="card-title text-lg">Accounts</h2>
-          <app-accounts-table></app-accounts-table>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="card-title text-lg">Accounts</h2>
+            <button (click)="openAddAccountDialog()" class="btn btn-primary btn-sm">
+              <i class="fas fa-plus mr-1"></i> Add Account
+            </button>
+          </div>
+          <app-accounts-table [accounts]="accounts"></app-accounts-table>
         </div>
       </div>
       
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4">
+      <div class="card bg-base-200 border border-base-300 p-4 ">
+        <app-category-settings [categories]="categories" (categoriesChange)="onCategoriesChange($event)"></app-category-settings>
+      </div>
     </div>
   </div>

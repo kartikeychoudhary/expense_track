@@ -1,5 +1,5 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { ModuleRegistry } from 'ag-grid-community';
+import { ModuleRegistry, NumberEditorModule, TextEditorModule } from 'ag-grid-community';
 import { ClientSideRowModelModule } from 'ag-grid-community';
 import { ValidationModule } from 'ag-grid-community';
 import { PaginationModule } from 'ag-grid-community';
@@ -21,7 +21,9 @@ ModuleRegistry.registerModules([
   DateFilterModule,
   RowSelectionModule,
   ColumnApiModule,
-  CsvExportModule
+  CsvExportModule,
+  TextEditorModule,
+  NumberEditorModule
 ]);
 
 platformBrowserDynamic().bootstrapModule(AppModule)

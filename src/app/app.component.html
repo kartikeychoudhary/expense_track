@@ -67,12 +67,12 @@
           <span class="ms-3">Dashboard</span>
         </a>
       </li>
-      <!-- <li>
+      <li>
         <a href="/#/visualize" class="flex items-center p-2 text-base-content rounded-lg hover:bg-base-200 group">
-          <i class="fa-solid fa-house"></i>
+          <i class="fa-solid fa-chart-line"></i>
           <span class="ms-3">Visualize</span>
         </a>
-      </li> -->
+      </li>
       <li>
         <a href="/#/transactions" class="flex items-center p-2 text-base-content rounded-lg hover:bg-base-200 group">
           <i class="fa-solid fa-file-invoice"></i>
@@ -107,7 +107,12 @@
 </aside>
 
 <div class="p-4 sm:ml-64 mt-16" *ngIf="isAuth">
-  <router-outlet></router-outlet>
+  <router-outlet *ngIf="!isLoading"></router-outlet>
+  <div class="flex justify-center items-center h-screen" *ngIf="isLoading">
+    <div class="border-t-2 border-b-2 border-gray-900 rounded-full animate-spin text-primary">
+      <i class="fa-solid fa-spinner h-12 w-12"></i>
+    </div>
+  </div>
 </div>
 <div *ngIf="!isAuth">
   <router-outlet></router-outlet>

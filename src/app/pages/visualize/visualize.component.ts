@@ -60,4 +60,9 @@ export class VisualizeComponent implements OnInit {
     }
 
   }
+
+  saveLayout() {
+    // Implement layout saving logic here
+    console.log('Layout saved:', this.dashboard);
+  }
 }

@@ -1,5 +1,6 @@
 <div class="h-[85vh]">
-  <button class="btn btn-primary mb-4" (click)="addItem()">Add Item</button>
+  <button class="btn btn-primary mb-4 mr-2" (click)="addItem()">Add Item</button>
+  <button class="btn btn-secondary mb-4" (click)="saveLayout()">Save Layout</button>
   <gridster [options]="options" class="bg-base-300">
     <gridster-item [item]="item" *ngFor="let item of dashboard" class="bg-transparent">
       <app-card [title]="item['title']" (delete)="removeItem($event, item)">

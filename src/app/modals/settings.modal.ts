@@ -2,6 +2,7 @@ import { Theme } from "../constants/application.constant";
 import { Account } from "./account.modal";
 
 export class Settings {
+    private _settingsId:string;
     private _theme:Theme;
     private _currency:string;
     private _accounts:Account[];
@@ -9,6 +10,7 @@ export class Settings {
     private _mode:string[];
     private _type:string[];
     constructor(
+        settingsId:string = null,
         theme: Theme = Theme.LIGHT,
         currency: string = 'INR',
         accounts: Account[] = [],
@@ -22,6 +24,7 @@ export class Settings {
         this._categories = categories;
         this._mode = mode;
         this._type = type;
+        this._settingsId = settingsId;
     }
 
     // Getters
@@ -72,5 +75,28 @@ export class Settings {
 
     set type(value: string[]) {
         this._type = value;
+    }
+
+    get settingsId():string {
+        return this._settingsId;
+    }
+
+    set settingsId(value:string) {
+        this._settingsId = value;
+    }
+
+    getSettingsDTO(){
+        const settingsDTO = {
+            theme:this._theme,
+            currency:this._currency,
+            categories:this._categories,
+            mode:this._mode,
+            type:this._type,
+            accounts:this._accounts.map(account => account instanceof Account ? account.accountDTO() : account)
+        }
+        if(this._settingsId){
+            settingsDTO['settingsId'] = this._settingsId;
+        }
+        return settingsDTO;
     }
 }

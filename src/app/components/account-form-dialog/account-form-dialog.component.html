@@ -1,0 +1,71 @@
+<section class="max-h-[90vh] overflow-y-auto">
+    <div class="bg-base-100 py-2 px-4 mx-auto max-w-2xl lg:py-8">
+        <h2 class="mb-4 text-xl font-bold text-base-content"> {{editMode ? 'Edit' : 'Add'}} Account </h2>
+        <form *ngIf="accountForm" [formGroup]="accountForm" (ngSubmit)="onSave()">
+            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+
+                <!-- Name -->
+                <div class="sm:col-span-2">
+                    <label for="uniqueName" class="block mb-2 text-sm font-medium text-base-content"> Account Name </label>
+                    <input formControlName="uniqueName" type="text" id="uniqueName" class="input input-bordered w-full" placeholder="Savings Account, Primary Credit Card">
+                    <!-- Add validation message display if needed -->
+                </div>
+
+                <!-- Type -->
+                <div class="w-full">
+                    <label for="type" class="block mb-2 text-sm font-medium text-base-content"> Account Type </label>
+                    <select formControlName="type" id="type" class="select select-bordered w-full">
+                        <option disabled selected value="">Select type</option>
+                        <option *ngFor="let type of accountTypes" [value]="type">{{type}}</option>
+                    </select>
+                </div>
+
+                <!-- Balance / Max Limit / Amount -->
+                <div class="w-full">
+                    <label for="balance" class="block mb-2 text-sm font-medium text-base-content"> {{ balanceLabel }} </label>
+                    <input formControlName="balance" type="number" id="balance" class="input input-bordered w-full" [placeholder]="balanceLabel">
+                </div>
+
+                <!-- Issuer -->
+                <div class="w-full">
+                    <label for="issuer" class="block mb-2 text-sm font-medium text-base-content"> Issuer </label>
+                    <input formControlName="issuer" type="text" id="issuer" class="input input-bordered w-full" placeholder="Issuer Name">
+                     <!-- Consider changing to a select if modes are predefined -->
+                </div>
+
+                <!-- Icon -->
+                <div class="w-full">
+                    <label for="icon" class="block mb-2 text-sm font-medium text-base-content"> Icon (Font Awesome) </label>
+                     <div class="join w-full">
+                        <div class="join-item bg-base-300 px-3 flex items-center">
+                             <i [class]="'fas ' + (accountForm.get('icon')?.value || 'fa-question-circle')"></i>
+                        </div>
+                        <input formControlName="icon" type="text" id="icon" class="input input-bordered join-item w-full" placeholder="e.g., fa-piggy-bank">
+                     </div>
+                </div>
+
+                <!-- Color -->
+                <div class="sm:col-span-2">
+                    <label for="color" class="block mb-2 text-sm font-medium text-base-content"> Color </label>
+                     <div class="join w-full">
+                        <input formControlName="color" type="color" id="color-picker" class="input input-bordered join-item h-10 w-16" placeholder="#ffffff">
+                        <input formControlName="color" type="text" id="color" class="input input-bordered join-item w-full" placeholder="#3498db">
+                     </div>
+                </div>
+
+                <!-- Description -->
+                <div class="sm:col-span-2">
+                    <label for="description" class="block mb-2 text-sm font-medium text-base-content"> Description </label>
+                    <textarea formControlName="description" id="description" rows="4" class="textarea textarea-bordered w-full" placeholder="Optional description..."></textarea>
+                </div>
+
+                 <!-- Add other fields like is_active, is_default if needed -->
+
+            </div>
+            <div class="w-full flex mt-4 place-content-end space-x-2">
+                <button (click)="onCancel()" type="button" class="btn"> Cancel </button>
+                <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid"> {{editMode ? 'Save Changes' : 'Add Account'}} </button>
+            </div>
+        </form>
+    </div>
+</section>

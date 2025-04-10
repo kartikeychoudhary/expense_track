@@ -47,3 +47,11 @@ export const getMillisForLast = (duration:string)=>{
     default: return time;
   }
 }
+
+export const isNullOrUndefined = (value:any):boolean => {
+  return value === null || value === undefined;
+}
+
+export const isNullOrUndefinedOrEmpty = (value:any):boolean => {
+  return isNullOrUndefined(value) || value === '';
+}

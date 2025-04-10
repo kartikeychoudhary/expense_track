@@ -1,0 +1,21 @@
+<div class="join w-full">
+  <input
+    class="input input-bordered join-item w-full"
+    placeholder="Add a new category"
+    [(ngModel)]="newCategory"
+    (keyup.enter)="addCategory()"
+  />
+  <button class="btn btn-primary join-item" (click)="addCategory()">Add</button>
+</div>
+
+<div class="mt-4 space-y-2" style="max-height: 150px; overflow-y: auto;">
+  <div *ngIf="categories.length === 0" class="text-center text-gray-500 p-4">No categories added yet.</div>
+  <div
+    *ngFor="let category of categories"
+    class="flex justify-between items-center p-2 border border-base-300 rounded bg-base-100"
+    
+  >
+    <span>{{ category }}</span>
+    <button class="btn btn-xs btn-error btn-outline" (click)="deleteCategory(category)">Delete</button>
+  </div>
+</div>

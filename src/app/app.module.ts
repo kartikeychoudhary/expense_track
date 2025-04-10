@@ -34,7 +34,9 @@ import { VisualizeComponent } from './pages/visualize/visualize.component';
 import { CardComponent } from './components/card/card.component';
 import { GridsterModule } from 'angular-gridster2';
 import { AccountsTableComponent } from './components/accounts-table/accounts-table.component';
-
+import { CategorySettingsComponent } from './components/category-settings/category-settings.component';
+import { AccountFormDialogComponent } from './components/account-form-dialog/account-form-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { AccountsTableComponent } from './components/accounts-table/accounts-tab
     SettingsComponent,
     VisualizeComponent,
     CardComponent,
-    AccountsTableComponent
+    AccountsTableComponent,
+    CategorySettingsComponent,
+    AccountFormDialogComponent,
   ],
   imports: [
     HttpClientModule,
@@ -76,8 +80,9 @@ import { AccountsTableComponent } from './components/accounts-table/accounts-tab
     ReactiveFormsModule,
     AgGridAngular,
     BaseChartDirective,
-    GridsterModule
-  ],
+    GridsterModule,
+    MatDialogModule
+    ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, 
     provideCharts(withDefaultRegisterables())
   ],

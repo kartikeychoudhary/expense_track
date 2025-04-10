@@ -1,49 +1,38 @@
 export class Account {
-    private _id:string;
-    private _name:string;
+    private _accountId:string;
+    private _uniqueName:string;
     private _balance:number;
     private _type:string;
-    private _mode:string;
+    private _issuer:string;
     private _icon:string;
     private _color:string;
     private _description:string;
-    private _is_active:boolean;
-    private _is_default:boolean;
-    private _is_deleted:boolean;
 
     constructor(
-        id: string = '',
-        name: string = '',
+        uniqueName: string = '',
         balance: number = 0,
         type: string = '',
         mode: string = '',
         icon: string = '',
         color: string = '',
         description: string = '',
-        is_active: boolean = true,
-        is_default: boolean = false,
-        is_deleted: boolean = false
     ) {
-        this._id = id;
-        this._name = name;
+        this._uniqueName = uniqueName;
         this._balance = balance;
         this._type = type;
-        this._mode = mode;
+        this._issuer = mode;
         this._icon = icon;
         this._color = color;
         this._description = description;
-        this._is_active = is_active;
-        this._is_default = is_default;
-        this._is_deleted = is_deleted;
     }
 
     // Getters
     get id(): string {
-        return this._id;
+        return this._accountId;
     }
 
-    get name(): string {
-        return this._name;
+    get uniqueName(): string {
+        return this._uniqueName;
     }
 
     get balance(): number {
@@ -54,8 +43,8 @@ export class Account {
         return this._type;
     }
 
-    get mode(): string {
-        return this._mode;
+    get issuer(): string {
+        return this._issuer;
     }
 
     get icon(): string {
@@ -70,25 +59,13 @@ export class Account {
         return this._description;
     }
 
-    get is_active(): boolean {
-        return this._is_active;
-    }
-
-    get is_default(): boolean {
-        return this._is_default;
-    }
-
-    get is_deleted(): boolean {
-        return this._is_deleted;
-    }
-
     // Setters
     set id(value: string) {
-        this._id = value;
+        this._accountId = value;
     }
 
-    set name(value: string) {
-        this._name = value;
+    set uniqueName(value: string) {
+        this._uniqueName = value;
     }
 
     set balance(value: number) {
@@ -99,8 +76,8 @@ export class Account {
         this._type = value;
     }
 
-    set mode(value: string) {
-        this._mode = value;
+    set issuer(value: string) {
+        this._issuer = value;
     }
 
     set icon(value: string) {
@@ -115,15 +92,16 @@ export class Account {
         this._description = value;
     }
 
-    set is_active(value: boolean) {
-        this._is_active = value;
-    }
-
-    set is_default(value: boolean) {
-        this._is_default = value;
-    }
-
-    set is_deleted(value: boolean) {
-        this._is_deleted = value;
+    public accountDTO(){
+        const dto = {
+            uniqueuniqueName: this._uniqueName,
+            balance: this._balance,
+            type: this._type,
+            issuer: this._issuer,
+            icon: this._icon,
+            color: this._color,
+            description: this._description
+        }
+        return dto;
     }
 }

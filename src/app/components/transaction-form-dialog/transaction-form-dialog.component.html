@@ -8,7 +8,7 @@
                     <label for="name" class="block mb-2 text-sm font-medium text-base-content"> Tags </label>
                     <div type="text" name="name" id="name" class="block bg-base-200 border border-base-300 text-base-content text-sm rounded-lg focus:ring-primary focus:border-primary w-full p-2.5" >
                         @for (tag of tags; track $index) {
-                            <span class="mb-2 badge badge-info gap-2">
+                            <span class="mb-2 badge badge-info mx-1">
                                 {{ tag }}
                                 <button (click)="removeTag(tag)" type="button" class="inline-flex items-center p-1 ms-2 text-sm text-info-content bg-transparent rounded-sm hover:bg-info-focus" aria-label="Remove">
                                 <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">

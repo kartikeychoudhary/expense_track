@@ -137,11 +137,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
           map.set(account.uniqueName, true);
         });
         const accounts = [...this.accounts];
+        let counter = -1;
         response.payload.RESULT.filter(account=>!map.has(account) && account !='').map((account: string) => {
-          const accountObj = new Account();
-          accountObj.uniqueName = account;
+          const accountObj = {};
+          accountObj['id'] = counter;
+          counter--;
+          accountObj['uniqueName'] = account;
           return accountObj;
-        }).forEach((account: Account) => {
+        }).forEach((account:any) => {
           accounts.push(account);
         });
         this.accounts = accounts;
@@ -151,11 +154,5 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     }
     );
-  }
-
-  scaleOut(): void {
-    // implement functionality to scale out the application similar to zoom out functionality similar to keyboard shourtcut crtl + - key
-    
-    
   }
 }

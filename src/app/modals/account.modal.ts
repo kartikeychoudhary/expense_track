@@ -1,5 +1,5 @@
 export class Account {
-    private _accountId:string;
+    private _accountId:number;
     private _uniqueName:string;
     private _balance:number;
     private _type:string;
@@ -27,7 +27,7 @@ export class Account {
     }
 
     // Getters
-    get id(): string {
+    get id(): number {
         return this._accountId;
     }
 
@@ -60,7 +60,7 @@ export class Account {
     }
 
     // Setters
-    set id(value: string) {
+    set id(value: number) {
         this._accountId = value;
     }
 
@@ -94,13 +94,16 @@ export class Account {
 
     public accountDTO(){
         const dto = {
-            uniqueuniqueName: this._uniqueName,
+            uniqueName: this._uniqueName,
             balance: this._balance,
             type: this._type,
             issuer: this._issuer,
             icon: this._icon,
             color: this._color,
             description: this._description
+        }
+        if(this._accountId && this._accountId > 0){
+            dto['id'] = this._accountId;
         }
         return dto;
     }

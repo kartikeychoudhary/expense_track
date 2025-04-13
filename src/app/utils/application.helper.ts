@@ -12,6 +12,19 @@ export const formatDate = (millis: string | number | Date | null | undefined) =>
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
+export const convertMillisToDateFormat = (millis: number) => {
+  // date in format dd MMM yy, hh:mm:ss
+  const date = new Date(millis);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = date.toLocaleString('en-US', { month: 'short' });
+  const year = String(date.getFullYear()).slice(-2);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${day} ${month} ${year}, ${hours}:${minutes}:${seconds}`;
+};
+
 export const convertDateToMillis = (dateString: string): number => {
   if(dateString === 'No Data'){return 0;}
     const [datePart, timePart] = dateString.split(' ');

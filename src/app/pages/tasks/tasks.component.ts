@@ -43,6 +43,9 @@ export class TasksComponent {
     const config = new MatDialogConfig();
     config.minWidth = '100%';
     config.minHeight = '100%';
+    config.panelClass = 'bg-transparent'; // Keep panel transparent
+    config.backdropClass = 'blurred-backdrop'; // Add class for backdrop styling
+    config.hasBackdrop = true; // Ensure backdrop is enabled
     config.data = params;
 
     const dialogRef = this.dialog.open(FieldEditorDialogComponent, config);

@@ -1,5 +1,5 @@
 export class GenericResponse<T> {
-    status: number;
+    status: string;
     message: string;
     payload: {
         RESULT: T;

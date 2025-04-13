@@ -31,4 +31,11 @@ export class TransactionService {
     });
     return this.http.post<any>(this.SERVER_URL, transaction, { headers });
   }
+
+  getAllAccounts() {  
+    const headers = new HttpHeaders({
+      'content-type': 'application/json',
+    });
+    return this.http.get<any>(this.SERVER_URL + '/accounts', { headers });
+  }
 }

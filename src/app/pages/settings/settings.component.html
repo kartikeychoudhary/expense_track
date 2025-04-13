@@ -88,9 +88,14 @@
         <div class="card-body">
           <div class="flex justify-between items-center mb-4">
             <h2 class="card-title text-lg">Accounts</h2>
-            <button (click)="openAddAccountDialog()" class="btn btn-primary btn-sm">
-              <i class="fas fa-plus mr-1"></i> Add Account
-            </button>
+            <div class="flex gap-2">
+              <button (click)="openImportDialog()" class="btn btn-primary btn-sm">
+                <i class="fas fa-file-import mr-1"></i> Fetch
+              </button>
+              <button (click)="openAddAccountDialog()" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus mr-1"></i> Add
+              </button>
+            </div>
           </div>
           <app-accounts-table [accounts]="accounts"></app-accounts-table>
         </div>

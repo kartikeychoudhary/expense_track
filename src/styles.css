@@ -116,3 +116,40 @@ body {
     --ag-popup-shadow: var(--ag-card-shadow);
     --ag-side-bar-panel-width: 250px;
 }
+
+.blurred-backdrop {
+  backdrop-filter: blur(5px); /* Apply blur effect */
+  background-color: rgba(0, 0, 0, 0.3); /* Optional: Add a semi-transparent overlay */
+}
+
+/* Ensure the dialog panel itself is transparent */
+.bg-transparent .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ... existing styles ... */
+
+/* Improve spacing for ag-Grid pagination controls */
+.ag-paging-panel {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap onto the next line */
+  gap: 0.5rem; /* Add space between pagination elements */
+  justify-content: center; /* Center items when they wrap */
+  padding: 0.5rem; /* Add some padding around the panel */
+}
+
+/* Ensure buttons have some minimum space */
+.ag-paging-panel .ag-paging-button {
+  margin: 0.1rem; /* Add small margin around buttons */
+}
+
+/* Adjust spacing for page number/info */
+.ag-paging-panel > span[ref="lbTotalPages"],
+.ag-paging-panel > span[ref="lbCurrent"],
+.ag-paging-panel > span[ref="lbFirstRowOnPage"],
+.ag-paging-panel > span[ref="lbLastRowOnPage"],
+.ag-paging-panel > span[ref="lbRecordCount"] {
+  padding: 0 0.5rem; /* Add horizontal padding */
+  white-space: nowrap; /* Prevent text wrapping within the info spans */
+}

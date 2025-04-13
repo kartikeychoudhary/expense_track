@@ -7,6 +7,8 @@ import { SettingsManagerService } from '../../services/settings-manager.service'
 import { MatDialog } from '@angular/material/dialog';
 import { AccountFormDialogComponent } from '../../components/account-form-dialog/account-form-dialog.component';
 import { Account } from '../../modals/account.modal';
+import { TransactionService } from '../../services/transaction.service';
+import { GenericResponse } from '../../modals/generic-response.modal';
 
 @Component({
   selector: 'app-settings',
@@ -18,6 +20,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private themeEngine = inject(ThemeEngineService);
   private layoutService = inject(LayoutManagerService);
   private settingsService = inject(SettingsManagerService);
+  private transactionService = inject(TransactionService);
   private dialog = inject(MatDialog);
   private themeSubscription: Subscription | null = null;
   
@@ -124,5 +127,35 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   saveSettings():void {
     this.settingsService.saveSettings(this.settingsService.settings);
+  }
+
+  openImportDialog(): void {  
+    this.transactionService.getAllAccounts().subscribe((response:GenericResponse<String[]>) => {
+      if (response && response.status === 'OK') {
+        const map = new Map<String, boolean>();
+        this.accounts.forEach(account => {
+          map.set(account.uniqueName, true);
+        });
+        const accounts = [...this.accounts];
+        response.payload.RESULT.filter(account=>!map.has(account) && account !='').map((account: string) => {
+          const accountObj = new Account();
+          accountObj.uniqueName = account;
+          return accountObj;
+        }).forEach((account: Account) => {
+          accounts.push(account);
+        });
+        this.accounts = accounts;
+        this.settingsService.settings.accounts = this.accounts;
+      } else {
+        console.error('Error fetching accounts:', response.message);
+      }
+    }
+    );
+  }
+
+  scaleOut(): void {
+    // implement functionality to scale out the application similar to zoom out functionality similar to keyboard shourtcut crtl + - key
+    
+    
   }
 }

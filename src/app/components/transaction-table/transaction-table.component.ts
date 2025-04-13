@@ -11,7 +11,7 @@ import {
 import { ActionButtons } from '../action-buttons/action-buttons.component';
 import { Subject } from 'rxjs';
 import { Transaction } from '../../modals/transaction.modal';
-import { convertDateToMillis, formatDate } from '../../utils/application.helper';
+import { convertDateToMillis, convertMillisToDateFormat, formatDate } from '../../utils/application.helper';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class TransactionTableComponent {
   @Input() action: Function
   @Input() event: Subject<any>;
   gridAPI: GridApi;
+  isMobileView:boolean;
 
   getStatusClass = (status) => {
     switch (status) {
@@ -50,14 +51,14 @@ export class TransactionTableComponent {
     //     params: HeaderCheckboxSelectionCallbackParams
     //   ) => this.headerCheckboxSelection(params),
     // },
+    { field: 'createdDate',type:'date' ,headerName:'Date', valueGetter: (params)=> convertMillisToDateFormat(params.data.createdDate), comparator: (A, B) => convertDateToMillis(A) - convertDateToMillis(B)  },
     { field: 'account' },
     { field: 'amount', maxWidth: 150, cellClass: (params) => this.getStatusClass(params.data.type) },
-    { field: 'createdDate',type:'date' ,headerName:'Date', valueGetter: (params)=> formatDate(params.data.createdDate), comparator: (A, B) => convertDateToMillis(A) - convertDateToMillis(B)  },
-    { field: 'type' },
     { field: 'category' },
-    { field: 'transactionMode', headerName:'Mode' },
-    { field: 'spendAt' },
-    { field: 'description' },
+    { field: 'transactionMode', headerName:'Mode', hide:true },
+    { field: 'spendAt', hide :true },
+    { field: 'type', hide :true },
+    { field: 'description', hide :true },
     { field: 'disableForCharts', hide:true, headerName:'Disabled for charts', valueGetter: (params)=> params.data.disableForCharts+''},
     {
       field: 'action',
@@ -72,6 +73,7 @@ export class TransactionTableComponent {
         actionTriggered: this.onAction.bind(this),
         calledFrom: 'TRANSACTION'
       },
+      filter:false
     },
   ];
   public autoGroupColumnDef: ColDef = {

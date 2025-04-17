@@ -24,6 +24,7 @@ import { SettingsComponent } from "./pages/settings/settings.component";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from "./app-routing.module";
 import { DecimalPipe, TitleCasePipe } from "@angular/common";
 import { AgGridAngular } from "ag-grid-angular";
@@ -37,6 +38,9 @@ import { AccountsTableComponent } from './components/accounts-table/accounts-tab
 import { CategorySettingsComponent } from './components/category-settings/category-settings.component';
 import { AccountFormDialogComponent } from './components/account-form-dialog/account-form-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CardSettingsFormComponent } from './components/card-settings-form/card-settings-form.component';
+import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
 
 @NgModule({
   declarations: [
@@ -68,11 +72,15 @@ import { MatDialogModule } from '@angular/material/dialog';
     AccountsTableComponent,
     CategorySettingsComponent,
     AccountFormDialogComponent,
+    CardSettingsFormComponent,
+    NotificationBannerComponent,
+    CheckboxComponent,
   ],
   imports: [
     HttpClientModule,
     FormsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     DecimalPipe,

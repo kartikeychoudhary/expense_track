@@ -1,0 +1,18 @@
+<div *ngIf="isVisible" @fadeSlideInOut role="alert" class="alert fixed top-20 right-4 w-auto max-w-md z-50 shadow-lg"
+     [ngClass]="{
+       'alert-info': type === types.INFO,
+       'alert-success': type === types.SUCCESS,
+       'alert-warning': type === types.WARNING,
+       'alert-error': type === types.ERROR
+     }"
+  >
+  <i *ngIf="type === types.INFO" class="fas fa-info-circle fa-lg shrink-0"></i>
+  <i *ngIf="type === types.SUCCESS" class="fas fa-check-circle fa-lg shrink-0"></i>
+  <i *ngIf="type === types.WARNING" class="fas fa-exclamation-triangle fa-lg shrink-0"></i>
+  <i *ngIf="type === types.ERROR" class="fas fa-times-circle fa-lg shrink-0"></i>
+
+  <span>{{ message }}</span>
+  <div>
+    <button class="btn btn-sm btn-ghost" (click)="closeBanner()">Close</button>
+  </div>
+</div>

@@ -2,7 +2,10 @@
   <div class="card-body">
     <div class="flex justify-between items-center">
       <h1 class="card-title text-2xl text-primary">Settings</h1>
-      <button class="btn btn-primary btn-sm p-4" (click)="saveSettings()">
+      <button class="btn btn-primary btn-sm p-4" (click)="saveSettings()" [disabled]="isLoading">
+        <div *ngIf="isLoading">
+          <span class="loading loading-dots loading-xl"></span>
+        </div>
         <i class="fas fa-save"></i>
       </button>
     </div>
@@ -89,10 +92,13 @@
           <div class="flex justify-between items-center mb-4">
             <h2 class="card-title text-lg">Accounts</h2>
             <div class="flex gap-2">
-              <button (click)="openImportDialog()" class="btn btn-primary btn-sm">
+              <button (click)="openImportDialog()" class="btn btn-primary btn-sm" [disabled]="isLoading">
+                <div *ngIf="isLoading">
+                  <span class="loading loading-dots loading-xl"></span>
+                </div>
                 <i class="fas fa-file-import mr-1"></i> Fetch
               </button>
-              <button (click)="openAddAccountDialog()" class="btn btn-primary btn-sm">
+              <button (click)="openAddAccountDialog()" class="btn btn-primary btn-sm" [disabled]="isLoading">
                 <i class="fas fa-plus mr-1"></i> Add
               </button>
             </div>

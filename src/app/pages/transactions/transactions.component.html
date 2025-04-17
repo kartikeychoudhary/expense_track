@@ -3,21 +3,30 @@
     <div class="flex flex-wrap gap-2 mb-4">
         <!-- Group Add/Export buttons -->
         <div class="flex gap-2">
-            <button (click)="openDialog()" type="button" class="btn btn-outline btn-primary"><i class="fa fa-plus"></i> Add</button>
-            <button (click)="exportCSV()" type="button" class="btn btn-outline btn-primary" *ngIf="rowData.length > 0"><i class="fa fa-download"></i> Export</button>
+            <button (click)="openDialog()" type="button" class="btn btn-outline btn-primary" [disabled]="isLoading"><i class="fa fa-plus"></i>
+                Add</button>
+            <button (click)="exportCSV()" type="button" class="btn btn-outline btn-primary"
+                *ngIf="rowData.length > 0" [disabled]="isLoading"><i class="fa fa-download"></i> Export</button>
+            <button (click)="loadTransactions()" type="button" class="btn btn-outline btn-primary"
+                *ngIf="rowData.length > 0" [disabled]="isLoading"><i class="fa fa-refresh"></i> Refresh <div *ngIf="isLoading">
+                    <span class="loading loading-dots loading-xl"></span>
+                </div></button>
         </div>
 
         <!-- Column Dropdown -->
         <div class="dropdown dropdown-end" *ngIf="isViewLoaded && columns">
             <button tabindex="0" role="button" class="btn btn-outline btn-primary inline-flex items-center">Columns
-                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
                 </svg>
             </button>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                 <li *ngFor="let col of columns" class="p-1">
                     <label class="label cursor-pointer justify-start">
-                        <input type="checkbox" class="checkbox checkbox-primary mr-2" [(ngModel)]="col.isSelected" (change)="refreshSelectedColumns()" />
+                        <input type="checkbox" class="checkbox checkbox-primary mr-2" [(ngModel)]="col.isSelected"
+                            (change)="refreshSelectedColumns()" />
                         <span class="label-text">{{col.title}}</span>
                     </label>
                 </li>
@@ -27,14 +36,14 @@
         <!-- Duration Select - Allow it to take available width on small screens -->
         <div class="form-control w-full sm:w-auto sm:max-w-xs">
             <select [(ngModel)]="duration" class="select select-bordered" (change)="loadTransactions()">
-              <option value="7_DAYS">From last 7 days</option>
-              <option value="1_MONTH">From last month</option>
-              <option value="3_MONTH">From last 3 months</option>
-              <option value="1_YEAR">From last year</option>
-              <option value="ALL">All time</option>
+                <option value="7_DAYS">From last 7 days</option>
+                <option value="1_MONTH">From last month</option>
+                <option value="3_MONTH">From last 3 months</option>
+                <option value="1_YEAR">From last year</option>
+                <option value="ALL">All time</option>
             </select>
         </div>
     </div>
-    <transaction-table  [rowDataInput]="rowData" [action]="actionTriggered" [event]="event"></transaction-table>
+    <transaction-table [rowDataInput]="rowData" [action]="actionTriggered" [event]="event"></transaction-table>
     <!-- <transaction-form-dialog></transaction-form-dialog> -->
 </div>

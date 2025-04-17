@@ -108,6 +108,9 @@
 
 <div class="p-4 sm:ml-64 mt-16" *ngIf="isAuth">
   <router-outlet *ngIf="!isLoading"></router-outlet>
+  <div class="fixed bottom-0 left-0 right-0 z-50">
+    <app-notification-banner></app-notification-banner>
+  </div>
   <div class="flex justify-center items-center h-screen" *ngIf="isLoading">
     <div class="border-t-2 border-b-2 border-gray-900 rounded-full animate-spin text-primary">
       <i class="fa-solid fa-spinner h-12 w-12"></i>

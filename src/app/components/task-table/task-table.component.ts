@@ -1,17 +1,17 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import {
-  CheckboxSelectionCallbackParams,
   ColDef,
   GridApi,
   GridOptions,
   GridReadyEvent,
-  HeaderCheckboxSelectionCallbackParams,
   IGroupCellRendererParams,
 } from 'ag-grid-community';
 import { ActionButtons } from '../action-buttons/action-buttons.component';
 import { Task } from '../../modals/task.modal';
 import { formatDate, formatExecutionTime } from '../../utils/application.helper';
 import { Subject } from 'rxjs';
+import { CheckboxComponent } from '../checkbox/checkbox.component';
+
 @Component({
   selector: 'task-table',
   templateUrl: './task-table.component.html',
@@ -45,12 +45,15 @@ export class TaskTableComponent {
     {
       field: 'select',
       headerName: '',
-      maxWidth: 50,
-      checkboxSelection: (params: CheckboxSelectionCallbackParams) =>
-        this.checkboxSelection(params),
-      headerCheckboxSelection: (
-        params: HeaderCheckboxSelectionCallbackParams
-      ) => this.headerCheckboxSelection(params),
+      maxWidth: 80,
+      filter: false,
+      sortable: false,
+      cellRenderer: CheckboxComponent,
+      cellRendererParams: {
+        checkbox: true,
+        actionTriggered: this.onAction.bind(this),
+        calledFrom: 'TASK'
+      },
     },
     { field: 'status', cellClass: (params) => this.getStatusClass(params.value) },
     { field: 'request' },
@@ -130,17 +133,6 @@ export class TaskTableComponent {
     this.gridAPI = params.api;
     this.rowData = this.rowDataInput;
   }
-
-  checkboxSelection = (params: CheckboxSelectionCallbackParams) => {
-    // we put checkbox on the name if we are not doing grouping
-    const isGroupingActive = params.api.getColumnState()?.some(col => col.rowGroupIndex != null);
-    return !isGroupingActive;
-  };
-  headerCheckboxSelection = (params: HeaderCheckboxSelectionCallbackParams) => {
-    // we put checkbox on the name if we are not doing grouping
-    const isGroupingActive = params.api.getColumnState()?.some(col => col.rowGroupIndex != null);
-    return !isGroupingActive;
-  };
 
   onAction(params:any) {
     this.action(params);

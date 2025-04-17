@@ -50,8 +50,6 @@ export class SettingsManagerService {
   }
 
   public saveSettings(settings:Settings){
-    this.homeService.saveSettings(settings.getSettingsDTO()).subscribe(res=>{
-      console.log(res);
-    })
+    return this.homeService.saveSettings(settings.getSettingsDTO())
   }
 }

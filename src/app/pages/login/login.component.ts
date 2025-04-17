@@ -17,7 +17,7 @@ export class LoginComponent {
 
   passwordMismatch= false;
   loginMode= true;
-  isLoading= true;
+  isLoading= false;
   constructor(private fb: FormBuilder, private authService:AuthService, private router: Router){
 
   }

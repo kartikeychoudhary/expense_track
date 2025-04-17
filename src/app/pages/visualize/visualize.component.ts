@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { Card } from '../../modals/card.modal';
+import { Gridster } from '../../modals/gridster.modal';
 
 @Component({
   selector: 'app-visualize',
@@ -8,7 +10,8 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 })
 export class VisualizeComponent implements OnInit {
   options: GridsterConfig | undefined;
-  dashboard: Array<GridsterItem> | undefined;
+  dashboard: Array<Card> | undefined;
+  editMode = false
 
   static itemChange(item: any, itemComponent: any) {
     console.info('itemChanged', item, itemComponent);
@@ -41,9 +44,9 @@ export class VisualizeComponent implements OnInit {
     };
 
     this.dashboard = [
-      {cols: 3, rows: 3, y: 0, x: 0, title: 'Card 1'},
-      {cols: 3, rows: 3, y: 0, x: 2, title: 'Card 2'}
+      new Card(new Gridster(3, 3, 0, 0), 'Card 1'),
     ];
+    this.gridsterSettingsChanged()
   }
 
   removeItem($event: any, item: any) {
@@ -56,7 +59,7 @@ export class VisualizeComponent implements OnInit {
 
   addItem() {
     if(this.dashboard){
-        this.dashboard.push({x: 0, y: 0, cols: 3, rows: 3, title: 'New Card'});
+        this.dashboard.push(new Card(new Gridster(3, 3, 0, 0), 'New Card'));
     }
 
   }
@@ -64,5 +67,27 @@ export class VisualizeComponent implements OnInit {
   saveLayout() {
     // Implement layout saving logic here
     console.log('Layout saved:', this.dashboard);
+  }
+
+  onEditToggle() {
+    this.editMode = !this.editMode;
+    this.gridsterSettingsChanged()
+  }
+
+  gridsterSettingsChanged() {
+    if (!this.options || !this.options.draggable || !this.options.resizable) {
+      return; // Guard against options not being initialized
+    }
+    if (this.editMode) {
+      this.options.draggable.enabled = true;
+      this.options.resizable.enabled = true;
+    } else {
+      this.options.draggable.enabled = false;
+      this.options.resizable.enabled = false;
+    }
+    // Notify gridster about the changes
+    if (this.options) {
+      this.options.api?.optionsChanged?.(); // Call optionsChanged if api exists
+    }
   }
 }

@@ -1,0 +1,102 @@
+<div class="p-6 bg-base-100 text-base-content">
+    <h2 class="text-xl font-bold mb-4">Card Settings</h2>
+  
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  
+    <!-- Form Content -->
+    <form *ngIf="!isLoading" [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+  
+      <!-- Card Title -->
+      <label class="form-control w-full mb-4">
+        <div class="label">
+          <span class="label-text">Card Title</span>
+        </div>
+        <input type="text" placeholder="Enter card title" class="input input-bordered w-full" formControlName="title" />
+        <!-- Basic validation message example -->
+        <div class="label" *ngIf="settingsForm.get('title')?.invalid && settingsForm.get('title')?.touched">
+           <span class="label-text-alt text-error">Title is required.</span>
+        </div>
+      </label>
+  
+      <!-- Filters Section -->
+      <fieldset class="fieldset border border-base-300 p-4 rounded-md mb-4" formGroupName="filters">
+        <legend class="fieldset-legend font-semibold px-2">Filters</legend>
+  
+        <!-- Categories -->
+        <label class="form-control w-full mb-3">
+          <div class="label">
+            <span class="label-text">Categories</span>
+          </div>
+          <select multiple class="select select-bordered w-full h-32" formControlName="categories">
+            <option *ngFor="let category of allCategories" [value]="category">{{ category }}</option>
+          </select>
+        </label>
+  
+        <!-- Accounts -->
+        <label class="form-control w-full mb-3">
+          <div class="label">
+            <span class="label-text">Accounts</span>
+          </div>
+          <select multiple class="select select-bordered w-full h-32" formControlName="accounts">
+             <option *ngIf="allAccounts.length === 0" disabled>Loading accounts...</option>
+             <option *ngFor="let account of allAccounts" [value]="account">{{ account }}</option>
+          </select>
+        </label>
+  
+        <!-- Tags -->
+        <label class="form-control w-full mb-3">
+          <div class="label">
+            <span class="label-text">Tags</span>
+          </div>
+          <select multiple class="select select-bordered w-full h-32" formControlName="tags">
+             <option *ngIf="allTags.length === 0" disabled>No tags available</option>
+             <option *ngFor="let tag of allTags" [value]="tag">{{ tag }}</option>
+          </select>
+           <!-- Add more multi-select dropdowns for other CardFilters properties as needed -->
+           <!-- Example: Date Range -->
+           <label class="form-control w-full mb-3">
+             <div class="label">
+               <span class="label-text">Date Range</span>
+             </div>
+             <select multiple class="select select-bordered w-full h-32" formControlName="dateRange">
+               <option *ngFor="let range of allDateRanges" [value]="range">{{ range }}</option>
+             </select>
+           </label>
+  
+           <!-- Example: Transaction Modes -->
+           <label class="form-control w-full mb-3">
+             <div class="label">
+               <span class="label-text">Transaction Modes</span>
+             </div>
+             <select multiple class="select select-bordered w-full h-32" formControlName="transactionModes">
+               <option *ngFor="let mode of allTransactionModes" [value]="mode">{{ mode }}</option>
+             </select>
+           </label>
+  
+           <!-- Example: Types (Income/Expense) -->
+           <label class="form-control w-full mb-3">
+             <div class="label">
+               <span class="label-text">Types</span>
+             </div>
+             <select multiple class="select select-bordered w-full h-32" formControlName="types">
+               <option *ngFor="let type of allTypes" [value]="type">{{ type }}</option>
+             </select>
+           </label>
+  
+           <!-- Add other filters similarly: applications, transactionTypes -->
+  
+        </label>
+  
+      </fieldset>
+  
+      <!-- Action Buttons -->
+      <div class="modal-action mt-6">
+         <button type="button" class="btn btn-ghost" (click)="closeDialog()">Cancel</button>
+         <button type="submit" class="btn btn-primary" [disabled]="settingsForm.invalid || isLoading">Save Settings</button>
+      </div>
+  
+    </form>
+  </div>

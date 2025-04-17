@@ -9,37 +9,50 @@
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-base-content md:text-2xl">
                     {{loginMode ? 'Sign in to your account': 'Create your account'}}
                 </h1>
-                <form class="space-y-4 md:space-y-6" action="#" *ngIf="getFormGroup()" [formGroup]="getFormGroup()" (ngSubmit)="login()">
+                <form class="space-y-4 md:space-y-6" action="#" *ngIf="getFormGroup()" [formGroup]="getFormGroup()"
+                    (ngSubmit)="login()">
                     <div>
                         <label hlmLabel for="email" class="label label-text">Your email</label>
-                        <input formControlName="email" class="w-full input input-bordered" placeholder='Email' type='email' >
+                        <input formControlName="email" class="w-full input input-bordered" placeholder='Email'
+                            type='email'>
                     </div>
 
                     <div *ngIf="!loginMode">
                         <label hlmLabel for="Name" class="label label-text">Name</label>
                         <div class="flex space-x-2">
-                            <input formControlName="firstName" class="w-1/2 input input-bordered" placeholder='First Name' type='name' >
-                            <input formControlName="lastName" class="w-1/2 input input-bordered" placeholder='Last Name' type='name' >
+                            <input formControlName="firstName" class="w-1/2 input input-bordered"
+                                placeholder='First Name' type='name'>
+                            <input formControlName="lastName" class="w-1/2 input input-bordered" placeholder='Last Name'
+                                type='name'>
                         </div>
                     </div>
 
                     <div>
                         <label hlmLabel for="password" class="label label-text">Password</label>
-                        <input formControlName="password" class="w-full input input-bordered" placeholder='Password' type='password'>
-                        <input *ngIf="!loginMode" formControlName="confirmPassword" class="w-full input input-bordered mt-2" placeholder='Confirm password' type='password'>
+                        <input formControlName="password" class="w-full input input-bordered" placeholder='Password'
+                            type='password'>
+                        <input *ngIf="!loginMode" formControlName="confirmPassword"
+                            class="w-full input input-bordered mt-2" placeholder='Confirm password' type='password'>
                     </div>
                     <div class="flex items-center justify-between">
                         <div *ngIf="loginMode" class="form-control">
                             <label class="label cursor-pointer">
-                              <input id="remember" aria-describedby="remember" type="checkbox" class="checkbox checkbox-primary mr-2" required="">
-                              <span class="label-text text-base-content/80">Remember me</span> 
+                                <input id="remember" aria-describedby="remember" type="checkbox"
+                                    class="checkbox checkbox-primary mr-2" required="">
+                                <span class="label-text text-base-content/80">Remember me</span>
                             </label>
                         </div>
                     </div>
                     <div *ngIf="!loginMode && passwordMismatch" class="text-error">Password does not match</div>
-                    <button type="submit" class="btn btn-primary w-full">{{loginMode ? 'Sign in': 'Sign Up'}}</button>
+                    <!-- daisy ui progress bar -->
+                    <button type="submit" class="btn btn-primary w-full" [disabled]="isLoading">{{loginMode ? 'Sign in': 'Sign Up'}}
+                        <div *ngIf="isLoading">
+                            <span class="loading loading-dots loading-xl"></span>
+                        </div>
+                    </button>
                     <p *ngIf="loginMode" class="text-sm font-light text-base-content/70">
-                        Don’t have an account yet? <a class="link link-primary" (click)="toggleLoginRegister()">Sign up</a>
+                        Don’t have an account yet? <a class="link link-primary" (click)="toggleLoginRegister()">Sign
+                            up</a>
                     </p>
                     <p *ngIf="!loginMode" class="text-sm font-light text-base-content/70">
                         Have an account yet? <a class="link link-primary" (click)="toggleLoginRegister()">Sign in</a>
@@ -48,4 +61,4 @@
             </div>
         </div>
     </div>
-  </section>
+</section>

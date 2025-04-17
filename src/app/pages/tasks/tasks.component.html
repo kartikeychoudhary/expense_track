@@ -1,7 +1,19 @@
 <div class="relative overflow-x-auto card border border-base-300 sm:rounded-lg px-4 py-4 bg-base-100">
     <div class="flex items-center mb-4">
         <input type="text" class="input input-bordered input-sm w-full mr-2" placeholder="Gen Ai Task" [(ngModel)]="prompt">
-        <button type="button" class="btn btn-sm btn-outline btn-primary" (click)="submitGenAiTask()">Submit</button>
+        <button type="button" class="btn btn-sm btn-outline btn-primary" (click)="submitGenAiTask()" [disabled]="isLoading || !prompt">
+            <div *ngIf="isLoading">
+                <span class="loading loading-dots loading-sm"></span>
+            </div>
+            Submit</button>
+        <button type="button" class="btn btn-sm btn-outline btn-primary ml-2" (click)="loadTasks()" [disabled]="isLoading">
+            <div *ngIf="isLoading">
+                <span class="loading loading-dots loading-sm"></span>
+            </div>
+            Refresh</button>
+    </div>
+    <div class="w-full" *ngIf="isLoading">
+        <progress class="progress w-full"></progress>
     </div>
     <task-table  [rowDataInput]="rowData" [action]="actionTriggered" [event]="event"></task-table>
 </div>

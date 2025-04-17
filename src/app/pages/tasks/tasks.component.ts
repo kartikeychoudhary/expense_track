@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { TaskService } from '../../services/task.service';
@@ -7,6 +7,8 @@ import { FieldEditorDialogComponent } from '../../components/field-editor-dialog
 import { Transaction } from '../../modals/transaction.modal';
 import { TransactionFormDialogComponent } from '../../components/transaction-form-dialog/transaction-form-dialog.component';
 import { Task } from '../../modals/task.modal';
+import { NotificationService } from '../../services/notification.service';
+import { ApplicationConstant, NOTIFICATION_TYPES } from '../../constants/application.constant';
 
 
 @Component({
@@ -15,11 +17,12 @@ import { Task } from '../../modals/task.modal';
   standalone:false
 })
 export class TasksComponent {
+  private notification:NotificationService = inject(NotificationService);
   actionTriggered: Function;
   isDataLoaded: boolean;
   transactionsIdIndexMap: {};
   prompt: string;
-  isLoading: false;
+  isLoading: boolean = false;
   event = new Subject();
   rowData = [];
 
@@ -99,6 +102,9 @@ export class TasksComponent {
           refrence: params.rowData['request'],
           rowData: params.rowData,
         });
+      case 'checkboxClicked':
+        params.rowData[params.cell] = params.value;
+        break;
       default:
         return;
     }
@@ -114,6 +120,7 @@ export class TasksComponent {
   }
 
   showLoading(value: boolean) {
+    this.isLoading = value;
     this.event.next({ type: 'LOADING', value });
   }
 
@@ -132,9 +139,12 @@ export class TasksComponent {
         if (res['status'] === 'OK') {
           this.rowData = res['payload']['RESULT'];
           this.isDataLoaded = true;
+          // this.sendNotification(ApplicationConstant.STRINGS.TASK.LOAD_TASK_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
         }
       },
-      error: (err) => {},
+      error: (err) => {
+        this.sendNotification(ApplicationConstant.STRINGS.TASK.LOAD_TASK_FAILED, NOTIFICATION_TYPES.ERROR);
+      },
       complete: () => {
         this.showLoading(false);
       },
@@ -158,12 +168,13 @@ export class TasksComponent {
           if (task) {
             this.rowData.push(task);
             this.refreshData(true);
-            console.log(this.rowData);
+            this.sendNotification(ApplicationConstant.STRINGS.TASK.TASK_GENAI_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
           }
         }
       },
       error: (err) => {
         this.showLoading(false);
+        this.sendNotification(ApplicationConstant.STRINGS.TASK.TASK_GENAI_FAILED, NOTIFICATION_TYPES.SUCCESS);
       },
       complete: () => {
         this.showLoading(false);
@@ -181,10 +192,12 @@ export class TasksComponent {
           this.rowData.unshift(t);
           this.refreshData(true);
           this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TASK.EDIT_TASK_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
         }
       },
       error: (err) => {
         this.showLoading(false);
+        this.sendNotification(ApplicationConstant.STRINGS.TASK.EDIT_TASK_FAILED, NOTIFICATION_TYPES.ERROR);
       },
     });
   }
@@ -199,10 +212,12 @@ export class TasksComponent {
           this.rowData = this.rowData.filter((tt) => tt.taskId !== t.taskId);
           this.refreshData(true);
           this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TASK.DELETE_TASK_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
         }
       },
       error: (err) => {
         this.showLoading(false);
+        this.sendNotification(ApplicationConstant.STRINGS.TASK.DELETE_TASK_FAILED, NOTIFICATION_TYPES.ERROR);
       },
     });
   }
@@ -217,10 +232,12 @@ export class TasksComponent {
           this.rowData.unshift(t);
           this.refreshData(true);
           this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TASK.TASK_STARTED, NOTIFICATION_TYPES.SUCCESS);
         }
       },
       error: (err) => {
         this.showLoading(false);
+        this.sendNotification(ApplicationConstant.STRINGS.TASK.TASK_START_FAILED, NOTIFICATION_TYPES.ERROR);
       },
     });
   }
@@ -235,11 +252,17 @@ export class TasksComponent {
           this.rowData.unshift(t);
           this.refreshData(true);
           this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TASK.TASK_CONVERTED, NOTIFICATION_TYPES.SUCCESS);
         }
       },
       error: (err) => {
         this.showLoading(false);
+        this.sendNotification(ApplicationConstant.STRINGS.TASK.TASK_CONVERT_FAILED, NOTIFICATION_TYPES.ERROR);
       },
     });
+  }
+
+  sendNotification(message:string, type:NOTIFICATION_TYPES, duration:number = ApplicationConstant.NOTIFICATION.TIMEOUT){
+      this.notification.showNotification(message, type, duration);
   }
 }

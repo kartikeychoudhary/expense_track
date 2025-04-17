@@ -2,13 +2,14 @@ import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ThemeEngineService } from '../../services/theme-engine.service';
 import { Subscription } from 'rxjs';
 import { LayoutManagerService } from '../../services/layout-manager.service';
-import { ApplicationConstant, Theme } from '../../constants/application.constant';
+import { ApplicationConstant, NOTIFICATION_TYPES, Theme } from '../../constants/application.constant';
 import { SettingsManagerService } from '../../services/settings-manager.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountFormDialogComponent } from '../../components/account-form-dialog/account-form-dialog.component';
 import { Account } from '../../modals/account.modal';
 import { TransactionService } from '../../services/transaction.service';
 import { GenericResponse } from '../../modals/generic-response.modal';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-settings',
@@ -21,9 +22,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
   private layoutService = inject(LayoutManagerService);
   private settingsService = inject(SettingsManagerService);
   private transactionService = inject(TransactionService);
+  private notification = inject(NotificationService);
   private dialog = inject(MatDialog);
   private themeSubscription: Subscription | null = null;
-  
+
   themes = Object.values(Theme);
   selectedTheme!: Theme;
   currentPassword: string = '';
@@ -32,6 +34,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   selectedCurrency!: string;
   categories: string[] = [];
   accounts: Account[] = [];
+  isLoading: boolean = false;
+
   ngOnInit(): void {
     this.themeSubscription = this.themeEngine.getThemeObservable().subscribe(theme => {
       if (theme) {
@@ -39,8 +43,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
       }
     });
     this.initSettings();
-    this.settingsService.settingsObservable.subscribe(data=>{
-      switch(data.event) {
+    this.settingsService.settingsObservable.subscribe(data => {
+      switch (data.event) {
         case ApplicationConstant.EVENTS.SETTINGS_UPDATED:
           this.initSettings();
           break;
@@ -48,7 +52,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  initSettings():void {
+  initSettings(): void {
     this.accounts = this.settingsService.settings.accounts;
     this.categories = this.settingsService.settings.categories;
     this.selectedCurrency = this.settingsService.settings.currency;
@@ -75,7 +79,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.selectedCurrency = select.value;
       this.settingsService.settings.currency = this.selectedCurrency;
     }
-  } 
+  }
   onChangePassword(): void {
     // TODO: Implement password change logic
     console.log('Password change requested');
@@ -90,19 +94,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
     return this.layoutService.isDesktop();
   }
 
-  get allCurrencies():string[] {
+  get allCurrencies(): string[] {
     return this.settingsService.allCurrencies;
   }
 
-  get allCategories():string[] {
+  get allCategories(): string[] {
     return this.settingsService.allCategories;
   }
 
-  get allModes():string[] {
+  get allModes(): string[] {
     return this.settingsService.allModes;
   }
-  
-  
+
+
   onCategoriesChange(categories: string[]): void {
     this.categories = categories;
     this.settingsService.settings.categories = categories;
@@ -116,21 +120,33 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.account) {
-        if(result.editMode){
+        if (result.editMode) {
           this.accounts = this.accounts.map(account => account.id === result.account.id ? result.account : account);
-        }else{
+        } else {
           this.accounts = [...this.accounts, result.account];
         }
       }
     });
   }
 
-  saveSettings():void {
-    this.settingsService.saveSettings(this.settingsService.settings);
+  saveSettings(): void {
+    this.isLoading = true;
+    this.settingsService.saveSettings(this.settingsService.settings).subscribe((response: GenericResponse<any>) => {
+      if (response && response.status === 'OK') {
+        this.sendNotification(ApplicationConstant.STRINGS.SETTINGS.SETTINGS_UPDATED, NOTIFICATION_TYPES.SUCCESS);
+      } else {
+        this.sendNotification(ApplicationConstant.STRINGS.SETTINGS.SETTINGS_UPDATE_FAILED, NOTIFICATION_TYPES.ERROR);
+      }
+    }, (error) => {
+      this.sendNotification(ApplicationConstant.STRINGS.SETTINGS.SETTINGS_UPDATE_FAILED, NOTIFICATION_TYPES.ERROR);
+    }, () => {
+      this.isLoading = false;
+    });
   }
 
-  openImportDialog(): void {  
-    this.transactionService.getAllAccounts().subscribe((response:GenericResponse<String[]>) => {
+  openImportDialog(): void {
+    this.isLoading = true;
+    this.transactionService.getAllAccounts().subscribe((response: GenericResponse<String[]>) => {
       if (response && response.status === 'OK') {
         const map = new Map<String, boolean>();
         this.accounts.forEach(account => {
@@ -138,21 +154,32 @@ export class SettingsComponent implements OnInit, OnDestroy {
         });
         const accounts = [...this.accounts];
         let counter = -1;
-        response.payload.RESULT.filter(account=>!map.has(account) && account !='').map((account: string) => {
+        response.payload.RESULT.filter(account => !map.has(account) && account != '').map((account: string) => {
           const accountObj = {};
           accountObj['id'] = counter;
           counter--;
           accountObj['uniqueName'] = account;
           return accountObj;
-        }).forEach((account:any) => {
+        }).forEach((account: any) => {
           accounts.push(account);
         });
         this.accounts = accounts;
         this.settingsService.settings.accounts = this.accounts;
+        this.sendNotification(ApplicationConstant.STRINGS.SETTINGS.IMPORT_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
       } else {
-        console.error('Error fetching accounts:', response.message);
+        this.sendNotification(ApplicationConstant.STRINGS.SETTINGS.IMPORT_FAILED, NOTIFICATION_TYPES.ERROR);
       }
-    }
+    },
+      (error) => {
+        this.sendNotification(ApplicationConstant.STRINGS.SETTINGS.IMPORT_FAILED, NOTIFICATION_TYPES.ERROR);
+      },
+      () => {
+        this.isLoading = false;
+      }
     );
+  }
+
+  sendNotification(message: string, type: NOTIFICATION_TYPES, duration: number = ApplicationConstant.NOTIFICATION.TIMEOUT) {
+    this.notification.showNotification(message, type, duration);
   }
 }

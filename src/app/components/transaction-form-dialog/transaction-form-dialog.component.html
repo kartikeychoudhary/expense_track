@@ -30,9 +30,16 @@
                     </div>
                       
                 </div>
-                <div class="w-full">
+                <div class="w-full" *ngIf="!editMode || accounts.length === 0">
                     <label for="account" class="block mb-2 text-sm font-medium text-base-content"> Account </label>
                     <input formControlName="account" type="text" class="input input-bordered w-full" placeholder="Account">
+                </div>
+                <div class="w-full" *ngIf="editMode && accounts.length > 0">
+                    <label for="account" class="block mb-2 text-sm font-medium text-base-content"> Account </label>
+                    <select name="account" id="account" formControlName="account" class="select w-full" placeholder="Account">
+                        <option disabled>Select Account</option>
+                        <option [value]="account" *ngFor="let account of accounts">{{account}}</option>
+                    </select>
                 </div>
                 <div class="w-full">
                     <label for="price" class="block mb-2 text-sm font-medium text-base-content"> Amount </label>

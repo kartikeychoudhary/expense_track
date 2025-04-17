@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { TransactionService } from '../../services/transaction.service';
 import { TransactionFormDialogComponent } from '../../components/transaction-form-dialog/transaction-form-dialog.component';
 import { getMillisForLast } from '../../utils/application.helper';
 import { Transaction } from '../../modals/transaction.modal';
+import { CacheService } from '../../services/cache.service';
+import { NotificationService } from '../../services/notification.service';
+import { ApplicationConstant, NOTIFICATION_TYPES } from '../../constants/application.constant';
 
 @Component({
   selector: 'app-transactions',
@@ -13,13 +16,17 @@ import { Transaction } from '../../modals/transaction.modal';
   standalone:false
 })
 export class TransactionsComponent {
+
+  private cache:CacheService = inject(CacheService);
+  private notification:NotificationService = inject(NotificationService);
+
   actionTriggered: Function;
   isDataLoaded: boolean;
   event = new Subject();
   rowData = [];
   duration: string = '7_DAYS';
   columns: {isSelected:boolean, title:string}[];
-
+  isLoading: boolean = false;
   isViewLoaded = false;
 
   constructor(
@@ -31,7 +38,9 @@ export class TransactionsComponent {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.actionTriggered = this.onActionTriggered.bind(this);
+    // this.cache.isValid('TRANSACTIONS') ? this.rowData = this.cache.getCache('TRANSACTIONS') : this.loadTransactions();
     this.loadTransactions();
+  
     this.event.subscribe((event)=>{
       if(event['calledFrom'] && event['calledFrom'] === 'TRANSACTIONS'){return;}
       if(event['type'] && event['type'] === 'COLUMNS'){
@@ -86,6 +95,7 @@ export class TransactionsComponent {
     this.openDialog(transaction);
   }
   showLoading(value: boolean) {
+    this.isLoading = value;
     this.event.next({ type: 'LOADING', value, calledFrom:'TRANSACTIONS' });
   }
   refreshData(value: boolean) {
@@ -99,11 +109,14 @@ export class TransactionsComponent {
         next: (res) => {
           if (res['status'] === 'OK') {
             this.rowData = res['payload']['RESULT'];
+            // this.cache.setCache('TRANSACTIONS', this.rowData);
             this.showLoading(false);
+            this.sendNotification(ApplicationConstant.STRINGS.TRANSACTION.LOAD_TRANSACTION_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
           }
         },
         error: (err) => {
           this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TRANSACTION.LOAD_TRANSACTION_FAILED, NOTIFICATION_TYPES.ERROR);
         },
       });
     }else{
@@ -180,5 +193,9 @@ export class TransactionsComponent {
   }
   refreshSelectedColumns(){
     this.event.next({ type: 'SHOW_HIDE_COLUMN', value:this.columns, calledFrom:'TRANSACTIONS' });
+  }
+
+  sendNotification(message:string, type:NOTIFICATION_TYPES, duration:number = ApplicationConstant.NOTIFICATION.TIMEOUT){
+    this.notification.showNotification(message, type, duration);
   }
 }

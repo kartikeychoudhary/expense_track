@@ -38,4 +38,11 @@ export class TransactionService {
     });
     return this.http.get<any>(this.SERVER_URL + '/accounts', { headers });
   }
+
+  getVisualizePageSettings() {
+    const headers = new HttpHeaders({
+      'content-type': 'application/json',
+    });
+    return this.http.get<any>(this.SERVER_URL + '/visualize', { headers });
+  }
 }

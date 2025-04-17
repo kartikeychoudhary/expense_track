@@ -1,8 +1,9 @@
-import { Component, Inject, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, Input, ChangeDetectorRef, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApplicationConstant } from '../../constants/application.constant';
 import { Transaction } from '../../modals/transaction.modal';
+import { SettingsManagerService } from '../../services/settings-manager.service';
 
 @Component({
   selector: 'transaction-form-dialog',
@@ -20,6 +21,8 @@ export class TransactionFormDialogComponent {
   categories: string[];
   modes: string[];
   types: string[];
+  accounts: string[] = [];
+  private settingsService:SettingsManagerService = inject(SettingsManagerService);
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<TransactionFormDialogComponent>, @Inject(MAT_DIALOG_DATA) private parameters: {transaction:Transaction, editMode:boolean}, private cdRef: ChangeDetectorRef) {
     this.categories = ApplicationConstant.CATEGORIES;
     this.modes = ApplicationConstant.MODE;
@@ -31,6 +34,7 @@ export class TransactionFormDialogComponent {
     //Add 'implements OnInit' to the class.
     this.editMode = this.parameters.editMode;
     this.transaction = this.parameters.transaction;
+    this.accounts = this.settingsService.settings.accounts.map((account) => account.uniqueName);
     this.createForm();
   }
 

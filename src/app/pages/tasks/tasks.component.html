@@ -11,6 +11,11 @@
                 <span class="loading loading-dots loading-sm"></span>
             </div>
             Refresh</button>
+        <button type="button" class="btn btn-sm btn-outline btn-error ml-2" (click)="deleteTasks()" [disabled]=" isLoading" *ngIf="isAnyTaskSelected">
+            <div *ngIf="isLoading">
+                <span class="loading loading-dots loading-sm"></span>
+            </div>
+            Delete</button>
     </div>
     <div class="w-full" *ngIf="isLoading">
         <progress class="progress w-full"></progress>

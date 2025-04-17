@@ -9,7 +9,7 @@ import { ICellRendererParams } from 'ag-grid-community';
   styleUrl: './checkbox.component.css'
 })
 export class CheckboxComponent implements ICellRendererAngularComp {
-  public params: ICellRendererParams;
+  public params: ICellRendererParams | any;
   public checked: boolean = false;
   actionTriggered: Function;
 
@@ -18,13 +18,13 @@ export class CheckboxComponent implements ICellRendererAngularComp {
     // Assuming the value for the checkbox state comes from the data
     // You might need to adjust this based on your actual data structure
     this.actionTriggered = params?.actionTriggered
-    this.checked = this.params.value === true || this.params.node.isSelected();
+    this.checked = this.params?.value === true || this.params?.node?.isSelected();
   }
 
   refresh(params: ICellRendererParams): boolean {
     this.params = params;
     // Update checked state on refresh
-    this.checked = this.params.value === true || this.params.node.isSelected();
+    this.checked = this.params.value === true || this.params.node?.isSelected();
     // Return true to tell ag-Grid the component refreshed successfully
     return true;
   }
@@ -33,6 +33,9 @@ export class CheckboxComponent implements ICellRendererAngularComp {
   onChange(event: any): void {
     const isChecked = event.target.checked;
     // Example: Select/deselect the row when the checkbox changes
+    if(this.params?.isHeader){
+      return this.actionTriggered({action:'checkboxHeaderClicked', rowData:this.params.data, value: isChecked});
+    }
     this.params.node.setSelected(isChecked);
     this.actionTriggered({action:'checkboxClicked', rowData:this.params.data, cell: this.params.colDef.field, value: isChecked});
     // You might want to emit an event or call a service here

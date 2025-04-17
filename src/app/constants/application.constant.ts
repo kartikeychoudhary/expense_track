@@ -39,6 +39,7 @@ export class ApplicationConstant {
       static readonly EDIT_TASK_SUCCESS = 'Task edited successfully!';
       static readonly DELETE_TASK_FAILED = 'Failed to delete task!';
       static readonly DELETE_TASK_SUCCESS = 'Task deleted successfully!';
+      static readonly DELETE_TASK_PARTIAL_SUCCESS = 'Tasks deleted partially!';
       static readonly TASK_COMPLETED = 'Task completed successfully!';
       static readonly TASK_CONVERTED = 'Task converted successfully!';
       static readonly TASK_FAILED = 'Task failed!';

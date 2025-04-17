@@ -14,10 +14,10 @@ import { ApplicationConstant, NOTIFICATION_TYPES } from '../../constants/applica
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
-  standalone:false
+  standalone: false
 })
 export class TasksComponent {
-  private notification:NotificationService = inject(NotificationService);
+  private notification: NotificationService = inject(NotificationService);
   actionTriggered: Function;
   isDataLoaded: boolean;
   transactionsIdIndexMap: {};
@@ -25,12 +25,13 @@ export class TasksComponent {
   isLoading: boolean = false;
   event = new Subject();
   rowData = [];
-
+  isAnyTaskSelected = false;
+  selectedTaskIds = new Map<string, boolean>();
   constructor(
     public dialog: MatDialog,
     private taskService: TaskService,
     private genaiService: GenaiService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.actionTriggered = this.onActionTriggered.bind(this);
@@ -68,9 +69,9 @@ export class TasksComponent {
       config.data = transaction
         ? { transaction, editMode: true }
         : {
-            transaction: null,
-            editMode: false,
-          };
+          transaction: null,
+          editMode: false,
+        };
       const dialogRef = this.dialog.open(
         TransactionFormDialogComponent,
         config
@@ -104,6 +105,16 @@ export class TasksComponent {
         });
       case 'checkboxClicked':
         params.rowData[params.cell] = params.value;
+        this.selectedTaskIds.set(params.rowData['taskId'], params.value);
+        this.checkIfAnyTaskSelected();
+        break;
+      case 'checkboxHeaderClicked':
+        this.rowData.forEach((row) => {
+          row['select'] = params.value;
+          this.selectedTaskIds.set(row['taskId'], params.value);
+        });
+        this.refreshData(true);
+        this.checkIfAnyTaskSelected();
         break;
       default:
         return;
@@ -262,7 +273,50 @@ export class TasksComponent {
     });
   }
 
-  sendNotification(message:string, type:NOTIFICATION_TYPES, duration:number = ApplicationConstant.NOTIFICATION.TIMEOUT){
-      this.notification.showNotification(message, type, duration);
+  sendNotification(message: string, type: NOTIFICATION_TYPES, duration: number = ApplicationConstant.NOTIFICATION.TIMEOUT) {
+    this.notification.showNotification(message, type, duration);
+  }
+
+  checkIfAnyTaskSelected() {
+    this.isAnyTaskSelected = false
+    this.selectedTaskIds.forEach((value, key) => {
+      if (value) {
+        this.isAnyTaskSelected = true;
+        return;
+      }
+    });
+  }
+
+  deleteTasks(){
+    const taskIds = Array.from(this.selectedTaskIds.keys()).filter((key) =>  this.selectedTaskIds.get(key)).map((key) => parseInt(key));
+    this.showLoading(true);
+    if (taskIds.length > 0) {
+      this.taskService.bulkDelete(taskIds).subscribe({
+        next: (res) => {
+          if (res['status'] === 'OK') {
+            this.selectedTaskIds = new Map<string, boolean>();
+            const leftOverIds = res['payload']['RESULT'].reduce((acc, id) => {
+              acc.set(id, true);
+              this.selectedTaskIds.set(id, true);
+              return acc;
+            }, new Map<string, boolean>());
+
+            this.rowData = this.rowData.filter((tt) => !tt.select || (tt.select && leftOverIds.get(tt.taskId)));
+            this.showLoading(false);
+            
+            if(leftOverIds.size > 0){
+              this.sendNotification(ApplicationConstant.STRINGS.TASK.DELETE_TASK_PARTIAL_SUCCESS, NOTIFICATION_TYPES.WARNING);
+            }
+            else{
+              this.sendNotification(ApplicationConstant.STRINGS.TASK.DELETE_TASK_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
+            }
+          }
+        },
+        error: (err) => {
+          this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TASK.DELETE_TASK_FAILED, NOTIFICATION_TYPES.ERROR);
+        }
+      });
+    }
   }
 }

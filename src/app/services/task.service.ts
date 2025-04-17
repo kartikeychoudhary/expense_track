@@ -38,4 +38,13 @@ export class TaskService {
     });
     return this.http.post<any>(this.SERVER_URL + '/start', task, { headers });
   }
+
+  bulkDelete(taskIds:number[]) {
+    const options = {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+      }), body: taskIds
+    };
+    return this.http.delete<any>(this.SERVER_URL + '/bulk', options);
+  }
 }

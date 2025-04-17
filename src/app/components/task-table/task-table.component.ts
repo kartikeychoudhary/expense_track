@@ -49,6 +49,12 @@ export class TaskTableComponent {
       filter: false,
       sortable: false,
       cellRenderer: CheckboxComponent,
+      headerComponent: CheckboxComponent,
+      headerComponentParams: {
+        isHeader:true,
+        actionTriggered: this.onAction.bind(this),
+        calledFrom: 'TASK',
+      },
       cellRendererParams: {
         checkbox: true,
         actionTriggered: this.onAction.bind(this),

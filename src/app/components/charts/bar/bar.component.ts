@@ -76,7 +76,7 @@ export class BarComponent {
     this.expense = 0;
     this.series.forEach(ser => {
       const sum = ser.data.reduce((acc, val) => acc + (val || 0), 0);
-      if(ser.name === 'Income'){
+      if(ser.name === 'Income' || ser.name === 'CREDIT'){
         this.income = sum;
       } else {
         this.expense = sum;
@@ -105,17 +105,15 @@ export class BarComponent {
   }
 
   getDefaultColor(seriesName: string): string {
-    if (seriesName === 'Income') return 'rgba(75, 192, 192, 0.8)';
-    if (seriesName === 'Expense') return 'rgba(255, 99, 132, 0.8)';
+    if (seriesName === 'Income' || seriesName === 'CREDIT') return 'rgba(75, 192, 192, 0.8)';
+    if (seriesName === 'Expense' || seriesName === 'DEBIT') return 'rgba(255, 99, 132, 0.8)';
     return 'rgba(54, 162, 235, 0.8)';
   }
 
   public chartClicked({ event, active }: { event?: ChartEvent, active?: any[] }): void {
-    console.log(event, active);
     if (active && active.length > 0) {
       const datasetIndex = active[0]?.datasetIndex;
       const dataIndex = active[0]?.index;
-      
       if (datasetIndex !== undefined && dataIndex !== undefined && this.barChartLabels) {
         const label = this.barChartLabels[dataIndex];
         this.event.emit({ seriesIndex: datasetIndex, label: label, isSelected: true });

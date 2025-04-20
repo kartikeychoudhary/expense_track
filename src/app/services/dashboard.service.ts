@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environment/environment';
+import { Card } from '../modals/card.modal';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,28 @@ export class DashboardService {
       'content-type': 'application/json',
     });
     return this.http.get<any>(this.SERVER_URL + '/after/' + date, { headers });
+  }
+
+  getChartPreviewData(card: Card) {
+    delete card['chart'];
+    const headers = new HttpHeaders({
+      'content-type': 'application/json',
+    });
+    return this.http.post<any>(this.SERVER_URL + '/visualize/preview', JSON.stringify(card), { headers });
+  }
+
+  getVisualizeDashboard() {
+    const headers = new HttpHeaders({
+      'content-type': 'application/json',
+    });
+    return this.http.get<any>(this.SERVER_URL + '/visualize', { headers });
+  }
+
+  updateVisualizeDashboard(dashboard: Card[]) {
+    const headers = new HttpHeaders({
+      'content-type': 'application/json',
+    });
+    return this.http.post<any>(this.SERVER_URL + '/visualize', {visualizeId: null, dashboard:JSON.stringify(dashboard)}, { headers });
   }
 
 }

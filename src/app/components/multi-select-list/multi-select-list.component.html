@@ -1,0 +1,61 @@
+<!-- <div
+  class="dropdown w-full"
+  [class.dropdown-open]="isOpen"
+  (click)="toggleDropdown()"
+  (blur)="isOpen = false"
+  tabindex="0"
+>
+  <button
+    class="btn m-1 w-full justify-between"
+    [class.btn-disabled]="isDisabled"
+    popovertarget="popover-1" style="anchor-name:--anchor-1"
+  >
+    <span>{{ getSelectedLabels() }}</span>
+    <i class="fa fa-chevron-down w-4 h-4"></i>
+</button>
+  <ul
+    class="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+    (click)="preventClose($event)"
+    id="anchor-1"
+  >
+    <li *ngFor="let item of items">
+      <label class="label cursor-pointer p-0">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary mr-2"
+          [value]="item.value"
+          [checked]="isSelected(item)"
+          [disabled]="isDisabled || item.disabled"
+          (change)="onItemClick(item)"
+        />
+        <span class="label-text flex-grow">{{ item.label }}</span>
+      </label>
+    </li>
+    <li *ngIf="items.length === 0">
+      <span class="text-gray-500">No items available</span>
+    </li>
+  </ul>
+</div> -->
+
+<div class="dropdown w-full dropdown-top" [class.dropdown-open]="isOpen" (click)="toggleDropdown()" (blur)="isOpen = false" [ngClass]="{'dropdown-top': options.placement === 'top'}">
+  <div tabindex="0" role="button" class="btn w-full justify-between select"
+    [class.btn-disabled]="isDisabled"><span>{{ getSelectedLabels() }}</span>
+  </div>
+  <ul tabindex="0" class="dropdown-content bg-base-100 rounded-box z-1 w-100 p-2 shadow-sm" style="max-height: 100px;overflow-y: scroll;">
+    <!-- <li class="flex justify-between items-center mb-2">
+      <div role="button" class="btn btn-primary btn-xs" (click)="selectAll()" >select all</div>
+      <div role="button" class="btn btn-secondary btn-xs" (click)="clearAll()">clear all</div>
+    </li>
+    <div class="divider m-0"></div> -->
+    <li *ngFor="let item of items">
+      <label class="label cursor-pointer p-0">
+        <input type="checkbox" class="checkbox checkbox-primary mr-2" [value]="item.value" [checked]="isSelected(item)"
+          [disabled]="isDisabled || item.disabled" (change)="onItemClick(item)" />
+        <span class="label-text flex-grow">{{ item.label }}</span>
+      </label>
+    </li>
+    <li *ngIf="items.length === 0">
+      <span class="text-gray-500">No items available</span>
+    </li>
+  </ul>
+</div>

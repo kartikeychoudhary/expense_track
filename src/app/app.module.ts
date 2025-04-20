@@ -41,6 +41,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CardSettingsFormComponent } from './components/card-settings-form/card-settings-form.component';
 import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { MultiSelectListComponent } from "./components/multi-select-list/multi-select-list.component";
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
     CardSettingsFormComponent,
     NotificationBannerComponent,
     CheckboxComponent,
+    MultiSelectListComponent
   ],
   imports: [
     HttpClientModule,

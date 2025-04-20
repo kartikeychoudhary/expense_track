@@ -1,15 +1,21 @@
 <div class="h-[85vh]">
-  <button class="btn btn-primary mb-4 mr-2" (click)="onEditToggle()" *ngIf="!editMode">Edit</button>
+  <button class="btn btn-primary mb-4 mr-2" (click)="onEditToggle()" *ngIf="!editMode">Design Mode</button>
   <button class="btn btn-primary mb-4 mr-2" (click)="addItem()" *ngIf="editMode">Add Item</button>
-  <button class="btn btn-secondary mb-4" (click)="saveLayout(); onEditToggle();" *ngIf="editMode">Save Layout</button>
-  <gridster [options]="options" class="bg-base-300">
+  <button class="btn btn-secondary mb-4 mr-2" (click)="onEditToggle();" *ngIf="editMode">View Mode</button>
+  <button class="btn btn-primary mb-4" (click)="saveDashboard();">
+    <div *ngIf="saveDashboardLoading">
+      <span class="loading loading-dots loading-xl"></span>
+    </div>
+    Save Dashboard</button>
+
+  <div class="loader h-100 w-100 flex justify-center items-center" *ngIf="isLoading">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+
+  <gridster [options]="options" class="bg-base-300" *ngIf="!isLoading">
     <gridster-item [item]="card.gridsterConfig" *ngFor="let card of dashboard" class="bg-transparent">
-      <app-card [card]="card" (delete)="removeItem($event, card)">
-        <!-- Content for the card goes here -->
-        <div class="p-2">
-          This is the content for {{ card.title }}
-        </div>
-        <!-- Add more complex content or components as needed -->
+      <app-card [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)">
+        
       </app-card>
     </gridster-item>
   </gridster>

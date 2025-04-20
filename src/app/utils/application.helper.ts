@@ -68,3 +68,93 @@ export const isNullOrUndefined = (value:any):boolean => {
 export const isNullOrUndefinedOrEmpty = (value:any):boolean => {
   return isNullOrUndefined(value) || value === '';
 }
+
+const sortQuarterlyStrings = (quarterlyStrings: string[]): string[] =>{
+  const monthOrder: { [key: string]: number } = {
+    jan: 1,
+    feb: 2,
+    mar: 3,
+    apr: 4,
+    may: 5,
+    jun: 6,
+    jul: 7,
+    aug: 8,
+    sep: 9,
+    oct: 10,
+    nov: 11,
+    dec: 12,
+  };
+
+  return quarterlyStrings.sort((a, b) => {
+    const [monthAStart, monthAEnd, yearA] = a.split(/[- ]/);
+    const [monthBStart, monthBEnd, yearB] = b.split(/[- ]/);
+
+    const yearANum = parseInt(yearA, 10);
+    const yearBNum = parseInt(yearB, 10);
+
+    if (yearANum !== yearBNum) {
+      return yearANum - yearBNum;
+    }
+
+    const monthAStartNum = monthOrder[monthAStart.toLowerCase()];
+    const monthBStartNum = monthOrder[monthBStart.toLowerCase()];
+
+    return monthAStartNum - monthBStartNum;
+  });
+}
+
+const sortMonthYearStrings = (monthYearStrings: string[]): string[] => {
+  const monthOrder: { [key: string]: number } = {
+    jan: 0,
+    feb: 1,
+    mar: 2,
+    apr: 3,
+    may: 4,
+    jun: 5,
+    jul: 6,
+    aug: 7,
+    sep: 8,
+    oct: 9,
+    nov: 10,
+    dec: 11,
+  };
+
+  return monthYearStrings.sort((a, b) => {
+    const [monthA, yearA] = a.split(" ");
+    const [monthB, yearB] = b.split(" ");
+
+    const yearANum = parseInt("20" + yearA, 10); // Assuming 2-digit year refers to 20xx
+    const yearBNum = parseInt("20" + yearB, 10);
+
+    if (yearANum !== yearBNum) {
+      return yearANum - yearBNum;
+    }
+
+    const monthANum = monthOrder[monthA.toLowerCase()];
+    const monthBNum = monthOrder[monthB.toLowerCase()];
+
+    return monthANum - monthBNum;
+  });
+}
+
+export const sortedDateString = (data:string[], format):string[] => {
+  if(format === 'quarter'){
+    return sortQuarterlyStrings(data);
+  }else if(format === 'day'){
+    // dd MMM yy
+    return data.sort((a, b) => {
+      const dateA = new Date(a);
+      const dateB = new Date(b);
+      return dateA.getTime() - dateB.getTime();
+    });
+  }else if(format === 'month'){
+    return sortMonthYearStrings(data);
+  }else if(format === 'year'){
+    return data.sort((a, b) => {
+      const yearA = parseInt(a, 10);
+      const yearB = parseInt(b, 10);
+      return yearA - yearB;
+    });
+  }
+  return data;
+}

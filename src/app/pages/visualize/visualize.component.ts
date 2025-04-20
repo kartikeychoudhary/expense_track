@@ -1,18 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { Card } from '../../modals/card.modal';
 import { Gridster } from '../../modals/gridster.modal';
-
+import { DashboardService } from '../../services/dashboard.service';
+import { GenericResponse } from '../../modals/generic-response.modal';
+import _ from 'lodash';
 @Component({
   selector: 'app-visualize',
   standalone: false,
   templateUrl: './visualize.component.html',
 })
 export class VisualizeComponent implements OnInit {
+  dashboardService:DashboardService = inject(DashboardService);
+
   options: GridsterConfig | undefined;
   dashboard: Array<Card> | undefined;
   editMode = false
+  isLoading = false;
+  saveDashboardLoading = false;
 
+
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef) 
   static itemChange(item: any, itemComponent: any) {
     console.info('itemChanged', item, itemComponent);
   }
@@ -35,7 +43,8 @@ export class VisualizeComponent implements OnInit {
       itemChangeCallback: VisualizeComponent.itemChange,
       itemResizeCallback: VisualizeComponent.itemResize,
       draggable: {
-        enabled: true
+        enabled: true,
+        ignoreContentClass: 'no-drag'
       },
       resizable: {
         enabled: true
@@ -43,10 +52,37 @@ export class VisualizeComponent implements OnInit {
       
     };
 
-    this.dashboard = [
-      new Card(new Gridster(3, 3, 0, 0), 'Card 1'),
-    ];
+    this.loadDashboard();
     this.gridsterSettingsChanged()
+  }
+
+  loadDashboard() {
+    this.isLoading = true;
+    this.dashboardService.getVisualizeDashboard().subscribe((data:GenericResponse<{dashboard:string, visualizeId:number}>) => {
+      const dashboard = JSON.parse(data.payload.RESULT.dashboard);
+      if(Array.isArray(dashboard) && dashboard.length === 0) {
+        this.isLoading = false;
+        this.dashboard = [];
+        setTimeout(() => {
+          this.addItem(true);
+          this.cdr.detectChanges(); 
+        }, 200);
+      }
+      this.dashboard = dashboard.map((card: any) => {
+        return Card.getCardFromJson(card);
+      })
+      this.isLoading = false;
+    });
+  }
+
+  saveDashboard() {
+    this.saveDashboardLoading = true;
+    let currentDashboard = _.cloneDeep(this.dashboard);
+    currentDashboard.forEach(card=>delete card?.chart?.['data'])
+    this.dashboardService.updateVisualizeDashboard(currentDashboard).subscribe((data:GenericResponse<string>) => {
+      this.saveDashboardLoading = false;
+    }
+    );
   }
 
   removeItem($event: any, item: any) {
@@ -57,9 +93,9 @@ export class VisualizeComponent implements OnInit {
     }
   }
 
-  addItem() {
+  addItem(isSampleCard?:boolean) {
     if(this.dashboard){
-        this.dashboard.push(new Card(new Gridster(3, 3, 0, 0), 'New Card'));
+        this.dashboard.push(new Card(new Gridster(10, 10, 0, 0), 'New Card', isSampleCard));
     }
 
   }
@@ -88,6 +124,17 @@ export class VisualizeComponent implements OnInit {
     // Notify gridster about the changes
     if (this.options) {
       this.options.api?.optionsChanged?.(); // Call optionsChanged if api exists
+    }
+  }
+
+  onSettingsChanged(updatedCard:Card) {
+    this.dashboard.forEach((card:Card) => { 
+      if(card.id === updatedCard.id) {
+        card.updateCard(updatedCard);
+      }
+    })
+    if (this.options) {
+      this.options.api?.optionsChanged?.(); 
     }
   }
 }

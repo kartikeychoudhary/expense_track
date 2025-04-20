@@ -1,20 +1,49 @@
 <div class="card card-compact w-full bg-base-100 h-full">
-  <div class="card-body">
-    <div class="flex justify-between items-center mb-2">
-      <h2 class="card-title">{{ card.title }}</h2>
-      <div class="dropdown dropdown-end">
-        <button tabindex="0" role="button" class="btn btn-ghost btn-xs btn-circle">
+  <div class="px-2 card-title flex justify-between items-center mb-2">
+    <h5 class="card-title">{{ card.title }}</h5>
+    <div class="flex items-center space-x-2"> <!-- Closing tag added -->
+      <button class="btn btn-ghost btn-sm btn-circle no-drag" (click)="loadChart() " [disabled]="isLoading" *ngIf="!isSampleCard">
+        <i class="fa fa-refresh"></i>
+      </button>
+      <div class="dropdown dropdown-end no-drag">
+        <button tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">
           <i class="fa-solid fa-ellipsis-vertical"></i>
         </button>
-        <ul tabindex="0" class="dropdown-content z-[50] menu p-2 bg-base-100 rounded-box w-32">
-          <li><button (click)="onEdit()">Edit</button></li>
-          <li><button (click)="onDelete()">Delete</button></li>
-          <!-- Add more menu items here if needed -->
+        <ul tabindex="0" class="dropdown-content z-[50] menu p-2 bg-base-100 rounded-box w-32 border border-base-300">
+          <li><button (click)="onEdit($event)" *ngIf="!isSampleCard">Edit</button></li>
+          <li><button (click)="onDelete($event)">Delete</button></li>
         </ul>
       </div>
     </div>
+  </div>
+  <div class="card-body p-0 ">
     <div class="card-content flex-grow overflow-y-auto">
-      <ng-content></ng-content> <!-- Content projection -->
+      <div class="flex justify-center items-center h-64" *ngIf="isLoading">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+
+      <div class="p-2" *ngIf="isSampleCard">
+        <div class="alert alert-error shadow-lg mb-2">
+          <div>
+            <span>It is a Sample card.</span>
+            <p class="font-bold">Follow these steps to add new Card</p>
+            <ul class="list-disc list-inside">
+              <li>Toggle Design Mode</li>
+              <li>Click add item</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-2" *ngIf="!card?.chart?.isDataLoaded && !isLoading && !isSampleCard">
+        No data available
+      </div>
+      <div style="max-height: 80vh;" *ngIf="card?.chart?.isDataLoaded && !isLoading">
+        <app-bar [series]="card.chart.data.series" [labels]="card.chart.data.labels"
+          *ngIf="card.chart.type === 'bar'"></app-bar>
+        <app-line [series]="card.chart.data.series" [labels]="card.chart.data.labels"
+          *ngIf="card.chart.type === 'line'"></app-line>
+      </div>
     </div>
   </div>
 </div>

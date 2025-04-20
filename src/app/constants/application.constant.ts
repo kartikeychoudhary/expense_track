@@ -124,6 +124,11 @@ export class ApplicationConstant {
   static EVENTS = {
     SETTINGS_UPDATED: 'SETTINGS_UPDATED',
   }
+
+  static readonly ALLOWED_CHART_TYPES = [
+    'line',
+    'bar',
+  ]
 }
 export enum NOTIFICATION_TYPES {
   SUCCESS = 'SUCCESS',
@@ -193,14 +198,4 @@ export enum AccountTypes {
   CREDIT_CARD = 'CREDIT CARD',
   WALLET = 'WALLET',
   LOAN = 'LOAN'
-}
-
-export enum ChartTypes {
-  LINE = 'line',
-  BAR = 'bar',
-  PIE = 'pie',
-  DONUT = 'donut',
-  AREA = 'area',
-  COLUMN = 'column',
-  RADIAL = 'radial'
 }

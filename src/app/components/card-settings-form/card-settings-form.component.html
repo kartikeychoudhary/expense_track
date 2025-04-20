@@ -1,102 +1,159 @@
 <div class="p-6 bg-base-100 text-base-content">
-    <h2 class="text-xl font-bold mb-4">Card Settings</h2>
-  
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="flex justify-center items-center h-64">
-      <span class="loading loading-spinner loading-lg"></span>
-    </div>
-  
-    <!-- Form Content -->
-    <form *ngIf="!isLoading" [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
-  
+  <h2 class="text-xl font-bold mb-4 tabs tabs-box">
+    <a role="tab" class="tab" [ngClass]="{ 'tab-active': currentTab === 'settings' }"
+      (click)="changeTab('settings')">Settings</a>
+    <a role="tab" class="tab" [ngClass]="{ 'tab-active': currentTab === 'preview' }"
+      (click)="changeTab('preview');onPreviewLoad()">Preview</a>
+  </h2>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+
+  <!-- Form Content -->
+  <form *ngIf="!isLoading" [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+    <ng-container *ngIf="currentTab === 'settings'">
       <!-- Card Title -->
-      <label class="form-control w-full mb-4">
-        <div class="label">
-          <span class="label-text">Card Title</span>
+      <label class="form-control w-full card bg-base-300 p-4">
+        <div class="block mb-2 text-sm font-medium text-base-content input-sm">
+          <span class="label-text">Title</span>
         </div>
-        <input type="text" placeholder="Enter card title" class="input input-bordered w-full" formControlName="title" />
+        <input type="text" placeholder="Enter card title" class="input input-bordered w-full input-sm"
+          formControlName="title" />
         <!-- Basic validation message example -->
         <div class="label" *ngIf="settingsForm.get('title')?.invalid && settingsForm.get('title')?.touched">
-           <span class="label-text-alt text-error">Title is required.</span>
+          <span class="label-text-alt text-error">Title is required.</span>
         </div>
       </label>
-  
-      <!-- Filters Section -->
-      <fieldset class="fieldset border border-base-300 p-4 rounded-md mb-4" formGroupName="filters">
-        <legend class="fieldset-legend font-semibold px-2">Filters</legend>
-  
-        <!-- Categories -->
-        <label class="form-control w-full mb-3">
-          <div class="label">
-            <span class="label-text">Categories</span>
+
+      <!-- chartOptions Section -->
+      <fieldset class="fieldset card bg-base-300 p-4" formGroupName="chartOptions">
+        <legend class="fieldset-legend">Chart Options</legend>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="form-control col-span-2">
+            <label for="chartType" class="block mb-2 text-sm font-medium text-base-content input-sm"> Chart Type
+            </label>
+            <select formControlName="chartType" class="select select-bordered w-full">
+              <option value="" disabled>Select Chart Type</option>
+              <option *ngFor="let type of allChartTypes" [value]="type.value" [disabled]="type.disabled">{{ type.label
+                }}
+              </option>
+            </select>
           </div>
-          <select multiple class="select select-bordered w-full h-32" formControlName="categories">
-            <option *ngFor="let category of allCategories" [value]="category">{{ category }}</option>
-          </select>
-        </label>
-  
-        <!-- Accounts -->
-        <label class="form-control w-full mb-3">
-          <div class="label">
-            <span class="label-text">Accounts</span>
+          <div class="form-control">
+            <label for="dimension" class="block mb-2 text-sm font-medium text-base-content input-sm"> Dimension </label>
+            <select formControlName="dimension" class="select select-bordered w-full">
+              <option value="" disabled>Select Dimension</option>
+              <option *ngFor="let dimension of dimensions" [value]="dimension.value" [disabled]="dimension.disabled">{{
+                dimension.label }}</option>
+            </select>
           </div>
-          <select multiple class="select select-bordered w-full h-32" formControlName="accounts">
-             <option *ngIf="allAccounts.length === 0" disabled>Loading accounts...</option>
-             <option *ngFor="let account of allAccounts" [value]="account">{{ account }}</option>
-          </select>
-        </label>
-  
-        <!-- Tags -->
-        <label class="form-control w-full mb-3">
-          <div class="label">
-            <span class="label-text">Tags</span>
+          <div class="form-control">
+            <label for="function" class="block mb-2 text-sm font-medium text-base-content input-sm"> Function </label>
+            <select formControlName="function" class="select select-bordered w-full">
+              <option value="" disabled>Select Function</option>
+              <option *ngFor="let function of functions" [value]="function.value" [disabled]="function.disabled">{{
+                function.label }}</option>
+            </select>
           </div>
-          <select multiple class="select select-bordered w-full h-32" formControlName="tags">
-             <option *ngIf="allTags.length === 0" disabled>No tags available</option>
-             <option *ngFor="let tag of allTags" [value]="tag">{{ tag }}</option>
-          </select>
-           <!-- Add more multi-select dropdowns for other CardFilters properties as needed -->
-           <!-- Example: Date Range -->
-           <label class="form-control w-full mb-3">
-             <div class="label">
-               <span class="label-text">Date Range</span>
-             </div>
-             <select multiple class="select select-bordered w-full h-32" formControlName="dateRange">
-               <option *ngFor="let range of allDateRanges" [value]="range">{{ range }}</option>
-             </select>
-           </label>
-  
-           <!-- Example: Transaction Modes -->
-           <label class="form-control w-full mb-3">
-             <div class="label">
-               <span class="label-text">Transaction Modes</span>
-             </div>
-             <select multiple class="select select-bordered w-full h-32" formControlName="transactionModes">
-               <option *ngFor="let mode of allTransactionModes" [value]="mode">{{ mode }}</option>
-             </select>
-           </label>
-  
-           <!-- Example: Types (Income/Expense) -->
-           <label class="form-control w-full mb-3">
-             <div class="label">
-               <span class="label-text">Types</span>
-             </div>
-             <select multiple class="select select-bordered w-full h-32" formControlName="types">
-               <option *ngFor="let type of allTypes" [value]="type">{{ type }}</option>
-             </select>
-           </label>
-  
-           <!-- Add other filters similarly: applications, transactionTypes -->
-  
-        </label>
-  
+        </div>
       </fieldset>
-  
-      <!-- Action Buttons -->
-      <div class="modal-action mt-6">
-         <button type="button" class="btn btn-ghost" (click)="closeDialog()">Cancel</button>
-         <button type="submit" class="btn btn-primary" [disabled]="settingsForm.invalid || isLoading">Save Settings</button>
+
+      <!-- dateOptions Section -->
+      <fieldset class="fieldset card bg-base-300 p-4" formGroupName="dateOptions">
+        <legend class="fieldset-legend">Date Options</legend>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2">
+            <label for="timeFrame" class="block mb-2 text-sm font-medium text-base-content input-sm">Time
+              Frame</label>
+            <div class="join join-horizontal border border-base-300">
+              <input type="radio" name="timeFrame" class="btn join-item" aria-label="Day" value="day"
+                formControlName="timeFrame" />
+              <input type="radio" name="timeFrame" class="btn join-item" aria-label="Month" value="month"
+                formControlName="timeFrame" />
+              <input type="radio" name="timeFrame" class="btn join-item" aria-label="Quarter" value="quarter"
+                formControlName="timeFrame" />
+              <input type="radio" name="timeFrame" class="btn join-item" aria-label="Year" value="year"
+                formControlName="timeFrame" />
+            </div>
+          </div>
+          <div class="form-control col-span-1">
+            <label for="theme-buttons" class="block mb-2 text-sm font-medium text-base-content input-sm">Date</label>
+            <select formControlName="dateType" class="select select-bordered w-full">
+              <option value="" disabled>Select Date Type</option>
+              <option *ngFor="let date of allDateTypes" [value]="date.value" [disabled]="date.disabled">{{ date.label }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-control col-span-1" *ngIf="isRangeDateType()">
+            <label for="datetime" class="block mb-2 text-sm font-medium text-base-content"> Start Date</label>
+            <input formControlName="start" type="datetime-local" id="datetime" class="input input-bordered w-full"/>
+          </div>
+          <div class="form-control col-span-1" *ngIf="isRangeDateType()">
+            <label for="datetime" class="block mb-2 text-sm font-medium text-base-content"> End Date</label>
+            <input formControlName="end" type="datetime-local" id="datetime" class="input input-bordered w-full"/>
+          </div>
+          <div class="form-control col-span-1" *ngIf="isDynamicDateType()">
+            <label for="datetime" class="block mb-2 text-sm font-medium text-base-content"> Dynamic Date</label>
+            <input formControlName="dynamic" type="datetime-local" id="datetime" class="input input-bordered w-full"/>
+          </div>
+        </div>
+
+      </fieldset>
+
+      <fieldset class="fieldset card bg-base-300 p-4" formGroupName="filters">
+        <legend class="fieldset-legend">Filter Options</legend>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="form-control col-span-2">
+            <label for="accounts" class="block mb-2 text-sm font-medium text-base-content input-sm"> Accounts </label>
+            <app-multi-select-list [items]="allAccounts" placeholder="Choose Accounts"
+              formControlName="accounts"></app-multi-select-list>
+          </div>
+          <div class="form-control col-span-2">
+            <label for="categories" class="block mb-2 text-sm font-medium text-base-content input-sm"> Categories
+            </label>
+            <app-multi-select-list [items]="allCategories" placeholder="Choose Categories"
+              formControlName="categories"></app-multi-select-list>
+          </div>
+          <div class="form-control col-span-2">
+            <label for="transactionModes" class="block mb-2 text-sm font-medium text-base-content input-sm"> Transaction
+              Modes </label>
+            <app-multi-select-list [items]="allTransactionModes" placeholder="Choose Transaction Modes"
+              formControlName="transactionModes"></app-multi-select-list>
+          </div>
+          <div class="form-control col-span-2">
+            <label for="transactionTypes" class="block mb-2 text-sm font-medium text-base-content input-sm"> Transaction
+              Types </label>
+            <app-multi-select-list [items]="allTransactionTypes" placeholder="Choose Transaction Types"
+              formControlName="transactionTypes"></app-multi-select-list>
+          </div>
+        </div>
+      </fieldset>
+
+    </ng-container>
+
+    <ng-container *ngIf="currentTab === 'preview'">
+      <!-- Preview Section -->
+      <div *ngIf="!isLoading && currentTab === 'preview'" class="preview-section"
+        style="max-height: 40vh;overflow-y: scroll">
+        <app-bar class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
+          *ngIf="isPreviewLoaded && previewCardType ==='bar'"></app-bar>
+        <app-line class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
+          *ngIf="isPreviewLoaded && previewCardType ==='line'"></app-line>
       </div>
-  
-    </form>
-  </div>
+    </ng-container>
+
+    <!-- Action Buttons -->
+    <div class="modal-action mt-6">
+      <button type="button" class="btn btn-ghost" (click)="closeDialog()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="settingsForm.invalid || isLoading">Save
+        Settings</button>
+    </div>
+  </form>
+
+
+
+
+</div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges } from '@angular/core';
 import {
   CheckboxSelectionCallbackParams,
   ColDef,
@@ -11,7 +11,8 @@ import {
 import { ActionButtons } from '../action-buttons/action-buttons.component';
 import { Subject } from 'rxjs';
 import { Transaction } from '../../modals/transaction.modal';
-import { convertDateToMillis, convertMillisToDateFormat, formatDate } from '../../utils/application.helper';
+import { convertDateToMillis, convertMillisToDateFormat, formatDate, formatNumberWithCurrencySuffix } from '../../utils/application.helper';
+import { SettingsManagerService } from '../../services/settings-manager.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ import { convertDateToMillis, convertMillisToDateFormat, formatDate } from '../.
   standalone:false
 })
 export class TransactionTableComponent {
+  private _settingsService: SettingsManagerService = inject(SettingsManagerService);
   @Input() rowDataInput: any[];
   @Input() params: { lastDataUpdated : number, rowData: any[]}
   @Input() action: Function
@@ -53,7 +55,7 @@ export class TransactionTableComponent {
     // },
     { field: 'createdDate',type:'date' ,headerName:'Date', valueGetter: (params)=> convertMillisToDateFormat(params.data.createdDate), comparator: (A, B) => convertDateToMillis(A) - convertDateToMillis(B)  },
     { field: 'account' },
-    { field: 'amount', maxWidth: 150, cellClass: (params) => this.getStatusClass(params.data.type) },
+    { field: 'amount', maxWidth: 150, cellClass: (params) => this.getStatusClass(params.data.type), valueGetter: (params) => formatNumberWithCurrencySuffix(params.data.amount, this._settingsService.currencySymbol) },
     { field: 'category' },
     { field: 'transactionMode', headerName:'Mode', hide:true },
     { field: 'spendAt', hide :true },

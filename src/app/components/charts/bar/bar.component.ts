@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartOptions, ChartType, ActiveElement } from 'chart.js';
+import { SettingsManagerService } from '../../../services/settings-manager.service';
+import { formatNumberWithCurrencySuffix } from '../../../utils/application.helper';
 
 @Component({
   selector: 'app-bar',
@@ -8,6 +10,8 @@ import { ChartConfiguration, ChartData, ChartEvent, ChartOptions, ChartType, Act
   standalone:false
 })
 export class BarComponent {
+  private _settingsService: SettingsManagerService = inject(SettingsManagerService);
+
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   @Input() series: {name: string, color:string, data:number[]}[] = [];
@@ -46,7 +50,12 @@ export class BarComponent {
         enabled: true,
         mode: 'index',
         intersect: false,
+        callbacks: {
+          label: (context) => this.getFormatedNumbers(Number(context.parsed.x))
+        }
+
       },
+      
     },
   };
   public barChartType: ChartType = 'bar';
@@ -121,4 +130,8 @@ export class BarComponent {
     } else {
     }
   }
+
+  getFormatedNumbers(num: number): string {
+    return formatNumberWithCurrencySuffix(num, this._settingsService.currencySymbol) 
+  };
 }

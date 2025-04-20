@@ -49,6 +49,10 @@ export class SettingsManagerService {
     return this._allTypes;
   }
 
+  get currencySymbol():string {
+    return this.settings.currency ? CurrencySymbol.symbols[this.settings.currency] : this.settings.currency;
+  }
+
   public saveSettings(settings:Settings){
     return this.homeService.saveSettings(settings.getSettingsDTO())
   }

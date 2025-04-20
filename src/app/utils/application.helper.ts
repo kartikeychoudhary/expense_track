@@ -158,3 +158,39 @@ export const sortedDateString = (data:string[], format):string[] => {
   }
   return data;
 }
+
+/**
+ * Formats a number with commas as thousands separators and appends a currency symbol at the end.
+ *
+ * @param amount The number to format.
+ * @param currencySymbol The currency symbol string (e.g., "$", "€", "₹") to append.
+ * @returns A string with the number formatted with commas and the currency symbol appended, separated by a space.
+ * Example: 12345.67 -> "12,345.67 $"
+ */
+export const formatNumberWithCurrencySuffix = (amount: number, currencySymbol: string): string => {
+  const currencyString = currencySymbol ? ' ' + currencySymbol : '';
+
+  // Validate input - ensure amount is a finite number
+  if (typeof amount !== 'number' || !isFinite(amount)) {
+    console.error("Invalid input: 'amount' must be a finite number.");
+    // Return a default or throw an error, depending on desired behavior
+    return `NaN${currencyString}`;
+  }
+
+  // Use Intl.NumberFormat for robust number formatting.
+  // We specify 'en-US' locale to guarantee the use of commas as thousands separators
+  // and a period as the decimal separator, regardless of the user's system locale.
+  // 'style: decimal' formats the number plainly, allowing us to append the symbol manually.
+  const numberFormatter = new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    // You can uncomment and adjust these if you need specific decimal place handling:
+    // minimumFractionDigits: 2, // Always show at least 2 decimal places
+    // maximumFractionDigits: 2, // Show no more than 2 decimal places
+  });
+
+  // Format the number part
+  const formattedNumber = numberFormatter.format(amount);
+
+  // Concatenate the formatted number, a space, and the currency symbol
+  return `${formattedNumber}${currencyString}`;
+}

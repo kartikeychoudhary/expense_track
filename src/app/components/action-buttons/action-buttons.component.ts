@@ -21,7 +21,7 @@ export class ActionButtons  implements ICellRendererAngularComp{
     if((params.data['status'] && params.data['status']!== 'OPEN')){
       this.isStartTaskDisabled = true;
     }
-    if((params.data['status'] && params.data['status'] === 'COMPLETED' && params.data['type'] === 'GenAi')){
+    if((params.data['status'] && params.data['status'] === 'COMPLETED' && params.data['type'] === 'GEN_AI')){
       this.isStartTaskDisabled = false;
     }
    

@@ -122,10 +122,10 @@ export class TasksComponent {
   }
 
   startAction(params: Task) {
-    if (params['status'] === 'COMPLETED' && params['type'] === 'GenAi') {
+    if (params['status'] === 'COMPLETED' && params['type'] === 'GEN_AI') {
       this.convertTask(params);
     }
-    if (params['status'] === 'OPEN' && params['type'] === 'GenAi') {
+    if (params['status'] === 'OPEN' && params['type'] === 'GEN_AI') {
       this.startTask(params);
     }
   }

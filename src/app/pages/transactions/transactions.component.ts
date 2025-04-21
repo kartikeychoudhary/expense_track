@@ -119,7 +119,22 @@ export class TransactionsComponent {
           this.sendNotification(ApplicationConstant.STRINGS.TRANSACTION.LOAD_TRANSACTION_FAILED, NOTIFICATION_TYPES.ERROR);
         },
       });
-    }else{
+    } else if(this.duration === 'DELETED'){
+      this.transactionService.getDeletedTransactions().subscribe({
+        next: (res) => {
+          if (res['status'] === 'OK') {
+            this.rowData = res['payload']['RESULT'];
+            this.showLoading(false);
+            this.sendNotification(ApplicationConstant.STRINGS.TRANSACTION.LOAD_TRANSACTION_SUCCESS, NOTIFICATION_TYPES.SUCCESS);
+          }
+        },
+        error: (err) => {
+          this.showLoading(false);
+          this.sendNotification(ApplicationConstant.STRINGS.TRANSACTION.LOAD_TRANSACTION_FAILED, NOTIFICATION_TYPES.ERROR);
+        },
+      });
+    }
+    else{
       this.transactionService.getAllTransactionsForDuration(getMillisForLast(this.duration)).subscribe({
         next: (res) => {
           if (res['status'] === 'OK') {

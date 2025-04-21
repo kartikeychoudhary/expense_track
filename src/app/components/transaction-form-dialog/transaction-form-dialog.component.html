@@ -76,6 +76,12 @@
                       <input type="checkbox" formControlName="disableForCharts" class="toggle toggle-primary" />
                     </label>
                 </div> 
+                <div class="block" *ngIf="transaction['deleted']">
+                    <label class="label cursor-pointer">
+                      <span class="label-text text-base-content"> Deleted </span>
+                      <input type="checkbox" formControlName="deleted" class="toggle toggle-primary" />
+                    </label>
+                </div> 
                 <div class="col-span-2">
                     <label for="datetime" class="block mb-2 text-sm font-medium text-base-content"> Date & Time </label>
                     <input 

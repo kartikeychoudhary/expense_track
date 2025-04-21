@@ -194,3 +194,16 @@ export const formatNumberWithCurrencySuffix = (amount: number, currencySymbol: s
   // Concatenate the formatted number, a space, and the currency symbol
   return `${formattedNumber}${currencyString}`;
 }
+
+export const generateRandomColorArray = (length: number): string[] => {
+  const colors: string[] = [];
+  const letters = '0123456789ABCDEF';
+  for (let i = 0; i < length; i++) {
+    let color = '#';
+    for (let j = 0; j < 6; j++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    colors.push(color);
+  }
+  return colors;
+}

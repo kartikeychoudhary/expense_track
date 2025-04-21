@@ -6,6 +6,7 @@ import { DashboardService } from '../../services/dashboard.service';
 import { GenericResponse } from '../../modals/generic-response.modal';
 import { sortedDateString } from '../../utils/application.helper';
 import { Chart } from '../../modals/chart.modal';
+import { filter, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -14,6 +15,7 @@ import { Chart } from '../../modals/chart.modal';
 })
 export class CardComponent implements OnInit, OnChanges {
   @Input() card: Card | undefined; // Input for the card data
+  @Input() eventSubject: Subject<{ id: string, type: string }>;
   @Output() delete = new EventEmitter<void>();
   @Output() settingsChanged = new EventEmitter<Card>(); // Output for updated settings
   previewLabels: string[] = [];
@@ -29,16 +31,24 @@ export class CardComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['card'] && changes['card'].currentValue) {
       this.card = changes['card'].currentValue;
-      if(this.card.id !== 'SAMPLE_CARD'){
+      if (this.card.id !== 'SAMPLE_CARD' && this.card.chart) {
         this.loadChart();
-      }else{
+      } else {
         this.isSampleCard = true;
       }
     }
   }
 
   ngOnInit(): void {
-    // Initialization logic if needed
+    this.eventSubject.pipe(
+      filter(event => event.id === this.card?.id)
+    ).subscribe(
+      (next) => {
+        if (next.type === 'ITEM_RESIZED') {
+          // this.loadChart();
+        }
+      }
+    );
   }
 
   toggleMenu(): void {
@@ -100,7 +110,6 @@ export class CardComponent implements OnInit, OnChanges {
           };
         });
         this.isPreviewLoaded = true;
-        this.card.chart = new Chart();
         this.card.chart.data.labels = this.previewLabels;
         this.card.chart.data.series = this.previewSeries;
         this.card.chart.isDataLoaded = true;

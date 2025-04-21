@@ -1,9 +1,12 @@
-<div class="max-w-lg w-full card bg-base-100 p-4 md:p-6">
+<div class="w-full card bg-base-100 p-4 md:p-6">
 
-  <div class="flex justify-between items-start w-full">
+  <div class="flex justify-between items-start w-full h-full">
     <div class="flex-col items-center">
       <div class="flex items-center mb-1">
-        <h5 class="text-xl font-bold leading-none text-base-content me-1">{{duration}}</h5>
+        <select class="select select-bordered w-full h-full no-drag" *ngIf="series.length > 0" [(ngModel)]="currentDataSet" (ngModelChange)="onDataSetChange($event)">
+          <option value="" disabled>Select dataset</option>
+          <option *ngFor="let dataset of series" [value]="dataset.name" >{{dataset.name}}</option>
+        </select>
       </div>
     </div>
     <div class="flex justify-end items-center">
@@ -14,6 +17,7 @@
   <!-- Pie Chart -->
   <div class="py-6">
     <canvas baseChart 
+      
       [data]="pieChartData" 
       [type]="'pie'"
       [options]="pieChartOptions">

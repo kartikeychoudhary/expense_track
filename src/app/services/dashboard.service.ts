@@ -19,11 +19,14 @@ export class DashboardService {
   }
 
   getChartPreviewData(card: Card) {
-    delete card['chart'];
+    const cardDTO = {
+      ...card,
+    }
+    delete cardDTO['chart'];
     const headers = new HttpHeaders({
       'content-type': 'application/json',
     });
-    return this.http.post<any>(this.SERVER_URL + '/visualize/preview', JSON.stringify(card), { headers });
+    return this.http.post<any>(this.SERVER_URL + '/visualize/preview', JSON.stringify(cardDTO), { headers });
   }
 
   getVisualizeDashboard() {

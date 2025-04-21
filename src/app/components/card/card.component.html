@@ -43,6 +43,8 @@
           *ngIf="card.chart.type === 'bar'"></app-bar>
         <app-line [series]="card.chart.data.series" [labels]="card.chart.data.labels"
           *ngIf="card.chart.type === 'line'"></app-line>
+        <app-pie [series]="card.chart.data.series" [labels]="card.chart.data.labels"
+          *ngIf="card.chart.type === 'pie'"></app-pie>
       </div>
     </div>
   </div>

@@ -13,8 +13,8 @@
   </div>
 
   <gridster [options]="options" class="bg-base-300" *ngIf="!isLoading">
-    <gridster-item [item]="card.gridsterConfig" *ngFor="let card of dashboard" class="bg-transparent">
-      <app-card [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)">
+    <gridster-item [id]="card.id" [item]="card.gridsterConfig" *ngFor="let card of dashboard" class="bg-transparent">
+      <app-card [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)" [eventSubject]="eventSubject">
         
       </app-card>
     </gridster-item>

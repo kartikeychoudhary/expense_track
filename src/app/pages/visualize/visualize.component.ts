@@ -1,16 +1,17 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { Card } from '../../modals/card.modal';
 import { Gridster } from '../../modals/gridster.modal';
 import { DashboardService } from '../../services/dashboard.service';
 import { GenericResponse } from '../../modals/generic-response.modal';
 import _ from 'lodash';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-visualize',
   standalone: false,
   templateUrl: './visualize.component.html',
 })
-export class VisualizeComponent implements OnInit {
+export class VisualizeComponent implements OnInit, AfterViewInit {
   dashboardService:DashboardService = inject(DashboardService);
 
   options: GridsterConfig | undefined;
@@ -18,15 +19,23 @@ export class VisualizeComponent implements OnInit {
   editMode = false
   isLoading = false;
   saveDashboardLoading = false;
-
+  public eventSubject = new Subject<{id:string, type:string}>();
+  private isViewLoaded = false;
 
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef) 
-  static itemChange(item: any, itemComponent: any) {
+  itemChange(item: any, itemComponent: any) {
     console.info('itemChanged', item, itemComponent);
   }
 
-  static itemResize(item: any, itemComponent: any) {
+  itemResize(item: any, itemComponent: any) {
+    const cardId = itemComponent.el.id
+    if(this.isViewLoaded){
+      this.eventSubject.next({id:cardId, type:'ITEM_RESIZED'})
+    }
     console.info('itemResized', item, itemComponent);
+  }
+  ngAfterViewInit(): void {
+    this.isViewLoaded = true;
   }
 
   ngOnInit() {
@@ -40,8 +49,8 @@ export class VisualizeComponent implements OnInit {
       minRows: 20,
       fixedColWidth: 25,
       fixedRowHeight: 25,
-      itemChangeCallback: VisualizeComponent.itemChange,
-      itemResizeCallback: VisualizeComponent.itemResize,
+      itemChangeCallback: this.itemChange.bind(this),
+      itemResizeCallback: this.itemResize.bind(this),
       draggable: {
         enabled: true,
         ignoreContentClass: 'no-drag'

@@ -128,6 +128,7 @@ export class ApplicationConstant {
   static readonly ALLOWED_CHART_TYPES = [
     'line',
     'bar',
+    'pie'
   ]
 }
 export enum NOTIFICATION_TYPES {

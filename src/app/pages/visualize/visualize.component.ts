@@ -41,8 +41,8 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
     }
     console.info('itemResized', item, itemComponent);
   }
-  ngAfterViewInit(): void {
-    this.isViewLoaded = true;
+
+  initGrid(){
     setTimeout(() => {
       if (this.gridstackComponent?.grid) {
         this.grid = this.gridstackComponent.grid;
@@ -50,7 +50,12 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
       } else {
         console.warn('GridstackComponent or its grid not available yet in ngAfterViewInit.');
       }
-    }, 100);
+    },);
+  }
+
+  ngAfterViewInit(): void {
+    this.isViewLoaded = true;
+    this.initGrid();
   }
 
   ngOnInit() {
@@ -85,6 +90,9 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
         return Card.getCardFromJson(card);
       })
       this.isLoading = false;
+      if(!this.grid){
+        this.initGrid();
+      }
     });
   }
 

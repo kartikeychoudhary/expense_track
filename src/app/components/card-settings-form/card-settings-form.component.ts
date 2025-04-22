@@ -38,7 +38,7 @@ export class CardSettingsFormComponent implements OnInit {
   allTransactionTypes: MultiSelectItem[] = ['all', ...ApplicationConstant.TYPE].map((mode) => ({ value: mode, label: mode }));
   allChartTypes: MultiSelectItem[] = ApplicationConstant.ALLOWED_CHART_TYPES.map((type) => ({ value: type, label: type }));
 
-  dimensions: MultiSelectItem[] = [{ label: 'Transaction Type', value: 'transactionType' }];
+  dimensions: MultiSelectItem[] = [{ label: 'Transaction Type', value: 'transactionType' }, { label: 'Category', value: 'category' }];
   functions: MultiSelectItem[] = [{ label: 'Sum', value: 'sum' }]
 
   constructor(

@@ -42,6 +42,9 @@ import { CardSettingsFormComponent } from './components/card-settings-form/card-
 import { NotificationBannerComponent } from './components/notification-banner/notification-banner.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { MultiSelectListComponent } from "./components/multi-select-list/multi-select-list.component";
+import { GridstackComponent, GridstackItemComponent, GridstackModule } from 'gridstack/dist/angular';
+import { StatsComponent } from './components/charts/stats/stats.component';
+
 
 @NgModule({
   declarations: [
@@ -76,7 +79,8 @@ import { MultiSelectListComponent } from "./components/multi-select-list/multi-s
     CardSettingsFormComponent,
     NotificationBannerComponent,
     CheckboxComponent,
-    MultiSelectListComponent
+    MultiSelectListComponent,
+    StatsComponent
   ],
   imports: [
     HttpClientModule,
@@ -90,8 +94,10 @@ import { MultiSelectListComponent } from "./components/multi-select-list/multi-s
     ReactiveFormsModule,
     AgGridAngular,
     BaseChartDirective,
-    GridsterModule,
-    MatDialogModule
+    MatDialogModule,
+    GridstackComponent,
+    GridstackItemComponent,
+    GridstackModule
     ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, 
     provideCharts(withDefaultRegisterables())

@@ -2,7 +2,8 @@
   <div class="px-2 card-title flex justify-between items-center mb-2">
     <h5 class="card-title">{{ card.title }}</h5>
     <div class="flex items-center space-x-2"> <!-- Closing tag added -->
-      <button class="btn btn-ghost btn-sm btn-circle no-drag" (click)="loadChart() " [disabled]="isLoading" *ngIf="!isSampleCard">
+      <button class="btn btn-ghost btn-sm btn-circle no-drag" (click)="loadChart() " [disabled]="isLoading"
+        *ngIf="!isSampleCard">
         <i class="fa fa-refresh"></i>
       </button>
       <div class="dropdown dropdown-end no-drag">
@@ -45,6 +46,8 @@
           *ngIf="card.chart.type === 'line'"></app-line>
         <app-pie [series]="card.chart.data.series" [labels]="card.chart.data.labels"
           *ngIf="card.chart.type === 'pie'"></app-pie>
+        <app-stats class="grid p-4" [series]="card.chart.data.series" [labels]="card.chart.data.labels"
+          *ngIf="card.chart.type === 'stats'"></app-stats>
       </div>
     </div>
   </div>

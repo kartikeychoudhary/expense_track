@@ -1,0 +1,11 @@
+<div class="stats bg-base-100 border border-base-300">
+    @for (stat of stats; track $index) {
+    <div class="stat">
+        <div class="stat-title">{{stat.label}}</div>
+        <div class="stat-value" [ngClass]="{'text-primary':stat.label !== 'DEBIT' && stat.label !== 'CREDIT', 'text-error':stat.label === 'DEBIT', 'text-success':stat.label === 'CREDIT'}">{{stat.amount}}</div>
+        <div class="stat-actions">
+            <div class="btn btn-xs" [ngClass]="{'btn-primary':stat.label !== 'DEBIT' && stat.label !== 'CREDIT', 'btn-error':stat.label === 'DEBIT', 'btn-success':stat.label === 'CREDIT'}"  >{{stat.subLabel}}</div>
+        </div>
+    </div>
+    }
+</div>

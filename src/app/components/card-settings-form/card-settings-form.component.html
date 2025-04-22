@@ -144,6 +144,8 @@
           *ngIf="isPreviewLoaded && previewCardType ==='line'"></app-line>
         <app-pie class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
         *ngIf="isPreviewLoaded && previewCardType ==='pie'"></app-pie>
+        <app-stats class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
+        *ngIf="isPreviewLoaded && previewCardType ==='stats'"></app-stats>
       </div>
     </ng-container>
 

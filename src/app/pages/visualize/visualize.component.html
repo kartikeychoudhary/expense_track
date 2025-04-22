@@ -1,4 +1,4 @@
-<div class="h-[85vh]">
+<div class="h-[90vh]">
   <button class="btn btn-primary mb-4 mr-2" (click)="onEditToggle()" *ngIf="!editMode">Design Mode</button>
   <button class="btn btn-primary mb-4 mr-2" (click)="addItem()" *ngIf="editMode">Add Item</button>
   <button class="btn btn-secondary mb-4 mr-2" (click)="onEditToggle();" *ngIf="editMode">View Mode</button>
@@ -12,11 +12,32 @@
     <span class="loading loading-spinner loading-lg"></span>
   </div>
 
-  <gridster [options]="options" class="bg-base-300" *ngIf="!isLoading">
+  <!-- <gridster [options]="options" class="bg-base-300" *ngIf="!isLoading">
     <gridster-item [id]="card.id" [item]="card.gridsterConfig" *ngFor="let card of dashboard" class="bg-transparent">
       <app-card [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)" [eventSubject]="eventSubject">
         
       </app-card>
     </gridster-item>
-  </gridster>
+  </gridster> -->
+  <div class="max-h-[85vh] overflow-y-auto">
+    <gridstack #gridstack [options]="options" (changeCB)="onChange($event)" class="bg-blue-100" *ngIf="!isLoading">
+  
+      @for (card of dashboard; track card.id) {
+        <gridstack-item [id]="card.id"
+        [options]="{ 
+          x: card.gridsterConfig.x, 
+          y: card.gridsterConfig.y, 
+          w: card.gridsterConfig.cols, 
+          h: card.gridsterConfig.rows 
+        }"
+        >
+          <app-card [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)" [eventSubject]="eventSubject">
+          
+          </app-card>
+        </gridstack-item>
+      }
+  
+    </gridstack>
+  </div>
+
 </div>

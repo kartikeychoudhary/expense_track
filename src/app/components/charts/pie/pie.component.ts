@@ -2,7 +2,7 @@ import { Component, Input, SimpleChanges, ViewChild, OnInit, OnChanges } from '@
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartOptions, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { generateRandomColorArray } from '../../../utils/application.helper';
+import { generatePieChartColors, generateRandomColorArray } from '../../../utils/application.helper';
 
 @Component({
   selector: 'app-pie',
@@ -87,6 +87,7 @@ export class PieComponent implements OnInit, OnChanges {
       datasets: [
         {
           data: this.series[0].data,
+          backgroundColor: generatePieChartColors(this.labels.length)
         }
       ]
     };

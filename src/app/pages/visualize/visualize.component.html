@@ -20,7 +20,7 @@
     </gridster-item>
   </gridster> -->
   <div class="max-h-[85vh] overflow-y-auto">
-    <gridstack #gridstack [options]="options" (changeCB)="onChange($event)" [ngClass]="{editMode:'bg-blue-100'}" *ngIf="!isLoading">
+    <gridstack #gridstack [options]="options" (changeCB)="onChange($event)" [ngClass]="{'bg-blue-100':editMode}" *ngIf="!isLoading">
   
       @for (card of dashboard; track card.id) {
         <gridstack-item [id]="card.id"

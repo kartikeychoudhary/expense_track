@@ -23,9 +23,9 @@
 <div class="overflow-auto grid grid-flow-row auto-cols-auto gap-4 md:grid-cols-1 lg:grid-cols-3 sm:grid-cols-1 grid-cols-1" style="height: 85vh;">
     <!-- <app-area></app-area> -->
 
-    <app-bar class="col-span-1" [series]="multiDimChartSeries" [labels]="multiDimChartLabels" (event)="handleEvent($event)" *ngIf="isLoaded"></app-bar>
+    <app-bar-custom class="col-span-1" [series]="multiDimChartSeries" [labels]="multiDimChartLabels" (event)="handleEvent($event)" *ngIf="isLoaded"></app-bar-custom>
     <!-- <app-pie class="col-span-2" [series]="singleDimChartSeries" [labels]="singleDimChartLabels" [duration]="uniqueSelected" *ngIf="isLoaded"></app-pie> -->
-    <app-donut class="col-span-2" [series]="singleDimChartSeries" [labels]="singleDimChartLabels" [duration]="uniqueSelected" *ngIf="isLoaded"></app-donut>
+    <app-donut-custom class="col-span-2" [series]="singleDimChartSeries" [labels]="singleDimChartLabels" [duration]="uniqueSelected" *ngIf="isLoaded"></app-donut-custom>
     <!-- <app-radial></app-radial>  -->
 
     <!-- <app-column></app-column>

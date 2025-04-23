@@ -44,6 +44,8 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { MultiSelectListComponent } from "./components/multi-select-list/multi-select-list.component";
 import { GridstackComponent, GridstackItemComponent, GridstackModule } from 'gridstack/dist/angular';
 import { StatsComponent } from './components/charts/stats/stats.component';
+import { DonutCustomComponent } from './components/charts/donut-custom/donut-custom.component';
+import { BarCustomComponent } from './components/charts/bar-custom/bar-custom.component';
 
 
 @NgModule({
@@ -80,7 +82,9 @@ import { StatsComponent } from './components/charts/stats/stats.component';
     NotificationBannerComponent,
     CheckboxComponent,
     MultiSelectListComponent,
-    StatsComponent
+    StatsComponent,
+    DonutCustomComponent,
+    BarCustomComponent
   ],
   imports: [
     HttpClientModule,

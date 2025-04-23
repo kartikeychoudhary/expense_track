@@ -30,6 +30,7 @@ export class CardSettingsFormComponent implements OnInit {
   previewSeries = [];
   previewLabels = [];
   previewCardType = 'bar'; // Default chart type for preview
+  previewOrientation = 'horizontal'
 
   allCategories: MultiSelectItem[] = [] // Example: Use constants or fetch from API
   allAccounts: MultiSelectItem[] = []; // Will be populated from API
@@ -64,6 +65,7 @@ export class CardSettingsFormComponent implements OnInit {
         chartType: [this.card?.chart?.type || 'bar'],
         dimension: [this.card?.layout?.dimension || 'transactionType'],
         function: [this.card?.layout?.function || 'sum'],
+        orientation:[this.card?.chart?.options?.orientation || 'horizontal']
       }),
       dateOptions: this.fb.group({
         timeFrame: [this.card?.layout?.dateOptions?.timeFrame || 'month'],
@@ -155,6 +157,9 @@ export class CardSettingsFormComponent implements OnInit {
       if(!source.chart.data) source.chart.data = {series: [], labels: []};
       source.chart.data.series = this.previewSeries;
       source.chart.data.labels = this.previewLabels;
+      if(this.isBarChartType()){
+        source.chart.options.orientation = this.settingsForm.get('chartOptions')?.get('orientation')?.value || 'horizontal';
+      }
       source.chart.isDataLoaded = true;
     }
   }
@@ -191,6 +196,7 @@ export class CardSettingsFormComponent implements OnInit {
           };
         });
         this.isPreviewLoaded = true;
+        this.previewOrientation = this.settingsForm.get('chartOptions')?.get('orientation')?.value
         console.log('Preview loaded successfully:', response);
       },
       error: (error) => {
@@ -205,6 +211,11 @@ export class CardSettingsFormComponent implements OnInit {
   isDynamicDateType(): boolean {
     const dateType = this.settingsForm.get('dateOptions')?.get('dateType')?.value;
     return ['before', 'after'].includes(dateType);
+  }
+
+  isBarChartType():boolean {
+    const chartType = this.settingsForm.get('chartOptions')?.get('chartType')?.value;
+    return ['bar'].includes(chartType);
   }
 
   isRangeDateType(): boolean {

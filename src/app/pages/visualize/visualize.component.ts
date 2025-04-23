@@ -63,7 +63,7 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
       animate: false,
       margin: 5,
       cellHeight: '10vh',
-      float: true,
+      float: false,
       columnOpts: {
         columnWidth: 100,
         layout: 'move'
@@ -131,7 +131,7 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
 
   addItem(isSampleCard?: boolean) {
     if (this.dashboard) {
-      this.dashboard.push(new Card(new Gridster(2, 2, 0, 0), 'New Card', isSampleCard));
+      this.dashboard.push(new Card(new Gridster(4, 4, 0, 0), 'New Card', isSampleCard));
     }
 
   }

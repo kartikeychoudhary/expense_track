@@ -41,6 +41,17 @@
               </option>
             </select>
           </div>
+          <div class="grid grid-cols-2 gap-4" *ngIf="isBarChartType()">
+            <div class="col-span-2">
+              <label for="orientation" class="block mb-2 text-sm font-medium text-base-content input-sm">Orientation</label>
+              <div class="join join-horizontal border border-base-300">
+                <input type="radio" name="orientation" class="btn join-item" aria-label="horizontal" value="horizontal"
+                  formControlName="orientation" />
+                <input type="radio" name="orientation" class="btn join-item" aria-label="vertical" value="vertical"
+                  formControlName="orientation" />
+              </div>
+            </div>
+          </div>
           <div class="form-control">
             <label for="dimension" class="block mb-2 text-sm font-medium text-base-content input-sm"> Dimension </label>
             <select formControlName="dimension" class="select select-bordered w-full">
@@ -138,12 +149,14 @@
       <!-- Preview Section -->
       <div *ngIf="!isLoading && currentTab === 'preview'" class="preview-section"
         style="max-height: 40vh;overflow-y: scroll">
-        <app-bar class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
+        <app-bar class="col-span-1" [series]="previewSeries" [labels]="previewLabels" [orientation]="previewOrientation"
           *ngIf="isPreviewLoaded && previewCardType ==='bar'"></app-bar>
         <app-line class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
           *ngIf="isPreviewLoaded && previewCardType ==='line'"></app-line>
         <app-pie class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
         *ngIf="isPreviewLoaded && previewCardType ==='pie'"></app-pie>
+        <app-donut class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
+        *ngIf="isPreviewLoaded && previewCardType ==='donut'"></app-donut>
         <app-stats class="col-span-1" [series]="previewSeries" [labels]="previewLabels"
         *ngIf="isPreviewLoaded && previewCardType ==='stats'"></app-stats>
       </div>

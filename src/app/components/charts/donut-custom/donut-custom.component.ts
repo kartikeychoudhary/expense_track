@@ -2,21 +2,18 @@ import { Component, Input, SimpleChanges, ViewChild, OnInit, OnChanges } from '@
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { DoughnutControllerChartOptions } from 'chart.js';
-import { generatePieChartColors } from '../../../utils/application.helper';
+
 @Component({
-  selector: 'app-donut',
-  templateUrl: './donut.component.html',
-  standalone: false
+  selector: 'app-donut-custom',
+  standalone: false,
+  templateUrl: './donut-custom.component.html',
 })
-export class DonutComponent implements OnInit, OnChanges {
+export class DonutCustomComponent implements OnInit, OnChanges {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  @Input() series: { name: string, color: string, data: number[] }[] = [];
+  @Input() series: number[] = [];
   @Input() labels: string[] = [];
-  public currentDataSet;
-  private backgroundColors = [];
-  private sortedSeries: any[];
-  private sortedLabels: any[]
+  @Input() duration: string;
 
   public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
@@ -25,7 +22,7 @@ export class DonutComponent implements OnInit, OnChanges {
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'bottom',
         labels: {
         }
       },
@@ -39,7 +36,7 @@ export class DonutComponent implements OnInit, OnChanges {
   public doughnutChartData: ChartData<'doughnut'> = {
     labels: [],
     datasets: [
-      {
+      { 
         data: [],
       }
     ]
@@ -51,46 +48,33 @@ export class DonutComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['series'] || changes['labels']) {
-      this.currentDataSet = this.series[0].name
-      this.backgroundColors = generatePieChartColors(this.labels.length);
       this.sortChart();
       this.updateChartData();
+      this.chart?.update();
     }
   }
 
   updateChartData(): void {
     this.doughnutChartData = {
-      labels: this.sortedLabels,
+      labels: this.labels,
       datasets: [
         {
-          data: this.sortedSeries,
-          backgroundColor: this.backgroundColors
+          data: this.series,
         }
       ]
     };
-    this.chart?.update();
   }
-
-  sortChart() {
-    const selectedDataSet = this.series.find((dataset) => dataset.name === this.currentDataSet)
-    if (!this.series || !this.labels || selectedDataSet.data.length !== this.labels.length) {
-      this.sortedLabels = this.labels;
-      this.sortedSeries = selectedDataSet.data;
+  
+  sortChart(){
+    if (!this.series || !this.labels || this.series.length !== this.labels.length) {
       return;
     }
-    const combinedData = selectedDataSet.data.map((item, index) => {
+    const combinedData = this.series.map((item, index) => {
       return { label: this.labels[index], value: item };
     });
     combinedData.sort((a, b) => b.value - a.value);
-    this.sortedLabels = combinedData.map(val => val.label);
-    this.sortedSeries = combinedData.map(val => val.value);
-    for (let i = 0; i < this.sortedSeries.length; i++) {
-      if(this.sortedSeries[i] === 0){
-        this.sortedSeries.splice(i, 1);
-        this.sortedLabels.splice(i, 1);
-        i--;
-      }
-    }
+    this.labels = combinedData.map(val => val.label);
+    this.series = combinedData.map(val => val.value);
   }
 
   public chartClicked({ event, active }: { event?: ChartEvent, active?: { index: number }[] }): void {
@@ -102,9 +86,5 @@ export class DonutComponent implements OnInit, OnChanges {
       console.log(`Clicked on slice: ${label}, value: ${value}`);
     }
   }
-  onDataSetChange(event: any) {
-    this.currentDataSet = event;
-    this.sortChart();
-    this.updateChartData();
-  }
 }
+

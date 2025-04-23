@@ -19,16 +19,16 @@ import { SettingsManagerService } from '../../services/settings-manager.service'
   selector: 'transaction-table',
   templateUrl: './transaction-table.component.html',
   styleUrl: './transaction-table.component.css',
-  standalone:false
+  standalone: false
 })
 export class TransactionTableComponent {
   private _settingsService: SettingsManagerService = inject(SettingsManagerService);
   @Input() rowDataInput: any[];
-  @Input() params: { lastDataUpdated : number, rowData: any[]}
+  @Input() params: { lastDataUpdated: number, rowData: any[] }
   @Input() action: Function
   @Input() event: Subject<any>;
   gridAPI: GridApi;
-  isMobileView:boolean;
+  isMobileView: boolean;
 
   getStatusClass = (status) => {
     switch (status) {
@@ -42,7 +42,7 @@ export class TransactionTableComponent {
   };
 
   public columnDefs: ColDef[] = [
-    {field: 'id', hide: true},
+    { field: 'id', hide: true },
     // {
     //   field: 'select',
     //   headerName: '',
@@ -53,15 +53,27 @@ export class TransactionTableComponent {
     //     params: HeaderCheckboxSelectionCallbackParams
     //   ) => this.headerCheckboxSelection(params),
     // },
-    { field: 'createdDate',type:'date' ,headerName:'Date', valueGetter: (params)=> convertMillisToDateFormat(params.data.createdDate), comparator: (A, B) => convertDateToMillis(A) - convertDateToMillis(B)  },
+    {
+      field: 'createdDate', type: 'date', headerName: 'Date', valueGetter: (params) => params.data.createdDate, valueFormatter: (params) => convertMillisToDateFormat(params.value), filterParams: {
+        valueFormatter: (params) => convertMillisToDateFormat(params.value),
+      },
+      comparator: (valueA, valueB, nodeA, nodeB, isDescending) => {
+        const dateA = nodeA.data.createdDate;
+        const dateB = nodeB.data.createdDate;
+        if (dateA === dateB) {
+          return 0;
+        }
+        return (dateA < dateB) ? -1 : 1;
+      }
+    },
     { field: 'account' },
-    { field: 'amount', maxWidth: 150, cellClass: (params) => this.getStatusClass(params.data.type), valueGetter: (params) => formatNumberWithCurrencySuffix(params.data.amount, this._settingsService.currencySymbol) },
+    { field: 'amount', maxWidth: 150, cellClass: (params) => this.getStatusClass(params.data.type), valueFormatter: (params) => formatNumberWithCurrencySuffix(params.data.amount, this._settingsService.currencySymbol) },
     { field: 'category' },
-    { field: 'transactionMode', headerName:'Mode', hide:true },
-    { field: 'spendAt', hide :true },
-    { field: 'type', hide :true },
-    { field: 'description', hide :true },
-    { field: 'disableForCharts', hide:true, headerName:'Disabled for charts', valueGetter: (params)=> params.data.disableForCharts+''},
+    { field: 'transactionMode', headerName: 'Mode', hide: true },
+    { field: 'spendAt', hide: true },
+    { field: 'type', hide: true },
+    { field: 'description', hide: true },
+    { field: 'disableForCharts', hide: true, headerName: 'Disabled for charts', valueGetter: (params) => params.data.disableForCharts + '' },
     {
       field: 'action',
       headerName: 'Action',
@@ -75,7 +87,7 @@ export class TransactionTableComponent {
         actionTriggered: this.onAction.bind(this),
         calledFrom: 'TRANSACTION'
       },
-      filter:false
+      filter: false
     },
   ];
   public autoGroupColumnDef: ColDef = {
@@ -111,30 +123,30 @@ export class TransactionTableComponent {
   public rowData!: Transaction[];
   public themeClass: string = 'ag-theme-quartz-dark';
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.event.subscribe(value=>{
-      if(this.gridAPI){
-        if(value['calledFrom'] && value['calledFrom'] === 'TRANSACTIONS_TABLE'){return;}
-        if(value['type'] === 'LOADING'){
-          if(value['value']){
+    this.event.subscribe(value => {
+      if (this.gridAPI) {
+        if (value['calledFrom'] && value['calledFrom'] === 'TRANSACTIONS_TABLE') { return; }
+        if (value['type'] === 'LOADING') {
+          if (value['value']) {
             this.gridAPI.showLoadingOverlay();
-          }else{
+          } else {
             this.gridAPI.hideOverlay();
           }
-        }else if(value['type'] === 'REFRESH'){
+        } else if (value['type'] === 'REFRESH') {
           this.gridAPI.setGridOption('rowData', this.rowData);
-        }else if(value['type'] === 'EXPORT_CSV'){
+        } else if (value['type'] === 'EXPORT_CSV') {
           this.gridAPI.exportDataAsCsv()
-        }else if(value['type'] === 'SHOW_HIDE_COLUMN'){
+        } else if (value['type'] === 'SHOW_HIDE_COLUMN') {
           const selectedColumn = value['value'];
           const map = new Map<string, boolean>();
-          selectedColumn.forEach(col=> map.set(col.title, col.isSelected));
-          this.columnDefs.forEach(col=>{
-            if(map.has(col.field)){
+          selectedColumn.forEach(col => map.set(col.title, col.isSelected));
+          this.columnDefs.forEach(col => {
+            if (map.has(col.field)) {
               col.hide = !map.get(col.field);
             }
           })
@@ -143,7 +155,7 @@ export class TransactionTableComponent {
       }
     })
   }
-  
+
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
@@ -163,20 +175,20 @@ export class TransactionTableComponent {
     return params.api.getRowGroupColumns().length === 0;
   };
 
-  onAction(params:any) {
+  onAction(params: any) {
     this.action(params);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    if(this.gridAPI){
+    if (this.gridAPI) {
       this.rowData = this.rowDataInput;
     }
   }
 
-  populateColumnSelection(){
-    const keys = this.columnDefs.map(column=> {return {title:column.field, isSelected: !column.hide}});
-    this.event.next({value:keys, calledFrom:'TRANSACTIONS_TABLE', type:'COLUMNS'});
+  populateColumnSelection() {
+    const keys = this.columnDefs.map(column => { return { title: column.field, isSelected: !column.hide } });
+    this.event.next({ value: keys, calledFrom: 'TRANSACTIONS_TABLE', type: 'COLUMNS' });
   }
 }

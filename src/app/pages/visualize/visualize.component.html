@@ -1,12 +1,18 @@
 <div class="h-[90vh]">
-  <button class="btn btn-primary mb-4 mr-2" (click)="onEditToggle()" *ngIf="!editMode">Design Mode</button>
-  <button class="btn btn-primary mb-4 mr-2" (click)="addItem()" *ngIf="editMode">Add Item</button>
-  <button class="btn btn-secondary mb-4 mr-2" (click)="onEditToggle();" *ngIf="editMode">View Mode</button>
-  <button class="btn btn-primary mb-4" (click)="saveDashboard();">
-    <div *ngIf="saveDashboardLoading">
-      <span class="loading loading-dots loading-xl"></span>
+  <div class="grid mb-4">
+    <div role="tablist" class="tabs col">
+      <div class="tabs-box mr-2">
+        <a role="tab" class="tab" [ngClass]="{'tab-active':!editMode}" (click)="onEditToggle()">View Mode</a>
+        <a role="tab" class="tab" [ngClass]="{'tab-active': editMode}" (click)="onEditToggle()">Design Mode</a>
+      </div>
+      <button class="col btn btn-primary mr-2 mt-1" (click)="addItem()" *ngIf="editMode">Add Item</button>
+      <button class="col btn btn-primary mt-1" (click)="saveDashboard();">
+        <div *ngIf="saveDashboardLoading">
+          <span class="loading loading-dots loading-xl"></span>
+        </div>
+        Save Dashboard</button>
     </div>
-    Save Dashboard</button>
+  </div>
 
   <div class="loader h-100 w-100 flex justify-center items-center" *ngIf="isLoading">
     <span class="loading loading-spinner loading-lg"></span>

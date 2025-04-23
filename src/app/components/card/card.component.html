@@ -41,7 +41,7 @@
       </div>
       <div style="max-height: 80vh;" *ngIf="card?.chart?.isDataLoaded && !isLoading">
         <app-bar [series]="card.chart.data.series" [labels]="card.chart.data.labels"
-          *ngIf="card.chart.type === 'bar'"></app-bar>
+          *ngIf="card.chart.type === 'bar'" [orientation]="card.chart.options.orientation"></app-bar>
         <app-line [series]="card.chart.data.series" [labels]="card.chart.data.labels"
           *ngIf="card.chart.type === 'line'"></app-line>
         <app-pie [series]="card.chart.data.series" [labels]="card.chart.data.labels"

@@ -129,6 +129,7 @@ export class ApplicationConstant {
     'line',
     'bar',
     'pie',
+    'donut',
     'stats'
   ]
 }

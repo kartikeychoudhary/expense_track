@@ -1,30 +1,34 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartOptions, ChartType, ActiveElement } from 'chart.js';
 import { SettingsManagerService } from '../../../services/settings-manager.service';
 import { formatNumberWithCurrencySuffix } from '../../../utils/application.helper';
 
 @Component({
-  selector: 'app-bar',
-  templateUrl: './bar.component.html',
-  standalone:false
+  selector: 'app-bar-custom',
+  standalone: false,
+  templateUrl: './bar-custom.component.html'
 })
-export class BarComponent implements OnInit, OnChanges {
-  
+export class BarCustomComponent {
   private _settingsService: SettingsManagerService = inject(SettingsManagerService);
+
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   @Input() series: {name: string, color:string, data:number[]}[] = [];
   @Input() labels: string[] = [];
-  @Input() orientation: string = 'horizontal';
   @Output() event = new EventEmitter<{seriesIndex: number, label: string, isSelected: boolean}>();
 
-  public currentStyles = {};
+  // Added property for dynamic height
+  chartContainerHeight: number = 300; // Default height
+
+  income: number = 0;
+  expense: number = 0;
+  net: number = 0;
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: this.orientation === 'horizontal' ? 'x' : 'y',
+    indexAxis: 'y',
     scales: {
       x: {
         stacked: false,
@@ -45,10 +49,11 @@ export class BarComponent implements OnInit, OnChanges {
       tooltip: {
         enabled: true,
         mode: 'index',
-        intersect: true,
+        intersect: false,
         callbacks: {
           label: (context) => this.getFormatedNumbers(Number(context.parsed.x))
         }
+
       },
       
     },
@@ -64,34 +69,48 @@ export class BarComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.updateChartData();
+    this.updateSummaryLabels();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['series'] || changes['labels'] || changes['orientation']) {
-      if(changes['orientation']){
-        this.barChartOptions.indexAxis = this.orientation === 'horizontal' ? 'x' : 'y';
-      }
-      this.updateStyle()
+    if (changes['series'] || changes['labels']) {
       this.updateChartData();
+      this.updateSummaryLabels();
       this.chart?.update();
     }
   }
+
+  updateSummaryLabels(){
+    this.income = 0;
+    this.expense = 0;
+    this.series.forEach(ser => {
+      const sum = ser.data.reduce((acc, val) => acc + (val || 0), 0);
+      if(ser.name === 'Income' || ser.name === 'CREDIT'){
+        this.income = sum;
+      } else {
+        this.expense = sum;
+      }
+    });
+    this.net = this.income - this.expense;
+  }
+
   updateChartData(): void {
     this.barChartLabels = this.labels || [];
     this.barChartData = {
       labels: this.barChartLabels,
-      datasets: this.series.map(s => {
-        {
-          return {
-            data: s.data,
-            label: s.name,
-            backgroundColor: s.color || this.getDefaultColor(s.name),
-            borderColor: s.color || this.getDefaultColor(s.name),
-            borderWidth: 1,
-          }
-        }
-      })
+      datasets: this.series.map(s => ({
+        data: s.data,
+        label: s.name,
+        backgroundColor: s.color || this.getDefaultColor(s.name),
+        borderColor: s.color || this.getDefaultColor(s.name),
+        borderWidth: 1,
+      }))
     };
+
+    // Calculate dynamic height
+    const baseHeight = 150; // Minimum height
+    const heightPerLabel = 30; // Pixels per label
+    this.chartContainerHeight = baseHeight + (this.barChartLabels.length * heightPerLabel);
   }
 
   getDefaultColor(seriesName: string): string {
@@ -115,11 +134,4 @@ export class BarComponent implements OnInit, OnChanges {
   getFormatedNumbers(num: number): string {
     return formatNumberWithCurrencySuffix(num, this._settingsService.currencySymbol) 
   };
-  
-  updateStyle(){
-    this.currentStyles = {'height':'100%', width:'100%'}
-    const offset = Math.max(30*this.labels.length*this.series.length, 200) + 'px';
-    const key = this.barChartOptions.indexAxis === 'x' ? 'width' : 'height';
-    this.currentStyles[key] = offset;
-  }
 }

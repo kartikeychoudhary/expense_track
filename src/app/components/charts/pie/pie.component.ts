@@ -15,6 +15,9 @@ export class PieComponent implements OnInit, OnChanges {
   @Input() series: { name: string, color: string, data: number[] }[] = [];
   @Input() labels: string[] = [];
   public currentDataSet;
+  private backgroundColors = [];
+  private sortedSeries: any[];
+  private sortedLabels: any[]
 
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -75,22 +78,25 @@ export class PieComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['series'] || changes['labels']) {
+      this.currentDataSet = this.series[0].name
+      this.backgroundColors = generatePieChartColors(this.labels.length);
+      this.sortChart()
       this.updateChartData();
-      this.chart?.update();
     }
   }
 
   updateChartData(): void {
-    this.currentDataSet = this.series[0].name
+    
     this.pieChartData = {
-      labels: this.labels,
+      labels: this.sortedLabels,
       datasets: [
         {
-          data: this.series[0].data,
-          backgroundColor: generatePieChartColors(this.labels.length)
+          data: this.sortedSeries,
+          backgroundColor: this.backgroundColors
         }
       ]
     };
+    this.chart?.update();
   }
 
   public chartClicked({ event, active }: { event?: ChartEvent, active?: { index: number }[] }): void {
@@ -103,20 +109,32 @@ export class PieComponent implements OnInit, OnChanges {
     }
   }
 
-  onDataSetChange(event: any) {
-    const selectedValue = event;
-    const selectedDataSet = this.series.find((dataset) => dataset.name === selectedValue);
-    if (selectedDataSet) {
-      this.currentDataSet = selectedValue;
-      this.pieChartData = {
-        labels: this.labels,
-        datasets: [
-          {
-            data: selectedDataSet.data,
-          }
-        ]
-      };
-      this.chart?.update();
+  sortChart() {
+    const selectedDataSet = this.series.find((dataset) => dataset.name === this.currentDataSet)
+    if (!this.series || !this.labels || selectedDataSet.data.length !== this.labels.length) {
+      this.sortedLabels = this.labels;
+      this.sortedSeries = selectedDataSet.data;
+      return;
     }
+    const combinedData = selectedDataSet.data.map((item, index) => {
+      return { label: this.labels[index], value: item };
+    });
+    combinedData.sort((a, b) => b.value - a.value);
+    this.sortedLabels = combinedData.map(val => val.label);
+    this.sortedSeries = combinedData.map(val => val.value);
+    for (let i = 0; i < this.sortedSeries.length; i++) {
+      if(this.sortedSeries[i] === 0){
+        this.sortedSeries.splice(i, 1);
+        this.sortedLabels.splice(i, 1);
+        i--;
+      }
+    }
+
+  }
+
+  onDataSetChange(event: any) {
+    this.currentDataSet = event;
+    this.sortChart();
+    this.updateChartData()
   }
 }

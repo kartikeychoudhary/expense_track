@@ -1,40 +1,11 @@
-<div class="max-w-lg w-full card bg-base-100 p-4 md:p-6">
-    <div class="flex justify-between border-base-300 border-b pb-3">
-      <dl>
-        <dt class="text-base font-normal text-base-content/70 pb-1">Net</dt>
-        <dd class="leading-none text-3xl font-bold" [ngClass]="net > 0 ? 'text-success' : 'text-error'">{{getFormatedNumbers(net)}}</dd>
-      </dl>
-      <div>
-        <!-- <span class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300">
-          <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4"/>
-          </svg>
-          Profit rate 23.5%
-        </span> -->
-      </div>
-    </div>
-  
-    <div class="grid grid-cols-2 py-3">
-      <dl>
-        <dt class="text-base font-normal text-base-content/70 pb-1">Income</dt>
-        <dd class="leading-none text-xl font-bold text-success">{{getFormatedNumbers(income)}}</dd>
-      </dl>
-      <dl>
-        <dt class="text-base font-normal text-base-content/70 pb-1">Expense</dt>
-        <dd class="leading-none text-xl font-bold text-error">{{getFormatedNumbers(expense)}}</dd>
-      </dl>
-    </div>
-  
-    <!-- Added div wrapper for chart canvas -->
-    <div class="chart-container" [style.height.px]="chartContainerHeight" style="position: relative;">
-      <canvas baseChart 
-        [datasets]="barChartData.datasets"
-        [labels]="barChartLabels"
-        [options]="barChartOptions"
-        [legend]="barChartLegend"
-        [type]="'bar'"
-        (chartClick)="chartClicked($event)">
+<div class="w-full card bg-base-100 p-2 flex">
+  <!-- bar Chart -->
+  <div class="h-100 flex" [ngClass]="{'overflow-x-auto':this.barChartOptions.indexAxis === 'x', 'overflow-y-auto':this.barChartOptions.indexAxis === 'y'}">
+    <div  [style]="currentStyles">
+      <canvas baseChart [datasets]="barChartData.datasets" [labels]="barChartLabels" [options]="barChartOptions" [style]="currentStyles"
+        [legend]="barChartLegend" [type]="'bar'" (chartClick)="chartClicked($event)" >
       </canvas>
     </div>
-      
   </div>
+
+</div>

@@ -1,8 +1,9 @@
-import { Component, Input, SimpleChanges, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild, OnInit, OnChanges, inject } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { DoughnutControllerChartOptions } from 'chart.js';
-import { generatePieChartColors } from '../../../utils/application.helper';
+import { formatNumberWithCurrencySuffix, generatePieChartColors } from '../../../utils/application.helper';
+import { SettingsManagerService } from '../../../services/settings-manager.service';
 @Component({
   selector: 'app-donut',
   templateUrl: './donut.component.html',
@@ -10,6 +11,8 @@ import { generatePieChartColors } from '../../../utils/application.helper';
 })
 export class DonutComponent implements OnInit, OnChanges {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+  private _settingsService: SettingsManagerService = inject(SettingsManagerService);
+
 
   @Input() series: { name: string, color: string, data: number[] }[] = [];
   @Input() labels: string[] = [];
@@ -25,12 +28,18 @@ export class DonutComponent implements OnInit, OnChanges {
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'bottom',
         labels: {
         }
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: (context) => {
+            const value = context.parsed;
+            return this.getFormatedNumbers(value)
+          }
+        }
       },
     }
   };
@@ -107,4 +116,7 @@ export class DonutComponent implements OnInit, OnChanges {
     this.sortChart();
     this.updateChartData();
   }
+  getFormatedNumbers(num: number): string {
+        return formatNumberWithCurrencySuffix(num, this._settingsService.currencySymbol) 
+      };
 }

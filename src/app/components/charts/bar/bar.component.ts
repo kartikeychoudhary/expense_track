@@ -44,10 +44,13 @@ export class BarComponent implements OnInit, OnChanges {
       },
       tooltip: {
         enabled: true,
-        mode: 'index',
-        intersect: true,
+        mode: 'index', 
+        // intersect: true,
         callbacks: {
-          label: (context) => this.getFormatedNumbers(Number(context.parsed.x))
+          label: (context) => {
+            const value = this.orientation === 'horizontal' ? context.parsed.y : context.parsed.x;
+            return this.getFormatedNumbers(value)
+          }
         }
       },
       

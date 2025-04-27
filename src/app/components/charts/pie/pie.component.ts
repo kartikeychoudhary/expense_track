@@ -1,8 +1,9 @@
-import { Component, Input, SimpleChanges, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild, OnInit, OnChanges, inject } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartOptions, ChartType } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { generatePieChartColors, generateRandomColorArray } from '../../../utils/application.helper';
+import { formatNumberWithCurrencySuffix, generatePieChartColors, generateRandomColorArray } from '../../../utils/application.helper';
+import { SettingsManagerService } from '../../../services/settings-manager.service';
 
 @Component({
   selector: 'app-pie',
@@ -11,6 +12,7 @@ import { generatePieChartColors, generateRandomColorArray } from '../../../utils
 })
 export class PieComponent implements OnInit, OnChanges {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+  private _settingsService: SettingsManagerService = inject(SettingsManagerService);
 
   @Input() series: { name: string, color: string, data: number[] }[] = [];
   @Input() labels: string[] = [];
@@ -25,13 +27,19 @@ export class PieComponent implements OnInit, OnChanges {
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'bottom',
         align: 'start',
         labels: {
         }
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: (context) => {
+            const value = context.parsed;
+            return this.getFormatedNumbers(value)
+          }
+        }
       },
       datalabels: {
         display: true,
@@ -137,4 +145,8 @@ export class PieComponent implements OnInit, OnChanges {
     this.sortChart();
     this.updateChartData()
   }
+
+  getFormatedNumbers(num: number): string {
+      return formatNumberWithCurrencySuffix(num, this._settingsService.currencySymbol) 
+    };
 }

@@ -44,8 +44,10 @@
           *ngIf="card.chart.type === 'bar'" [orientation]="card.chart.options.orientation"></app-bar>
         <app-line [series]="card.chart.data.series" [labels]="card.chart.data.labels"
           *ngIf="card.chart.type === 'line'"></app-line>
-        <app-pie [series]="card.chart.data.series" [labels]="card.chart.data.labels"
+        <app-pie [series]="card.chart.data.series" [labels]="card.chart.data.labels" class="h-full"
           *ngIf="card.chart.type === 'pie'"></app-pie>
+        <app-donut [series]="card.chart.data.series" [labels]="card.chart.data.labels" class="h-full"
+        *ngIf="card.chart.type === 'donut'"></app-donut>
         <app-stats class="grid p-4" [series]="card.chart.data.series" [labels]="card.chart.data.labels"
           *ngIf="card.chart.type === 'stats'"></app-stats>
       </div>

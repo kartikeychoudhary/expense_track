@@ -1,8 +1,8 @@
-<div class="max-w-lg w-full card bg-base-100 p-4 md:p-6">
+<div class="w-full h-full grid card bg-base-100 p-0">
 
-  <div class="flex justify-between items-start w-full">
+  <div class="grid justify-between items-start w-full">
     <div class="flex-col items-center">
-      <div class="flex items-center mb-1">
+      <div class="flex items-center ml-1">
         <select class="select select-bordered w-full h-full no-drag" *ngIf="series.length > 0" [(ngModel)]="currentDataSet" (ngModelChange)="onDataSetChange($event)">
           <option value="" disabled>Select dataset</option>
           <option *ngFor="let dataset of series" [value]="dataset.name" >{{dataset.name}}</option>

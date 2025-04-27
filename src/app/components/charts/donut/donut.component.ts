@@ -18,9 +18,9 @@ export class DonutComponent implements OnInit, OnChanges {
   @Input() labels: string[] = [];
   public currentDataSet;
   private backgroundColors = [];
-  private sortedSeries: any[];
-  private sortedLabels: any[]
-
+  public sortedSeries: any[];
+  public sortedLabels: any[]
+  public tabularView = false;
   public doughnutChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,

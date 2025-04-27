@@ -1,13 +1,14 @@
-<div class="w-full h-full grid card bg-base-100 p-0">
+<div class="w-full h-full grid card bg-base-100 p-0" [ngClass]="{'grid':!tabularView}">
 
-  <div class="grid justify-between items-start w-full">
-    <div class="flex-col items-center">
-      <div class="flex items-center ml-1">
+  <div class="justify-between items-start w-full">
+    <div class="flex justify-between w-full">
+      <div class="flex items-center justify-between ml-1">
         <select class="select select-bordered w-full h-full no-drag" *ngIf="series.length > 0" [(ngModel)]="currentDataSet" (ngModelChange)="onDataSetChange($event)">
           <option value="" disabled>Select dataset</option>
           <option *ngFor="let dataset of series" [value]="dataset.name" >{{dataset.name}}</option>
         </select>
       </div>
+      <span class="flex items-center p-1">Tabular <input type="checkbox" checked="checked" class="toggle ml-2" [(ngModel)]="tabularView" /></span>
     </div>
     <div class="flex justify-end items-center">
       <!-- Placeholder -->
@@ -15,13 +16,32 @@
   </div>
 
   <!-- Pie Chart -->
-  <div class="py-6">
+  <div class="py-6" *ngIf="!tabularView">
     <canvas baseChart 
       
       [data]="pieChartData" 
       [type]="'pie'"
       [options]="pieChartOptions">
     </canvas>
+  </div>
+
+  <div class="py-6" *ngIf="currentDataSet && tabularView">
+    <div class="overflow-y-auto">
+      <table class="table table-xs table-zebra">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of sortedSeries; let i = index">
+            <td>{{sortedLabels[i]}}</td>
+            <td>{{getFormatedNumbers(sortedSeries[i])}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </div>

@@ -25,7 +25,7 @@
       </app-card>
     </gridster-item>
   </gridster> -->
-  <div class="max-h-[85vh] overflow-y-auto">
+  <div class="max-h-[82vh] overflow-y-auto">
     <gridstack #gridstack [options]="options" (changeCB)="onChange($event)" [ngClass]="{'bg-blue-100':editMode}" *ngIf="!isLoading">
   
       @for (card of dashboard; track card.id) {

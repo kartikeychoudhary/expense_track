@@ -78,6 +78,7 @@ export class CardComponent implements OnInit, OnChanges {
         // Update the card with the new settings from the dialog
         this.card = result;
         this.settingsChanged.emit(this.card); // Emit the updated card data
+        this.loadChart();
       }
     });
   }

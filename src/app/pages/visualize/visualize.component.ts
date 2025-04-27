@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { Card } from '../../modals/card.modal';
 import { Gridster } from '../../modals/gridster.modal';
@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { GridItemHTMLElement, GridStack, GridStackNode, GridStackOptions } from 'gridstack';
 import { GridstackComponent, nodesCB } from 'gridstack/dist/angular';
 import { LayoutManagerService } from '../../services/layout-manager.service';
+import { CardComponent } from '../../components/card/card.component';
 @Component({
   selector: 'app-visualize',
   standalone: false,
@@ -19,6 +20,7 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
   layoutService: LayoutManagerService = inject(LayoutManagerService);
 
   @ViewChild('gridstack') gridstackComponent!: GridstackComponent;
+  @ViewChildren(CardComponent) cardComponents!: QueryList<CardComponent>;
   grid!: GridStack;
 
   options: GridStackOptions;
@@ -42,7 +44,7 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
     console.info('itemResized', item, itemComponent);
   }
 
-  initGrid(){
+  initGrid() {
     setTimeout(() => {
       if (this.gridstackComponent?.grid) {
         this.grid = this.gridstackComponent.grid;
@@ -90,7 +92,7 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
         return Card.getCardFromJson(card);
       })
       this.isLoading = false;
-      if(!this.grid){
+      if (!this.grid) {
         this.initGrid();
       }
     });
@@ -163,5 +165,11 @@ export class VisualizeComponent implements OnInit, AfterViewInit {
 
   public onChange(data: nodesCB) {
     const nodes = data.nodes;
+    for(const node of nodes){
+      const el = node.el;
+      const id = el.id;
+      const cardComponentInstance = this.cardComponents.find(comp => comp.card?.id === id);
+      cardComponentInstance.loadChart();
+    }
   }
 }

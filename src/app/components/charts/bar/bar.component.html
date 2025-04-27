@@ -1,7 +1,7 @@
-<div class="w-full card bg-base-100 p-2 flex">
+<div class="w-full h-full card bg-base-100 p-2">
   <!-- bar Chart -->
-  <div class="h-100 flex" [ngClass]="{'overflow-x-auto':this.barChartOptions.indexAxis === 'x', 'overflow-y-auto':this.barChartOptions.indexAxis === 'y'}">
-    <div  [style]="currentStyles">
+  <div class="h-full" [ngClass]="{'overflow-x-auto':this.barChartOptions.indexAxis === 'x', 'overflow-y-auto':this.barChartOptions.indexAxis === 'y'}">
+    <div style="max-height: inherit;" [style]="currentStyles">
       <canvas baseChart [datasets]="barChartData.datasets" [labels]="barChartLabels" [options]="barChartOptions" [style]="currentStyles"
         [legend]="barChartLegend" [type]="'bar'" (chartClick)="chartClicked($event)" >
       </canvas>

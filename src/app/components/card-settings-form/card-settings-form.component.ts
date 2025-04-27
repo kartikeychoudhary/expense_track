@@ -153,13 +153,13 @@ export class CardSettingsFormComponent implements OnInit {
     source.layout.function = this.settingsForm.get('chartOptions')?.get('function')?.value || 'sum';
     source.chart.type = this.settingsForm.get('chartOptions')?.get('chartType')?.value || 'bar';
     source.title = this.settingsForm.get('title')?.value || 'New Card';
+    if(this.isBarChartType()){
+      source.chart.options.orientation = this.settingsForm.get('chartOptions')?.get('orientation')?.value || 'horizontal';
+    }
     if(this.previewSeries.length > 0 && this.previewLabels.length > 0){
       if(!source.chart.data) source.chart.data = {series: [], labels: []};
       source.chart.data.series = this.previewSeries;
       source.chart.data.labels = this.previewLabels;
-      if(this.isBarChartType()){
-        source.chart.options.orientation = this.settingsForm.get('chartOptions')?.get('orientation')?.value || 'horizontal';
-      }
       source.chart.isDataLoaded = true;
     }
   }

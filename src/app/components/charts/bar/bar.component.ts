@@ -22,7 +22,7 @@ export class BarComponent implements OnInit, OnChanges {
   public currentStyles = {};
 
   public barChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
+    responsive: false,
     maintainAspectRatio: false,
     indexAxis: this.orientation === 'horizontal' ? 'x' : 'y',
     scales: {

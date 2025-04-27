@@ -37,7 +37,7 @@
           h: card.gridsterConfig.rows 
         }"
         >
-          <app-card [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)" [eventSubject]="eventSubject">
+          <app-card id="{{'CARD_'+card.id}}" [card]="card" (delete)="removeItem($event, card)" (settingsChanged)="onSettingsChanged($event)" [eventSubject]="eventSubject">
           
           </app-card>
         </gridstack-item>

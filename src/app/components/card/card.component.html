@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="card-body p-0 ">
+  <div class="card-body p-0 overflow-y-auto">
     <div class="card-content flex-grow overflow-y-auto">
       <div class="flex justify-center items-center h-64" *ngIf="isLoading">
         <span class="loading loading-spinner loading-lg"></span>
@@ -39,7 +39,7 @@
       <div class="p-2" *ngIf="!card?.chart?.isDataLoaded && !isLoading && !isSampleCard">
         No data available
       </div>
-      <div style="max-height: 80vh;" *ngIf="card?.chart?.isDataLoaded && !isLoading">
+      <div *ngIf="card?.chart?.isDataLoaded && !isLoading" class="h-full">
         <app-bar [series]="card.chart.data.series" [labels]="card.chart.data.labels"
           *ngIf="card.chart.type === 'bar'" [orientation]="card.chart.options.orientation"></app-bar>
         <app-line [series]="card.chart.data.series" [labels]="card.chart.data.labels"

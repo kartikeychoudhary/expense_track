@@ -19,6 +19,10 @@ export class BarComponent implements OnInit, OnChanges {
   @Input() orientation: string = 'horizontal';
   @Output() event = new EventEmitter<{seriesIndex: number, label: string, isSelected: boolean}>();
 
+  constructor(private el: ElementRef){
+
+  }
+
   public currentStyles = {};
 
   public barChartOptions: ChartConfiguration['options'] = {
@@ -98,9 +102,10 @@ export class BarComponent implements OnInit, OnChanges {
   }
 
   getDefaultColor(seriesName: string): string {
-    if (seriesName === 'Income' || seriesName === 'CREDIT') return 'rgba(75, 192, 192, 0.8)';
-    if (seriesName === 'Expense' || seriesName === 'DEBIT') return 'rgba(255, 99, 132, 0.8)';
-    return 'rgba(54, 162, 235, 0.8)';
+    const style = getComputedStyle(this.el.nativeElement);
+    if (seriesName === 'Income' || seriesName === 'CREDIT') return style.getPropertyValue('--color-success').trim();
+    if (seriesName === 'Expense' || seriesName === 'DEBIT') return style.getPropertyValue('--color-error').trim();
+    return style.getPropertyValue('--color-primary').trim();
   }
 
   public chartClicked({ event, active }: { event?: ChartEvent, active?: any[] }): void {
